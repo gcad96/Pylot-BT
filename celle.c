@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include "cella.h"
 #include "celle.h"
@@ -35,4 +36,14 @@ void aggiungiCella(celle c, cella cel)
     }
 
     c->insieme[(c->dim)++] = cel;
+}
+
+void stampaCelle(celle c)
+{
+    int i;
+    for(i=0; i<c->dim; i++)
+    {
+        stampaCella(c->insieme[i]);
+        printf("/n");
+    }
 }

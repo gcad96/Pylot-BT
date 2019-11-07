@@ -17,18 +17,19 @@ void allocaCelle(celle* cel)
     void* service = NULL;
     int stop = 0;
     char nome[L]; float x; float y;
-    if(acquisisciDati(&service, &stop, nome, &x, &y))
+
+    while(!stop)
     {
-         while(!stop)
-         {
+        if(acquisisciDati(&service, &stop, nome, &x, &y))
+        {
              creaCella(&c, nome, x, y);
              aggiungiCella(*cel, c);
-         }
-    }
-    else
-    {
-        liberaCelle(*cel);
-        fprintf(stderr, "Errore durante il caricamento dei dati, celle non allocate\n");
+        }
+        else
+        {
+            liberaCelle(*cel);
+            fprintf(stderr, "Errore durante il caricamento dei dati, celle non allocate\n");
+        }
     }
 }
 
@@ -41,8 +42,13 @@ int acquisisciDati(void** gen, int* stop, char* nome, float* x, float* y)
     {
         FILE* f = fopen(FILE_INPUT, "r");
         if(f==NULL)     return 0;
-
-        fgets(NULL, L, f);
+        char line[LLENGTH];
+        fgets(line, LLENGTH, f);
+        if ( fscanf(f, "%s %f %f", nome, x, y)!=3 )
+        {
+            *stop=1;
+            fclose(f);
+        }
 
         *gen = (void*) f;
     }

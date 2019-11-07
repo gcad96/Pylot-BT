@@ -2,6 +2,7 @@
 #define UTILITY_H
 
 #define L 10
-#define FILE_INPUT ""
+#define LLENGTH 200
+#define FILE_INPUT "C:\\Docs\\CLion workspace\\Pylot-BT\\Dati\\DatiCelle.txt"
 
 #endif //UTILITY_H

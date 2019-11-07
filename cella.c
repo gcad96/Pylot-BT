@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "coordinata.h"
@@ -23,4 +24,10 @@ void liberaCella(cella c)
     free(c->nome);
     liberaCoordinata(c->coordinata);
     free(c);
+}
+
+void stampaCella(cella c)
+{
+    printf("Cella denominata: %s, con coordinate: ", c->nome);
+    stampaCoordinata(c->coordinata);
 }

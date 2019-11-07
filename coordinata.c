@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include "coordinata.h"
 
@@ -17,4 +18,9 @@ void creaCoordinata(coordinata* c, float x, float y)
 void liberaCoordinata(coordinata c)
 {
     free(c);
+}
+
+void stampaCoordinata(coordinata c)
+{
+    printf("(%f, %f)", c->x, c->y);
 }
