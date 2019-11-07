@@ -9,4 +9,5 @@ int main(void)
     celle c;
     allocaCelle(&c);
     stampaCelle(c);
+    liberaCelle(c);
 }
