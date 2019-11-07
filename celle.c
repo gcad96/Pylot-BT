@@ -44,6 +44,6 @@ void stampaCelle(celle c)
     for(i=0; i<c->dim; i++)
     {
         stampaCella(c->insieme[i]);
-        printf("/n");
+        printf("\n");
     }
 }
