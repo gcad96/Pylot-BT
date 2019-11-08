@@ -40,7 +40,7 @@ int acquisisciDati(void** gen, int* stop, char* nome, float* x, float* y)
 
     if(*gen==NULL)
     {
-        FILE* f = fopen(FILE_INPUT, "r");
+        FILE* f = fopen(FILE_INPUT_CELLE, "r");
         if(f==NULL)     return 0;
         char line[LLENGTH];
         fgets(line, LLENGTH, f);
