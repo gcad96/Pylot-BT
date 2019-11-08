@@ -1,4 +1,4 @@
-TestaID	X Nominal	Y Nominal
+TestaID	base altezza
 Z2
 Z1
 Z3

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "cella.h"
+#include "sorting.h"
 #include "celle.h"
 
 #define START 4
@@ -46,4 +47,44 @@ void stampaCelle(celle c)
         stampaCella(c->insieme[i]);
         printf("\n");
     }
+}
+
+void ordinaCelle(celle c, criterio crit)
+{
+    switch(crit)
+    {
+        case ascissa:
+            Sort(c->insieme, c->dim, ascissa);
+            break;
+        case ordinata:
+            Sort(c->insieme, c->dim, ordinata);
+            break;
+        case matrice:
+            Sort(c->insieme, c->dim, matrice);
+            break;
+        case altro:
+            break;
+        default:
+            break;
+    }
+}
+
+void generaDistanze(celle c, double*** m)
+{
+    int i, j;
+
+    *m = malloc((c->dim) * sizeof(double*));
+    for(i=0; i<c->dim; i++)
+    {
+        (*m)[i] = malloc((c->dim) * sizeof(double));
+        for(j=0; j<c->dim; j++)
+        {
+            (*m)[i][j] = distanza(c->insieme[i], c->insieme[j]);
+        }
+    }
+}
+
+int getDim(celle c)
+{
+    return c->dim;
 }
