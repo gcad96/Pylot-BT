@@ -22,8 +22,8 @@ void allocaCelle(celle* cel)
     {
         if(acquisisciDati(&service, &stop, nome, &x, &y))
         {
-             creaCella(&c, nome, x, y);
-             aggiungiCella(*cel, c);
+            creaCella(&c, nome, x, y);
+            aggiungiCella(*cel, c);
         }
         else
         {
@@ -64,7 +64,7 @@ int acquisisciDati(void** gen, int* stop, char* nome, float* x, float* y)
 
 #elif UFFICIALE
 
-#elif ALTRO
+    #elif ALTRO
 
 #else
 
