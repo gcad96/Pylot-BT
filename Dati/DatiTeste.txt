@@ -1,0 +1,5 @@
+TestaID	X Nominal	Y Nominal
+Z2
+Z1
+Z3
+Z4
