@@ -7,7 +7,7 @@
 #include "teste.h"
 #include "allocazione.h"
 
-int definisciNumeroTeste(int* n);
+void definisciNumeroTeste(int* n);
 
 void trovaPercorso()
 {
@@ -15,31 +15,27 @@ void trovaPercorso()
     allocaCelle(&c);
 
     int nTeste;
-    int out = definisciNumeroTeste(&nTeste);
-    if(out==-1)
-    {
-        fprintf(stderr, "Errore nel caricamento del file di configurazione.\n");
-        return;
-    }
-    if(out==0)
-    {
-        fprintf(stderr, "Errore nel caricamento del file di configurazione.\n");
-        return;
-    }
+    definisciNumeroTeste(&nTeste);
 
     teste t;
     allocaTeste(&t, nTeste);
 }
 
-int definisciNumeroTeste(int* n)
+void definisciNumeroTeste(int* n)
 {
     FILE* f;
-    if((f=fopen(FILE_INPUT_CONFIGURAZIONI, "r"))==NULL)     return -1;
+    if((f=fopen(FILE_INPUT_CONFIGURAZIONI, "r"))==NULL)
+    {
+        fprintf(stderr, "Errore nel caricamento del file di configurazione.\n");
+        return;
+    }
 
     *n=0;
     fscanf(f, "%*s %d", n);
 
-    if(*n<=0)       return 0;
-
-    return 1;
+    if(*n<=0)
+    {
+        fprintf(stderr, "Errore nel file di configurazione.\n");
+        return;
+    }
 }
