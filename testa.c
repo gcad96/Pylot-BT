@@ -18,13 +18,14 @@ struct testa_s
     forma forma;
 };
 
-void creaTesta(testa* t, char* nome, coordinata* c, int dim)
+void creaTesta(testa* t, char* nome, float d1, float d2, char* line)
 {
     *t = malloc(sizeof(struct testa_s));
     (*t)->nome = strdup(nome);
     int fase = 0;
-    creaTopologia(&((*t)->caratteristiche), dim, c);
-    creaForma(&((*t)->forma));
+    (*t)->caratteristiche = NULL;
+    //creaTopologia(&((*t)->caratteristiche), dim, c);
+    creaForma(&((*t)->forma), d1, d2, line);
 }
 
 void liberaTesta(testa t)

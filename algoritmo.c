@@ -3,6 +3,8 @@
 #include "utility.h"
 #include "cella.h"
 #include "celle.h"
+#include "testa.h"
+#include "teste.h"
 #include "allocazione.h"
 
 int definisciNumeroTeste(int* n);
@@ -11,7 +13,7 @@ void trovaPercorso()
 {
     celle c;
     allocaCelle(&c);
-    stampaCelle(c);
+
     int nTeste;
     int out = definisciNumeroTeste(&nTeste);
     if(out==-1)
@@ -25,7 +27,8 @@ void trovaPercorso()
         return;
     }
 
-
+    teste t;
+    allocaTeste(&t, nTeste);
 }
 
 int definisciNumeroTeste(int* n)

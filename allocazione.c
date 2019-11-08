@@ -1,14 +1,18 @@
 #include <stdio.h>
+#include <string.h>
 #include "utility.h"
 #include "cella.h"
 #include "celle.h"
+#include "testa.h"
+#include "teste.h"
 #include "allocazione.h"
 
 #define DAFILE 1
 #define UFFICIALE 0
 #define ALTRO 0
 
-int acquisisciDati(void** gen, int* stop, char* nome, float* x, float* y);
+int acquisisciDatiCelle(void** gen, int* stop, char* nome, float* x, float* y);
+int acquisisciDatiTeste(void** gen, char* nome, float* x, float* y, char* l);
 
 void allocaCelle(celle* cel)
 {
@@ -20,7 +24,7 @@ void allocaCelle(celle* cel)
 
     while(!stop)
     {
-        if(acquisisciDati(&service, &stop, nome, &x, &y))
+        if(acquisisciDatiCelle(&service, &stop, nome, &x, &y))
         {
             creaCella(&c, nome, x, y);
             aggiungiCella(*cel, c);
@@ -33,7 +37,30 @@ void allocaCelle(celle* cel)
     }
 }
 
-int acquisisciDati(void** gen, int* stop, char* nome, float* x, float* y)
+void allocaTeste(teste* tes, int n)
+{
+    testa t;
+    creaTeste(& (*tes));
+    void* service = NULL;
+    char nome[L]; char line[L]; float x; float y;
+
+    int i;
+    for(i=0; i<n; i++)
+    {
+        if(acquisisciDatiTeste(&service, nome, &x, &y, line))
+        {
+            creaTesta(&t, nome, x, y, line);
+            aggiungiTesta(*tes, t);
+        }
+        else
+        {
+            liberaTeste(*tes);
+            fprintf(stderr, "Errore durante il caricamento dei dati, celle non allocate\n");
+        }
+    }
+}
+
+int acquisisciDatiCelle(void** gen, int* stop, char* nome, float* x, float* y)
 {
 
 #if DAFILE
@@ -58,6 +85,45 @@ int acquisisciDati(void** gen, int* stop, char* nome, float* x, float* y)
         if ( fscanf(f, "%s %f %f", nome, x, y)!=3 )
         {
             *stop=1;
+            fclose(f);
+        }
+    }
+
+#elif UFFICIALE
+
+    #elif ALTRO
+
+#else
+
+#endif
+
+
+    return 1;
+}
+
+int acquisisciDatiTeste(void** gen, char* nome, float* x, float* y, char* l)
+{
+
+#if DAFILE
+
+    if(*gen==NULL)
+    {
+        FILE* f = fopen(FILE_INPUT_TESTE, "r");
+        if(f==NULL)     return 0;
+        fgets(l, LLENGTH, f);
+
+        if ( fscanf(f, "%s %f %f", nome, x, y)!=3 )
+        {
+            fclose(f);
+        }
+
+        *gen = (void*) f;
+    }
+    else
+    {
+        FILE* f = (FILE*) (*gen);
+        if ( fscanf(f, "%s %f %f", nome, x, y)!=3 )
+        {
             fclose(f);
         }
     }
