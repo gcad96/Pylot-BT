@@ -24,3 +24,13 @@ void stampaCoordinata(coordinata c)
 {
     printf("(%f, %f)", c->x, c->y);
 }
+
+float getAscissa(coordinata c)
+{
+    return c->x;
+}
+
+float getOrdinata(coordinata c)
+{
+    return c->y;
+}
