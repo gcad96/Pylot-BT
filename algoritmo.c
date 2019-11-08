@@ -7,6 +7,7 @@
 #include "celle.h"
 #include "gruppo.h"
 #include "testa.h"
+#include "teste.h"
 #include "allocazione.h"
 
 void trovaPercorso()
