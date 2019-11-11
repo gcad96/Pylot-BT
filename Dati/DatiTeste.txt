@@ -1,5 +1,5 @@
 TestaID	base altezza
-Z2
-Z1
-Z3
-Z4
+Z2 5 9
+Z1 9 6
+Z3 8 9
+Z4 7 9

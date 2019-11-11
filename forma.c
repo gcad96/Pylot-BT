@@ -78,3 +78,23 @@ void liberaForma(forma f)
 
     free(f);
 }
+
+void stampaForma(forma f)
+{
+    printf("vertici con coordinate: ");
+
+    coordinata v0;
+    creaCoordinata(&v0, 0, 0);
+    stampaCoordinata(v0);
+    liberaCoordinata(v0);
+    printf(", ");
+    int i;
+    for(i=0; i<f->nVertici-2; i++)
+    {
+        stampaCoordinata(f->offSet[i]);
+        printf(", ");
+    }
+    stampaCoordinata(f->offSet[i]);
+
+    printf("\n");
+}

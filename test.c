@@ -10,15 +10,30 @@
 
 int main(void)
 {
+    setbuf(stdout, 0);
+    setbuf(stderr, 0);
+
     celle c;
     allocaCelle(&c);
     stampaCelle(c);
-    liberaCelle(c);
 
     teste t;
     allocaTeste(&t, NTESTE);
-    //stampaTeste(t); //implementare per test
-    liberaTeste(t);
+    stampaTeste(t);
 
-    /*TEST DI CELLA.H E CELLE.H*/
+    ordinaCelle(c, ascissa);
+
+    double**m; generaDistanze(c, &m);
+    int i, j;
+    for(i=0; i<getDim(c); i++)
+    {
+        for(j=0; j<getDim(c); j++)
+        {
+            printf("%lf  ", m[i][j]);
+        }
+        printf("\n");
+    }
+
+    liberaCelle(c);
+    liberaTeste(t);
 }

@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "coordinata.h"
@@ -34,4 +35,10 @@ void liberaTesta(testa t)
     liberaTopologia(t->caratteristiche);
     liberaForma(t->forma);
     free(t);
+}
+
+void stampaTesta(testa t)
+{
+    printf("Testa denominata: %s, con superficie occupata: ", t->nome);
+    stampaForma(t->forma);
 }
