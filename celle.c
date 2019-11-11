@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <float.h>
 #include "cella.h"
 #include "sorting.h"
 #include "celle.h"
@@ -84,7 +85,41 @@ void generaDistanze(celle c, double*** m)
     }
 }
 
+void getNCellePiuVicina(celle c, cella a, int N, cella* vic)
+{
+    int round=1;
+    int index=0;
+    double* mins = malloc(N* sizeof(double));
+    mins[0] = 0;
+
+    while(round<=N)
+    {
+        double min = DBL_MAX;
+        int i;
+        for(i=0; i<c->dim; i++)
+        {
+            double d=distanza(a, c->insieme[i]);
+            if(d<min && d>mins[round-1])
+            {
+                min = d;
+                index = i;
+            }
+        }
+
+        mins[round] = min;
+        vic[round-1] = c->insieme[index];
+        round++;
+    }
+
+    free(mins);
+}
+
 int getDim(celle c)
 {
     return c->dim;
+}
+
+cella* getInsieme(celle c)
+{
+    return c->insieme;
 }
