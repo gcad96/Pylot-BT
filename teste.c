@@ -38,3 +38,13 @@ void aggiungiTesta(teste t, testa tes)
 
     t->insieme[(t->dim)++] = tes;
 }
+
+void stampaTeste(teste t)
+{
+    int i;
+    for(i=0; i<t->dim; i++)
+    {
+        stampaTesta(t->insieme[i]);
+        printf("\n");
+    }
+}
