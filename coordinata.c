@@ -34,3 +34,10 @@ float getOrdinata(coordinata c)
 {
     return c->y;
 }
+
+int equalCoordinata(coordinata c, coordinata d)
+{
+    if(c->x==d->x && c->y==d->y)
+        return 1;
+    return 0;
+}

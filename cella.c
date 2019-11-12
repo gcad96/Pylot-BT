@@ -108,7 +108,7 @@ coordinata getCoordinata(cella c)
     return c->coordinata;
 }
 
-int equal(cella a, cella b)
+int equalCella(cella a, cella b)
 {
     return (strcmp(a->nome, b->nome)==0);
 }

@@ -28,3 +28,17 @@ void liberaTopologia(topologia t)
 
     free(t);
 }
+
+int equalTopologia(topologia t, topologia s)
+{
+    int i;
+    if(t->dimensione!=s->dimensione)
+        return 0;
+    for(i=0; i<t->dimensione; i++)
+    {
+        if(!equalCoordinata(t->offSet[i], s->offSet[i]))
+            return 0;
+    }
+
+    return 1;
+}

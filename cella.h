@@ -19,6 +19,6 @@ int CELLAgt(cella a, cella b, criterio c);
 double distanza(cella a, cella b);
 int getId(cella c);
 coordinata getCoordinata(cella c);
-int equal(cella a, cella b);
+int equalCella(cella a, cella b);
 
 #endif //CELLA_H

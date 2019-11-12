@@ -8,5 +8,6 @@ void liberaCoordinata(coordinata c);
 void stampaCoordinata(coordinata c);
 float getAscissa(coordinata c);
 float getOrdinata(coordinata c);
+int equalCoordinata(coordinata c, coordinata d);
 
 #endif //COORDINATA_H
