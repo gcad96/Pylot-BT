@@ -24,7 +24,13 @@ void creaMatrice(Matrice* m)
 
 void liberaMatrice(Matrice m)
 {
+    int i;
+    for(i=0; i<m->dim; i++)
+    {
+        free(m->v[i]);
+    }
     free(m->v);
+
     free(m);
 }
 
@@ -36,7 +42,15 @@ void aggiungiVettore(Matrice m, int* a)
         m->v = realloc(m->v, (m->realDim)*sizeof(int*));
     }
 
-    m->v[(m->dim)++] = a;
+    int i=0;
+    while(a[i++]!=-1);
+    int * vett = malloc(i* sizeof(int));
+
+    int j;
+    for(j=0; j<i; j++)
+        vett[i] = a[i];
+
+    m->v[(m->dim)++] = vett;
 }
 
 int checkDuplicati(Matrice m, int* v)
