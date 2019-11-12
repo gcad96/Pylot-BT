@@ -10,14 +10,16 @@ struct cella_s
     char* nome;
     coordinata coordinata;
     int test;
+    int id;
 };
 
-void creaCella(cella* c, char* nome, float x, float y)
+void creaCella(cella* c, char* nome, float x, float y, int cod)
 {
     *c = malloc(sizeof(struct cella_s));
     (*c)->nome = strdup(nome);
     creaCoordinata(&((*c)->coordinata), x, y);
     (*c)->test = 0;
+    (*c)->id = cod;
 }
 
 void liberaCella(cella c)
@@ -94,4 +96,19 @@ int CELLAgt(cella a, cella b, criterio c)
 double distanza(cella a, cella b)
 {
     return sqrt( pow( (getAscissa(a->coordinata)-getAscissa(b->coordinata)), 2) + pow( (getOrdinata(a->coordinata)-getOrdinata(b->coordinata)), 2) );
+}
+
+int getId(cella c)
+{
+    return c->id;
+}
+
+coordinata getCoordinata(cella c)
+{
+    return c->coordinata;
+}
+
+int equal(cella a, cella b)
+{
+    return (strcmp(a->nome, b->nome)==0);
 }

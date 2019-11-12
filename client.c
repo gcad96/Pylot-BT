@@ -1,1 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "utility.h"
+#include "coordinata.h"
+#include "cella.h"
+#include "celle.h"
+#include "testa.h"
+#include "teste.h"
+#include "allocazione.h"
 #include "algoritmo.h"

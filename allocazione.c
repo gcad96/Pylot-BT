@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "utility.h"
+#include "coordinata.h"
 #include "cella.h"
 #include "celle.h"
 #include "testa.h"
@@ -21,12 +22,13 @@ void allocaCelle(celle* cel)
     void* service = NULL;
     int stop = 0;
     char nome[L]; float x; float y;
+    int identificativo = 1;
 
     while(!stop)
     {
         if(acquisisciDatiCelle(&service, &stop, nome, &x, &y))
         {
-            creaCella(&c, nome, x, y);
+            creaCella(&c, nome, x, y, identificativo++);
             aggiungiCella(*cel, c);
         }
         else

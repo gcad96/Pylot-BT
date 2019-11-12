@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
+#include "coordinata.h"
 #include "cella.h"
 #include "sorting.h"
 #include "celle.h"
