@@ -3,7 +3,7 @@
 #include <float.h>
 #include "coordinata.h"
 #include "cella.h"
-#include "sorting.h"
+#include "sortingCelle.h"
 #include "celle.h"
 
 #define START 4
@@ -56,13 +56,13 @@ void ordinaCelle(celle c, criterio crit)
     switch(crit)
     {
         case ascissa:
-            Sort(c->insieme, c->dim, ascissa);
+            SortCelle(c->insieme, c->dim, ascissa);
             break;
         case ordinata:
-            Sort(c->insieme, c->dim, ordinata);
+            SortCelle(c->insieme, c->dim, ordinata);
             break;
         case matrice:
-            Sort(c->insieme, c->dim, matrice);
+            SortCelle(c->insieme, c->dim, matrice);
             break;
         case altro:
             break;

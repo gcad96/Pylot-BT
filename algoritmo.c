@@ -7,6 +7,7 @@
 #include "testa.h"
 #include "teste.h"
 #include "allocazione.h"
+#include "sortingInt.h"
 #include "algoritmo.h"
 
 #define PIUVICINE 4
@@ -16,6 +17,7 @@ void generaInsiemiDiCelleContigue(celle c);
 void definisciNumeroMaxCelle(int* n);
 void path(celle c, int card);
 void pathRic(cella u, celle c, int n, int card, int *coll);
+int equalVett(int* a, int* b, int dimA, int dimB);
 
 void trovaPercorso()
 {
@@ -128,5 +130,46 @@ void pathRic(cella u, celle c, int n, int card, int *coll)
             printf("%d ", coll[i]);
         }
         printf("\n");
+    }
+}
+
+int equalVett(int* a, int* b, int dimA, int dimB)
+{
+    if(dimA!=dimB)
+        return 0;
+
+    SortInt(a, dimA);
+    SortInt(b, dimB);
+
+    int i;
+    for(i=0; i<dimA; i++)
+    {
+        if(a[i]!=b[i])
+            return 0;
+    }
+
+    return 1;
+}
+
+void eliminaDuplicati(int** a, int dim)
+{
+    int i,j,k;
+    for(i=0; i<dim; i++)
+    {
+        for(j =i+1; j<dim; )
+        {
+            if(equalVett(a[j], a[i], dim, dim))
+            {
+                for(k=j; k<dim; k++)
+                {
+                    a[k] = a[k+1];
+                }
+                dim--;
+            }
+            else
+            {
+                j++;
+            }
+        }
     }
 }
