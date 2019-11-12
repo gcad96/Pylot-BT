@@ -13,14 +13,18 @@ void creaTopologia(topologia* t, int dim, coordinata* c)
 {
     *t = malloc(sizeof(struct topologia_s));
     (*t)->dimensione = dim;
-    int i;
-    for(i=0; i<dim; i++)
-    {
-        (*t)->offSet[i] = c[i];
-    }
+
+    (*t)->offSet = c;
 }
 
 void liberaTopologia(topologia t)
 {
+    int i;
+    for(i=0; i<t->dimensione; i++)
+    {
+        liberaCoordinata(t->offSet[i]);
+    }
+    free(t->offSet);
+
     free(t);
 }

@@ -29,6 +29,7 @@ void creaGruppo(gruppo* g)
 void liberaGruppo(gruppo g)
 {
     liberaCoordinata(g->baricentro);
+    liberaTopologia(g->topologia);
 
     free(g);
 }
@@ -55,4 +56,25 @@ void setBaricentro(gruppo g)
     creaCoordinata(&c, x, y);
 
     g->baricentro = c;
+}
+
+void setTopologia(gruppo g)
+{
+    celle c = g->insieme;
+    ordinaCelle(c, matrice);
+    cella* i = getInsieme(c);
+    int dim = getDim(c);
+    cella c1 = i[0];
+    coordinata* cc = malloc((dim-1)*sizeof(coordinata));
+    int j;
+    for(j=1; j<dim; j++)
+    {
+        float xOff = getAscissa(getCoordinata(i[j])) - getAscissa(getCoordinata(c1));
+        float yOff = getOrdinata(getCoordinata(i[j])) - getOrdinata(getCoordinata(c1));
+        coordinata coo; creaCoordinata(&coo, xOff, yOff);
+        cc[j-1] = coo;
+    }
+
+    topologia t;
+    creaTopologia(&t, dim-1, cc);
 }
