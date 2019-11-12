@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "utility.h"
+#include "matrix.h"
 #include "coordinata.h"
 #include "cella.h"
 #include "celle.h"
 #include "testa.h"
 #include "teste.h"
 #include "allocazione.h"
-#include "sortingInt.h"
 #include "algoritmo.h"
 
 #define PIUVICINE 4
@@ -15,9 +15,8 @@
 void definisciNumeroTeste(int* n);
 void generaInsiemiDiCelleContigue(celle c);
 void definisciNumeroMaxCelle(int* n);
-void path(celle c, int card);
-void pathRic(cella u, celle c, int n, int card, int *coll);
-int equalVett(int* a, int* b, int dimA, int dimB);
+void path(celle c, int card, Matrice m);
+void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m);
 
 void trovaPercorso()
 {
@@ -55,11 +54,15 @@ void generaInsiemiDiCelleContigue(celle c)
     int card;
 
     definisciNumeroMaxCelle(&card);
-    int i, j, k;
+    Matrice m;
+    creaMatrice(&m);
+    int i;
     for(i=1; i<=card; i++)
     {
-        path(c, card);
+        path(c, card, m);
     }
+
+    //In m i gruppi
 }
 
 void definisciNumeroMaxCelle(int* n)
@@ -80,7 +83,7 @@ void definisciNumeroMaxCelle(int* n)
     }
 }
 
-void path(celle c, int card)
+void path(celle c, int card, Matrice m)
 {
     cella* insieme = getInsieme(c);
     int dim = getDim(c);
@@ -92,13 +95,13 @@ void path(celle c, int card)
         int n = 0;
         int* coll = malloc(card*sizeof(int));
 
-        pathRic(u, c, n, card, coll);
+        pathRic(u, c, n, card, coll, m);
 
         free(coll);
     }
 }
 
-void pathRic(cella u, celle c, int n, int card, int *coll)
+void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m)
 {
     coll[n++] = getId(u);
     if(n!=card)
@@ -118,58 +121,14 @@ void pathRic(cella u, celle c, int n, int card, int *coll)
                     break;
                 }
             }
-            if(!giaCons)    pathRic(s, c, n, card, coll);
+            if(!giaCons) pathRic(s, c, n, card, coll, m);
         }
         free(vicine);
     }
     else
     {
-        int i;
-        for(i=0; i<n; i++)
-        {
-            printf("%d ", coll[i]);
-        }
-        printf("\n");
-    }
-}
-
-int equalVett(int* a, int* b, int dimA, int dimB)
-{
-    if(dimA!=dimB)
-        return 0;
-
-    SortInt(a, dimA);
-    SortInt(b, dimB);
-
-    int i;
-    for(i=0; i<dimA; i++)
-    {
-        if(a[i]!=b[i])
-            return 0;
-    }
-
-    return 1;
-}
-
-void eliminaDuplicati(int** a, int dim)
-{
-    int i,j,k;
-    for(i=0; i<dim; i++)
-    {
-        for(j =i+1; j<dim; )
-        {
-            if(equalVett(a[j], a[i], dim, dim))
-            {
-                for(k=j; k<dim; k++)
-                {
-                    a[k] = a[k+1];
-                }
-                dim--;
-            }
-            else
-            {
-                j++;
-            }
-        }
+        coll[n] = -1;
+        if(!checkDuplicati(m, coll))
+            aggiungiVettore(m, coll);
     }
 }
