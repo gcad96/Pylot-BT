@@ -38,6 +38,7 @@ void aggiungiCella(celle c, cella cel)
         c->insieme = realloc(c->insieme, (c->realDim)*sizeof(cella));
     }
 
+    setId(cel, c->dim);
     c->insieme[(c->dim)++] = cel;
 }
 
