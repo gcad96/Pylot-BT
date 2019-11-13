@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "utility.h"
+#include "matrix.h"
 #include "coordinata.h"
 #include "cella.h"
 #include "celle.h"
