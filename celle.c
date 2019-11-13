@@ -126,7 +126,7 @@ void getNCellePiuVicina(celle c, cella a, int N, cella* vic)
     free(mins);
 }
 
-int getDim(celle c)
+int getDimC(celle c)
 {
     return c->dim;
 }

@@ -10,7 +10,7 @@ void stampaCelle(celle c);
 void ordinaCelle(celle c, criterio crit);
 void generaDistanze(celle c, double ***m);
 void getNCellePiuVicina(celle c, cella a, int N, cella* vic);
-int getDim(celle c);
+int getDimC(celle c);
 cella* getInsieme(celle c);
 void calcolaDimensioniBatteria(celle c, float* base, float* altezza);
 
