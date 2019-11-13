@@ -94,3 +94,8 @@ void setTopologia(gruppo g)
     topologia t;
     creaTopologia(&t, dim-1, cc);
 }
+
+void stampaGruppo(gruppo g)
+{
+    stampaCelle(g->insieme);
+}

@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include "coordinata.h"
 #include "cella.h"
@@ -37,4 +38,14 @@ void aggiungiGruppo(gruppi g, gruppo gr)
     }
 
     g->insieme[(g->dim)++] = gr;
+}
+
+void stampaGruppi(gruppi g)
+{
+    int i;
+    for(i=0; i<g->dim; i++)
+    {
+        stampaGruppo(g->insieme[i]);
+        printf("\n");
+    }
 }
