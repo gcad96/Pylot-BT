@@ -105,7 +105,7 @@ void definisciNumeroMaxCelle(int* n)
 void path(celle c, int card, Matrice m)
 {
     cella* insieme = getInsieme(c);
-    int dim = getDim(c);
+    int dim = getDimC(c);
 
     int* coll = malloc(card*sizeof(int));
     int i;
