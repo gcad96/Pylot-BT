@@ -30,20 +30,17 @@ int partitionC(cella* A, int l, int r, criterio specifica)
     int i, j;
     cella x = A[r];
     i = l-1;
-    j = r;
-    for ( ; ; )
+    for (j=l; j<=r-1; j++)
     {
-        while(CELLAleq(A[++i], x, specifica));
-        while(CELLAgt(A[--j], x, specifica))
+        if(CELLAleq(A[j], x, specifica))
         {
-            if (j == l)		break;
-            if (i >= j)		break;
+            i++;
+            SwapC(A, i, j);
         }
-        SwapC(A, i, j);
     }
-    SwapC(A, i, r);
+    SwapC(A, i+1, r);
 
-    return i;
+    return i+1;
 }
 
 void SwapC(cella *v, int n1, int n2)

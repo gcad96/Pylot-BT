@@ -28,20 +28,17 @@ int partitionI(int* A, int l, int r)
     int i, j;
     int x = A[r];
     i = l-1;
-    j = r;
-    for ( ; ; )
+    for (j=l; j<=r-1; j++)
     {
-        while(A[++i] <= x);
-        while(A[--j] > x)
+        if(A[j]<x)
         {
-            if (j == l)		break;
-            if (i >= j)		break;
+            i++;
+            SwapI(A, i, j);
         }
-        SwapI(A, i, j);
     }
-    SwapI(A, i, r);
+    SwapI(A, i+1, r);
 
-    return i;
+    return i+1;
 }
 
 void SwapI(int *v, int n1, int n2)
