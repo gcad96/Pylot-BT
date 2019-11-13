@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include "utility.h"
 #include "sortingInt.h"
 #include "matrix.h"
 
@@ -55,12 +56,17 @@ void aggiungiVettore(Matrice m, int* a)
 
 int checkDuplicati(Matrice m, int* v)
 {
-    int** a = m->v;
-    int dimA = m->dim;
     int i;
-    for(i=0; i<dimA; i++)
+    int vett[L];
+    int a;
+    for(i=0; i<m->dim; i++)
     {
-        if(equalVett(a[i], v))
+        int j = 0;
+        while((a=m->v[i][j++])!=-1)
+        {
+            vett[j] = a;
+        }
+        if(equalVett(vett, v))
             return 1;
     }
 
