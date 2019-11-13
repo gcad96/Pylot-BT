@@ -44,11 +44,11 @@ void aggiungiVettore(Matrice m, int* a)
 
     int i=0;
     while(a[i++]!=-1);
-    int * vett = malloc(i* sizeof(int));
+    int* vett = malloc(i* sizeof(int));
 
     int j;
     for(j=0; j<i; j++)
-        vett[i] = a[i];
+        vett[j] = a[j];
 
     m->v[(m->dim)++] = vett;
 }
@@ -61,7 +61,7 @@ int checkDuplicati(Matrice m, int* v)
     for(i=0; i<dimA; i++)
     {
         if(equalVett(a[i], v))
-            return 0;
+            return 1;
     }
 
     return 0;
