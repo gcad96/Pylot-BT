@@ -25,10 +25,8 @@ void trovaPercorso()
     celle c;
     allocaCelle(&c);
 
-    int nTeste;
+    teste t; int nTeste;
     definisciNumeroTeste(&nTeste);
-
-    teste t;
     allocaTeste(&t, nTeste);
 
     gruppi g;
