@@ -88,17 +88,17 @@ void path(celle c, int card, Matrice m)
     cella* insieme = getInsieme(c);
     int dim = getDim(c);
 
+    int* coll = malloc(card*sizeof(int));
     int i;
     for(i=0; i<dim; i++)
     {
         cella u = insieme[i];
         int n = 0;
-        int* coll = malloc(card*sizeof(int));
 
         pathRic(u, c, n, card, coll, m);
-
-        free(coll);
     }
+
+    free(coll);
 }
 
 void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m)
