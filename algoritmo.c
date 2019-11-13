@@ -62,7 +62,7 @@ void generaInsiemiDiCelle(celle c, gruppi* gr)
     int i, j;
     for(i=1; i<=card; i++)
     {
-        path(c, card, m);
+        path(c, i, m);
     }
 
     creaGruppi(gr);
@@ -76,9 +76,10 @@ void generaInsiemiDiCelle(celle c, gruppi* gr)
         while((a=m->v[i][j++])!=-1)
         {
             cella cel = (getInsieme(c))[a];
-            ins[j] = cel;
+            ins[j-1] = cel;
         }
-        impostaGruppo(g, ins, j-1);
+        int quantita = j-1;
+        impostaGruppo(g, ins, quantita);
         aggiungiGruppo(*gr, g);
     }
 }
@@ -92,7 +93,7 @@ void definisciNumeroMaxCelle(int* n)
         return;
     }
 
-    fscanf(f, "%*s %*d\n%*s %*s %*s %*s %*s %n", n);
+    fscanf(f, "%*s %*d\n%*s %*s %*s %*s %*s %d\n", n);
 
     if(*n<=0)
     {
