@@ -49,3 +49,8 @@ void stampaTeste(teste t)
         printf("\n");
     }
 }
+
+int getDimT(teste t)
+{
+    return t->dim;
+}

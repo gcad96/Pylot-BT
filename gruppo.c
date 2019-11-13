@@ -53,7 +53,7 @@ void liberaGruppo(gruppo g)
 void setBaricentro(gruppo g)
 {
     cella* ins = getInsieme(g->insieme);
-    int dim = getDim(g->insieme);
+    int dim = getDimC(g->insieme);
 
     float x = 0;
     float y = 0;
@@ -79,7 +79,7 @@ void setTopologia(gruppo g)
     celle c = g->insieme;
     ordinaCelle(c, matrice);
     cella* i = getInsieme(c);
-    int dim = getDim(c);
+    int dim = getDimC(c);
     cella c1 = i[0];
     coordinata* cc = malloc((dim-1)*sizeof(coordinata));
     int j;
