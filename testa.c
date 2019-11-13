@@ -4,6 +4,7 @@
 #include "coordinata.h"
 #include "forma.h"
 #include "topologia.h"
+#include "cella.h"
 #include "gruppo.h"
 #include "gruppi.h"
 #include "testa.h"

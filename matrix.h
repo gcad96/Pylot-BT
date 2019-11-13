@@ -1,6 +1,13 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+struct matrice_s
+{
+    int** v;
+    int dim;
+    int realDim;
+};
+
 typedef struct matrice_s* Matrice;
 
 void creaMatrice(Matrice* m);

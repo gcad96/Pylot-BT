@@ -13,6 +13,9 @@ struct gruppo_s
     coordinata baricentro;
 };
 
+void setBaricentro(gruppo g);
+void setTopologia(gruppo g);
+
 void creaGruppo(gruppo* g)
 {
     *g = malloc(sizeof(struct gruppo_s));
@@ -24,6 +27,19 @@ void creaGruppo(gruppo* g)
     (*g)->topologia = NULL;
 
     (*g)->baricentro = NULL;
+}
+
+void impostaGruppo(gruppo g, cella* cel, int q)
+{
+    int i;
+    for(i=0; i<q; i++)
+    {
+        aggiungiCella(g->insieme, cel[i]);
+    }
+
+    setBaricentro(g);
+
+    setTopologia(g);
 }
 
 void liberaGruppo(gruppo g)

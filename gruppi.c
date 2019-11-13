@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include "coordinata.h"
+#include "cella.h"
 #include "gruppo.h"
 #include "gruppi.h"
 

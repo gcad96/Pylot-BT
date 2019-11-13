@@ -6,13 +6,6 @@
 #define START 4
 #define CRESCITA 2
 
-struct matrice_s
-{
-    int** v;
-    int dim;
-    int realDim;
-};
-
 int equalVett(int* a, int* b);
 
 void creaMatrice(Matrice* m)

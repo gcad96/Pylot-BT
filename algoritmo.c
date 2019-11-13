@@ -5,6 +5,8 @@
 #include "coordinata.h"
 #include "cella.h"
 #include "celle.h"
+#include "gruppo.h"
+#include "gruppi.h"
 #include "testa.h"
 #include "teste.h"
 #include "allocazione.h"
@@ -13,7 +15,7 @@
 #define PIUVICINE 4
 
 void definisciNumeroTeste(int* n);
-void generaInsiemiDiCelleContigue(celle c);
+void generaInsiemiDiCelle(celle c, gruppi* gr);
 void definisciNumeroMaxCelle(int* n);
 void path(celle c, int card, Matrice m);
 void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m);
@@ -28,6 +30,9 @@ void trovaPercorso()
 
     teste t;
     allocaTeste(&t, nTeste);
+
+    gruppi g;
+    generaInsiemiDiCelle(c, &g);
 }
 
 void definisciNumeroTeste(int* n)
@@ -49,20 +54,35 @@ void definisciNumeroTeste(int* n)
     }
 }
 
-void generaInsiemiDiCelleContigue(celle c)
+void generaInsiemiDiCelle(celle c, gruppi* gr)
 {
     int card;
 
     definisciNumeroMaxCelle(&card);
     Matrice m;
     creaMatrice(&m);
-    int i;
+    int i, j;
     for(i=1; i<=card; i++)
     {
         path(c, card, m);
     }
 
-    //In m i gruppi
+    creaGruppi(gr);
+    for(i=0; i<m->dim; i++)
+    {
+        gruppo g;
+        creaGruppo(&g);
+        int a;
+        j=0;
+        cella ins[L];
+        while((a=m->v[i][j++])!=-1)
+        {
+            cella cel = (getInsieme(c))[a];
+            ins[j] = cel;
+        }
+        impostaGruppo(g, ins, j-1);
+        aggiungiGruppo(*gr, g);
+    }
 }
 
 void definisciNumeroMaxCelle(int* n)
