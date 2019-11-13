@@ -5,6 +5,8 @@
 #include "coordinata.h"
 #include "cella.h"
 #include "celle.h"
+#include "gruppo.h"
+#include "gruppi.h"
 #include "testa.h"
 #include "teste.h"
 #include "allocazione.h"

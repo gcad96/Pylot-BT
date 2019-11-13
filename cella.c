@@ -13,13 +13,13 @@ struct cella_s
     int id;
 };
 
-void creaCella(cella* c, char* nome, float x, float y, int cod)
+void creaCella(cella* c, char* nome, float x, float y)
 {
     *c = malloc(sizeof(struct cella_s));
     (*c)->nome = strdup(nome);
     creaCoordinata(&((*c)->coordinata), x, y);
     (*c)->test = 0;
-    (*c)->id = cod;
+    (*c)->id = -1;
 }
 
 void liberaCella(cella c)
@@ -101,6 +101,11 @@ double distanza(cella a, cella b)
 int getId(cella c)
 {
     return c->id;
+}
+
+void setId(cella c, int cod)
+{
+    c->id = cod;
 }
 
 coordinata getCoordinata(cella c)
