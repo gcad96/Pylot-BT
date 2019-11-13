@@ -9,12 +9,22 @@
 #define START 4
 #define CRESCITA 2
 
+typedef enum estremo_s
+{
+    Alto,
+    Basso,
+    Destra,
+    Sinistra
+} estremo ;
+
 struct celle_s
 {
     cella* insieme;
     int dim;
     int realDim;
 };
+
+float estremiBatteria(celle c, estremo e);
 
 void creaCelle(celle* c)
 {
@@ -124,4 +134,72 @@ int getDim(celle c)
 cella* getInsieme(celle c)
 {
     return c->insieme;
+}
+
+void calcolaDimensioniBatteria(celle c, float* base, float* altezza)
+{
+    *base = estremiBatteria(c, Alto) - estremiBatteria(c, Basso);
+    *altezza = estremiBatteria(c, Destra) - estremiBatteria(c, Sinistra);
+}
+
+float estremiBatteria(celle c, estremo e)
+{
+    int i;
+    float m;
+    float v;
+    switch(e)
+    {
+        case Alto:
+        {
+            m = FLT_MIN;
+            for(i=0; i<c->dim; i++)
+            {
+                if((v=getOrdinata(getCoordinata(c->insieme[i])))>m)
+                {
+                    m = v;
+                }
+            }
+            break;
+        }
+        case Basso:
+        {
+            m = FLT_MAX;
+            for(i=0; i<c->dim; i++)
+            {
+                if((v=getOrdinata(getCoordinata(c->insieme[i])))<m)
+                {
+                    m = v;
+                }
+            }
+            break;
+        }
+        case Destra:
+        {
+            m = FLT_MIN;
+            for(i=0; i<c->dim; i++)
+            {
+                if((v=getAscissa(getCoordinata(c->insieme[i])))>m)
+                {
+                    m = v;
+                }
+            }
+            break;
+        }
+        case Sinistra:
+        {
+            m = FLT_MAX;
+            for(i=0; i<c->dim; i++)
+            {
+                if((v=getAscissa(getCoordinata(c->insieme[i])))<m)
+                {
+                    m = v;
+                }
+            }
+            break;
+        }
+        default:
+            return 0;
+    }
+
+    return m;
 }
