@@ -36,6 +36,7 @@ void aggiungiTesta(teste t, testa tes)
         t->insieme = realloc(t->insieme, (t->realDim) * sizeof(testa));
     }
 
+    setCod(tes, t->dim);
     t->insieme[(t->dim)++] = tes;
 }
 

@@ -18,6 +18,8 @@ struct testa_s
     topologia caratteristiche;
 
     forma forma;
+
+    int cod;
 };
 
 void creaTesta(testa* t, char* nome, float d1, float d2, char* line)
@@ -28,6 +30,7 @@ void creaTesta(testa* t, char* nome, float d1, float d2, char* line)
     (*t)->caratteristiche = NULL;
     //creaTopologia(&((*t)->caratteristiche), dim, c);
     creaForma(&((*t)->forma), d1, d2, line);
+    (*t)->cod = -1;
 }
 
 void liberaTesta(testa t)
@@ -42,4 +45,14 @@ void stampaTesta(testa t)
 {
     printf("Testa denominata: %s, con superficie occupata: ", t->nome);
     stampaForma(t->forma);
+}
+
+int getCod(testa t)
+{
+    return t->cod;
+}
+
+void setCod(testa t, int id)
+{
+    t->cod = id;
 }
