@@ -12,6 +12,7 @@ void generaDistanze(celle c, double ***m);
 void getNCellePiuVicina(celle c, cella a, int N, cella* vic);
 int getDimC(celle c);
 cella* getInsieme(celle c);
+int batteriaTestata(celle c);
 void calcolaDimensioniBatteria(celle c, float* base, float* altezza);
 
 #endif //CELLE_H

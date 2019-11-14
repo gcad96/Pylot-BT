@@ -136,6 +136,20 @@ cella* getInsieme(celle c)
     return c->insieme;
 }
 
+int batteriaTestata(celle c)
+{
+    int i;
+    for(i=0; i<c->dim; i++)
+    {
+        if(!isTest(c->insieme[i]))
+        {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
 void calcolaDimensioniBatteria(celle c, float* base, float* altezza)
 {
     *base = estremiBatteria(c, Alto) - estremiBatteria(c, Basso);

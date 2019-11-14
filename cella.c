@@ -108,6 +108,16 @@ void setId(cella c, int cod)
     c->id = cod;
 }
 
+int isTest(cella c)
+{
+    return (c->test == 1);
+}
+
+void test(cella c)
+{
+    c->test = 1;
+}
+
 coordinata getCoordinata(cella c)
 {
     return c->coordinata;
