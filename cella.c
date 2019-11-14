@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "coordinata.h"
+#include "distanza.h"
 #include "cella.h"
 
 struct cella_s
@@ -93,9 +94,9 @@ int CELLAgt(cella a, cella b, criterio c)
     }
 }
 
-double distanza(cella a, cella b)
+double distanzaC(cella a, cella b)
 {
-    return sqrt( pow( (getAscissa(a->coordinata)-getAscissa(b->coordinata)), 2) + pow( (getOrdinata(a->coordinata)-getOrdinata(b->coordinata)), 2) );
+    return distanza(getCoordinata(a), getCoordinata(b));
 }
 
 int getId(cella c)

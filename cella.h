@@ -16,7 +16,7 @@ void liberaCella(cella c);
 void stampaCella(cella c);
 int CELLAleq(cella a, cella b, criterio c);
 int CELLAgt(cella a, cella b, criterio c);
-double distanza(cella a, cella b);
+double distanzaC(cella a, cella b);
 int getId(cella c);
 void setId(cella c, int cod);
 int isTest(cella c);

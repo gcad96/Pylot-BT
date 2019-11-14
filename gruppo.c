@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "coordinata.h"
+#include "distanza.h"
 #include "topologia.h"
 #include "cella.h"
 #include "celle.h"
@@ -14,6 +15,7 @@ struct gruppo_s
 };
 
 void setBaricentro(gruppo g);
+coordinata getBaricentro(gruppo g);
 void setTopologia(gruppo g);
 
 void creaGruppo(gruppo* g)
@@ -74,6 +76,31 @@ void setBaricentro(gruppo g)
     g->baricentro = c;
 }
 
+coordinata getBaricentro(gruppo g)
+{
+    return g->baricentro;
+}
+
+int getFase(gruppo g)
+{
+    return g->fase;
+}
+
+void setFase(gruppo g, int fase)
+{
+    g->fase = fase;
+}
+
+int getMaxFase(gruppo g)
+{
+    return getDimC(g->insieme);
+}
+
+topologia getTopologia(gruppo g)
+{
+    return g->topologia;
+}
+
 void setTopologia(gruppo g)
 {
     celle c = g->insieme;
@@ -98,4 +125,9 @@ void setTopologia(gruppo g)
 void stampaGruppo(gruppo g)
 {
     stampaCelle(g->insieme);
+}
+
+double distanzaG(gruppo a, gruppo b)
+{
+    return distanza(getBaricentro(a), getBaricentro(b));
 }

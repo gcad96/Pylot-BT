@@ -92,7 +92,7 @@ void generaDistanze(celle c, double*** m)
         (*m)[i] = malloc((c->dim) * sizeof(double));
         for(j=0; j<c->dim; j++)
         {
-            (*m)[i][j] = distanza(c->insieme[i], c->insieme[j]);
+            (*m)[i][j] = distanzaC(c->insieme[i], c->insieme[j]);
         }
     }
 }
@@ -110,7 +110,7 @@ void getNCellePiuVicina(celle c, cella a, int N, cella* vic)
         int i;
         for(i=0; i<c->dim; i++)
         {
-            double d=distanza(a, c->insieme[i]);
+            double d= distanzaC(a, c->insieme[i]);
             if(d<min && d>mins[round-1])
             {
                 min = d;
