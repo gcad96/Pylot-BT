@@ -10,5 +10,4 @@
             -> Iterare di più sulle scelte per maggior precisione
         2.2.1 Criterio scelta: vicinanza, fase
             -> Migliorare scelta per maggior precisione
-            
-3. Stop: tutte le celle sono state testate
+    2.3 Stop: tutte le celle sono state testate
