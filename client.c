@@ -3,6 +3,7 @@
 #include "utility.h"
 #include "matrix.h"
 #include "coordinata.h"
+#include "topologia.h"
 #include "cella.h"
 #include "celle.h"
 #include "gruppo.h"
