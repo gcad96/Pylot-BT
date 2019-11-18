@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <float.h>
 #include "coordinata.h"
+#include "distanza.h"
 #include "cella.h"
 #include "sortingCelle.h"
 #include "celle.h"
@@ -17,14 +18,14 @@ typedef enum estremo_s
     Sinistra
 } estremo ;
 
+float estremoBatteria(celle c, estremo e);
+
 struct celle_s
 {
     cella* insieme;
     int dim;
     int realDim;
 };
-
-float estremiBatteria(celle c, estremo e);
 
 void creaCelle(celle* c)
 {
@@ -50,6 +51,18 @@ void aggiungiCella(celle c, cella cel)
 
     setId(cel, c->dim);
     c->insieme[(c->dim)++] = cel;
+}
+
+int checkEsistenzaCella(celle c, cella cel)
+{
+    int i;
+    for(i=0; i<c->dim; i++)
+    {
+        if(equalCella(c->insieme[i], cel))
+            return 1;
+    }
+
+    return 0;
 }
 
 void stampaCelle(celle c)
@@ -97,7 +110,7 @@ void generaDistanze(celle c, double*** m)
     }
 }
 
-void getNCellePiuVicina(celle c, cella a, int N, cella* vic)
+void getNCellePiuVicine(celle c, cella a, int N, cella* vic)
 {
     int round=1;
     int index=0;
@@ -110,7 +123,7 @@ void getNCellePiuVicina(celle c, cella a, int N, cella* vic)
         int i;
         for(i=0; i<c->dim; i++)
         {
-            double d= distanzaC(a, c->insieme[i]);
+            double d = distanzaC(a, c->insieme[i]);
             if(d<min && d>mins[round-1])
             {
                 min = d;
@@ -124,6 +137,25 @@ void getNCellePiuVicina(celle c, cella a, int N, cella* vic)
     }
 
     free(mins);
+}
+
+cella getCellaPiuVicina(celle c, coordinata coor)
+{
+    double min = DBL_MAX;
+    int index;
+
+    int i;
+    for(i=0; i<c->dim; i++)
+    {
+        double d = distanza(coor, getCoordinata(c->insieme[i]));
+        if(d<min)
+        {
+            min = d;
+            index = i;
+        }
+    }
+
+    return c->insieme[i];
 }
 
 int getDimC(celle c)
@@ -152,11 +184,24 @@ int batteriaTestata(celle c)
 
 void calcolaDimensioniBatteria(celle c, float* base, float* altezza)
 {
-    *base = estremiBatteria(c, Alto) - estremiBatteria(c, Basso);
-    *altezza = estremiBatteria(c, Destra) - estremiBatteria(c, Sinistra);
+    *base = estremoBatteria(c, Alto) - estremoBatteria(c, Basso);
+    *altezza = estremoBatteria(c, Destra) - estremoBatteria(c, Sinistra);
 }
 
-float estremiBatteria(celle c, estremo e)
+void calcolaEstremiBatteria(celle c, coordinata* coord, orientamento* start)
+{
+    *start = ASx;
+    coordinata c1; creaCoordinata(&c1, estremoBatteria(c, Alto), estremoBatteria(c, Sinistra));
+    coord[0] = c1;
+    coordinata c2; creaCoordinata(&c2, estremoBatteria(c, Alto), estremoBatteria(c, Destra));
+    coord[1] = c2;
+    coordinata c3; creaCoordinata(&c3, estremoBatteria(c, Basso), estremoBatteria(c, Destra));
+    coord[2] = c3;
+    coordinata c4; creaCoordinata(&c4, estremoBatteria(c, Basso), estremoBatteria(c, Sinistra));
+    coord[3] = c4;
+}
+
+float estremoBatteria(celle c, estremo e)
 {
     int i;
     float m;

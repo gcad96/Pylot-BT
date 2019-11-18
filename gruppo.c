@@ -46,8 +46,8 @@ void impostaGruppo(gruppo g, cella* cel, int q)
 
 void liberaGruppo(gruppo g)
 {
-    liberaCoordinata(g->baricentro);
-    liberaTopologia(g->topologia);
+    if(g->baricentro!=NULL)     liberaCoordinata(g->baricentro);
+    if(g->topologia!=NULL)      liberaTopologia(g->topologia);
 
     free(g);
 }
@@ -130,4 +130,27 @@ void stampaGruppo(gruppo g)
 double distanzaG(gruppo a, gruppo b)
 {
     return distanza(getBaricentro(a), getBaricentro(b));
+}
+
+int ckeckPresenzaCella(gruppo g, cella c)
+{
+    return checkEsistenzaCella(g->insieme, c);
+}
+
+void setGruppoNullo(gruppo* g)
+{
+    *g = malloc(sizeof(struct gruppo_s));
+
+    (*g)->fase = -1;
+
+    (*g)->topologia = NULL;
+
+    (*g)->baricentro = NULL;
+
+    (*g)->insieme = NULL;
+}
+
+int isGruppoNullo(gruppo g)
+{
+    return (g->fase==-1);
 }

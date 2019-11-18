@@ -110,3 +110,19 @@ gruppi* getRaggruppamentiPerTopologia(gruppi g)
 {
     return g->raggruppamentiPerTopologia;
 }
+
+gruppo* getGruppiConCella(gruppi g, cella c, gruppo** cont)
+{
+    *cont = malloc(g->dim*sizeof(gruppo));
+    int dim = 0;
+    int i;
+    for(i=1; i<g->dim; i++)
+    {
+        if(ckeckPresenzaCella(g->insieme[i], c))
+        {
+            (*cont)[(dim)++] = g->insieme[i];
+        }
+    }
+    setGruppoNullo(&((*cont)[(dim)++]));
+    (*cont) = realloc((*cont), (dim+1));
+}

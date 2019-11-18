@@ -23,8 +23,8 @@ void path(celle c, int card, Matrice m);
 void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m);
 void movimentoTeste(teste t, celle c, gruppi g);
 void movimentoTesteRic(gruppo* attuale, int dim, celle c, gruppi g);
-void estraiGruppi(gruppo* start, int dimG, teste t, celle c);
-void sceltaGruppi(gruppi g, gruppo* insieme, int dim, gruppo* scelte);
+void estraiGruppi(gruppo** start, teste t, celle c, gruppi g);
+void sceltaGruppi(gruppo* i, gruppo* scelte, int dim, gruppi g);
 
 void trovaPercorso()
 {
@@ -131,7 +131,8 @@ void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m)
     coll[n++] = getId(u);
     if(n!=card)
     {
-        cella* vicine = malloc(PIUVICINE*sizeof(cella)); getNCellePiuVicina(c, u, PIUVICINE, vicine);
+        cella* vicine = malloc(PIUVICINE*sizeof(cella));
+        getNCellePiuVicine(c, u, PIUVICINE, vicine);
         int j;
         for(j=0; j<PIUVICINE; j++)
         {
@@ -155,5 +156,110 @@ void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m)
         coll[n] = -1;
         if(!checkDuplicati(m, coll))
             aggiungiVettore(m, coll);
+    }
+}
+
+void movimentoTeste(teste t, celle c, gruppi g)
+{
+    gruppo** estratti = malloc((getDimT(t))* sizeof(gruppo*));
+    estraiGruppi(estratti, t, c, g);
+    gruppo* start = malloc((getDimT(t))* sizeof(gruppo));
+    int i; for(i=0; i<getDimT(t); i++)
+    {
+        start[i] = estratti[i][0];
+    }
+    movimentoTesteRic(start, getDimT(t), c, g);
+}
+
+void estraiGruppi(gruppo** start, teste t, celle c, gruppi g)
+{
+    float base; float altezza;
+    calcolaDimensioniBatteria(c, &base, &altezza);
+    float porzioneX = base / (float) getDimT(t);
+    float porzioneY = altezza / (float) getDimT(t);
+    coordinata* coords = malloc(4*sizeof(coordinata));
+    calcolaEstremiBatteria(c, coords, NULL);
+    cella* cel = malloc(getDimT(t)* sizeof(cella));
+    coordinata coor = coords[ASx];
+    int i;
+    for(i=0; getDimT(t); i++)
+    {
+        cel[i] = getCellaPiuVicina(c, coor);
+        float asc = getAscissa(coor);
+        float ord = getOrdinata(coor);
+        liberaCoordinata(coor);
+        creaCoordinata(&coor, asc+porzioneX, ord);
+        getGruppiConCella(g, cel[i], &(start[i]));
+    }
+    liberaCoordinata(coor);
+
+    for(i=0; i<4; i++)
+    {
+        if(i!=ASx)  liberaCoordinata(coords[i]);
+    }
+    free(coords);
+    free(cel);
+}
+
+void movimentoTesteRic(gruppo* attuale, int dim, celle c, gruppi g)
+{
+    if(batteriaTestata(c))
+        return;
+
+    gruppo* next = malloc(dim*sizeof(gruppo));
+    int j;
+    for(j=0; j<dim; j++)    next[j] = NULL;
+    sceltaGruppi(attuale, next, dim, g);
+    movimentoTesteRic(next, dim, c, g);
+}
+
+void sceltaGruppi(gruppo* i, gruppo* scelte, int dim, gruppi g)
+{
+    gruppi* raggruppamenti = getRaggruppamentiPerTopologia(g);
+
+    int l;
+    for(l=0; l<dim; l++)
+    {
+        int fase = -1;
+        gruppi elementi = raggruppamenti[l];
+        gruppo p = i[l];
+        gruppo* t = getGruppi(elementi);
+        int dimT = getDimG(elementi);
+        int j;
+        double min = DBL_MAX;
+        while(scelte[l] == NULL)
+        {
+            fase++;
+            for(j=0; j<dimT; j++)
+            {
+                if((getFase(t[j]))==fase)
+                {
+                    double d = distanzaG(p, t[j]);
+                    if(d<min && d!=0) // + comparazione e mediazione
+                    {
+                        int k;
+                        int ok = 1;
+                        for(k=0; k<l; k++)
+                        {
+//                            if(!checkCompatibilitaTeste(t[j], scelte[k])) // + ottimizazzione al contrario
+                            {
+                                ok = 0;
+                                break;
+                            }
+                        }
+                        if(ok)
+                        {
+                            min = distanzaG(p, t[j]);
+                            scelte[l] = t[j];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    for(l=0; l<dim; l++)
+    {
+
     }
 }
