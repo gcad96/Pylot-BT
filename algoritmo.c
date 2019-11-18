@@ -37,6 +37,8 @@ void trovaPercorso()
 
     gruppi g;
     generaInsiemiDiCelle(c, &g);
+
+    movimentoTeste(t, c, g);
 }
 
 void definisciNumeroTeste(int* n)
