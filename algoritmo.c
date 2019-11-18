@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <float.h>
 #include "utility.h"
 #include "matrix.h"
 #include "coordinata.h"
+#include "topologia.h"
 #include "cella.h"
 #include "celle.h"
 #include "gruppo.h"
@@ -19,6 +21,10 @@ void generaInsiemiDiCelle(celle c, gruppi* gr);
 void definisciNumeroMaxCelle(int* n);
 void path(celle c, int card, Matrice m);
 void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m);
+void movimentoTeste(teste t, celle c, gruppi g);
+void movimentoTesteRic(gruppo* attuale, int dim, celle c, gruppi g);
+void estraiGruppi(gruppo* start, int dimG, teste t, celle c);
+void sceltaGruppi(gruppi g, gruppo* insieme, int dim, gruppo* scelte);
 
 void trovaPercorso()
 {
