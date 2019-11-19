@@ -21,10 +21,10 @@ void generaInsiemiDiCelle(celle c, gruppi* gr);
 void definisciNumeroMaxCelle(int* n);
 void path(celle c, int card, Matrice m);
 void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m);
-void movimentoTeste(teste t, celle c, gruppi g);
-void movimentoTesteRic(gruppo* attuale, int dim, celle c, gruppi g);
+bool movimentoTeste(teste t, celle c, gruppi g);
+bool movimentoTesteRic(gruppo* attuale, int dim, celle c, gruppi g);
 void estraiGruppi(gruppo** start, teste t, celle c, gruppi g);
-void sceltaGruppi(gruppo* i, gruppo* scelte, int dim, gruppi g);
+bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g);
 void eseguiTest(gruppo* g, int dim, gruppi gr);
 
 void trovaPercorso()
@@ -39,7 +39,8 @@ void trovaPercorso()
     gruppi g;
     generaInsiemiDiCelle(c, &g);
 
-    movimentoTeste(t, c, g);
+    bool successo;
+    successo = movimentoTeste(t, c, g);
 }
 
 void definisciNumeroTeste(int* n)
@@ -162,18 +163,46 @@ void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m)
     }
 }
 
-void movimentoTeste(teste t, celle c, gruppi g)
+bool movimentoTeste(teste t, celle c, gruppi g)
 {
     gruppo** estratti = malloc((getDimT(t))* sizeof(gruppo*));
     estraiGruppi(estratti, t, c, g);
     gruppo* start = malloc((getDimT(t))* sizeof(gruppo));
-    int i; for(i=0; i<getDimT(t); i++)
+    int i, j, k;
+    for(i=0; i<getDimT(t); i++)
     {
-        start[i] = estratti[i][0];
+        start[i] = NULL;
+        k=0;
+        while(!isGruppoNullo(estratti[i][k]))
+        {
+            int ok = 1;
+            for(j=0; j<i; j++)
+            {
+
+                if(!checkCompatibilitaTeste(t, i, j, estratti[i][k], start[j])) // + ottimizazzione al contrario
+                {
+                    ok = 0;
+                    break;
+                }
+            }
+            if(ok)
+            {
+                start[i] = estratti[i][k];
+                break;
+            }
+            k++;
+        }
+    }
+    for(i=0; i<getDimT(t); i++)
+    {
+        if(start[i]==NULL)
+            return false;
     }
 
     eseguiTest(start, getDimT(t), g);
     movimentoTesteRic(start, getDimT(t), c, g);
+
+    return true;
 }
 
 void estraiGruppi(gruppo** start, teste t, celle c, gruppi g)
@@ -206,20 +235,20 @@ void estraiGruppi(gruppo** start, teste t, celle c, gruppi g)
     free(cel);
 }
 
-void movimentoTesteRic(gruppo* attuale, int dim, celle c, gruppi g)
+bool movimentoTesteRic(gruppo* attuale, int dim, celle c, gruppi g)
 {
     if(batteriaTestata(c))
-        return;
+        return true;
 
     gruppo* next = malloc(dim*sizeof(gruppo));
     int j;
     for(j=0; j<dim; j++)    next[j] = NULL;
-    sceltaGruppi(attuale, next, dim, g);
+    if(!sceltaGruppi(attuale, next, dim, NULL, g))      return false;
     eseguiTest(next, dim, g);
-    movimentoTesteRic(next, dim, c, g);
+    return movimentoTesteRic(next, dim, c, g);
 }
 
-void sceltaGruppi(gruppo* i, gruppo* scelte, int dim, gruppi g)
+bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
 {
     gruppi* raggruppamenti = getRaggruppamentiPerTopologia(g);
 
@@ -247,7 +276,7 @@ void sceltaGruppi(gruppo* i, gruppo* scelte, int dim, gruppi g)
                         int ok = 1;
                         for(k=0; k<l; k++)
                         {
-//                            if(!checkCompatibilitaTeste(t[j], scelte[k])) // + ottimizazzione al contrario
+                            if(!checkCompatibilitaTeste(tes, l, k, t[j], scelte[k])) // + ottimizazzione al contrario
                             {
                                 ok = 0;
                                 break;
@@ -266,8 +295,11 @@ void sceltaGruppi(gruppo* i, gruppo* scelte, int dim, gruppi g)
 
     for(l=0; l<dim; l++)
     {
-
+        if(scelte[l]==NULL)
+            return false;
     }
+
+    return true;
 }
 
 void eseguiTest(gruppo* g, int dim, gruppi gr)
