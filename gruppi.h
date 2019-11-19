@@ -13,5 +13,6 @@ gruppo* getGruppi(gruppi g);
 int getDimRaggruppamentiPerTopologia(gruppi g);
 gruppi* getRaggruppamentiPerTopologia(gruppi g);
 gruppo* getGruppiConCella(gruppi g, cella c, gruppo** cont);
+void aggiornaTest(gruppi g);
 
 #endif //GRUPPI_H

@@ -17,6 +17,7 @@ struct gruppo_s
 void setBaricentro(gruppo g);
 coordinata getBaricentro(gruppo g);
 void setTopologia(gruppo g);
+void setFase(gruppo g, int fase);
 
 void creaGruppo(gruppo* g)
 {
@@ -91,6 +92,21 @@ void setFase(gruppo g, int fase)
     g->fase = fase;
 }
 
+void aggiornaFase(gruppo g)
+{
+    int aggiornamento = 0;
+    int i;
+    for(i=0; i<getDimC(g->insieme); i++)
+    {
+         if(isTest((getInsieme(g->insieme))[i]))
+         {
+             aggiornamento++;
+         }
+    }
+
+    setFase(g, aggiornamento);
+}
+
 int getMaxFase(gruppo g)
 {
     return getDimC(g->insieme);
@@ -135,6 +151,13 @@ double distanzaG(gruppo a, gruppo b)
 int ckeckPresenzaCella(gruppo g, cella c)
 {
     return checkEsistenzaCella(g->insieme, c);
+}
+
+void testGruppo(gruppo g)
+{
+    int i;
+    for(i=0; i<getDimC(g->insieme); i++)
+        test((getInsieme(g->insieme))[i]);
 }
 
 void setGruppoNullo(gruppo* g)

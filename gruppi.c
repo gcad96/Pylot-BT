@@ -126,3 +126,12 @@ gruppo* getGruppiConCella(gruppi g, cella c, gruppo** cont)
     setGruppoNullo(&((*cont)[(dim)++]));
     (*cont) = realloc((*cont), (dim+1));
 }
+
+void aggiornaTest(gruppi g)
+{
+    int i;
+    for(i=0; i<g->dim; i++)
+    {
+        aggiornaFase(g->insieme[i]);
+    }
+}

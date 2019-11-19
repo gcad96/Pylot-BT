@@ -25,6 +25,7 @@ void movimentoTeste(teste t, celle c, gruppi g);
 void movimentoTesteRic(gruppo* attuale, int dim, celle c, gruppi g);
 void estraiGruppi(gruppo** start, teste t, celle c, gruppi g);
 void sceltaGruppi(gruppo* i, gruppo* scelte, int dim, gruppi g);
+void eseguiTest(gruppo* g, int dim, gruppi gr);
 
 void trovaPercorso()
 {
@@ -170,6 +171,8 @@ void movimentoTeste(teste t, celle c, gruppi g)
     {
         start[i] = estratti[i][0];
     }
+
+    eseguiTest(start, getDimT(t), g);
     movimentoTesteRic(start, getDimT(t), c, g);
 }
 
@@ -212,6 +215,7 @@ void movimentoTesteRic(gruppo* attuale, int dim, celle c, gruppi g)
     int j;
     for(j=0; j<dim; j++)    next[j] = NULL;
     sceltaGruppi(attuale, next, dim, g);
+    eseguiTest(next, dim, g);
     movimentoTesteRic(next, dim, c, g);
 }
 
@@ -264,4 +268,14 @@ void sceltaGruppi(gruppo* i, gruppo* scelte, int dim, gruppi g)
     {
 
     }
+}
+
+void eseguiTest(gruppo* g, int dim, gruppi gr)
+{
+    int i;
+    for(i=0; i<dim; i++)
+    {
+        testGruppo(g[i]);
+    }
+    aggiornaTest(gr);
 }
