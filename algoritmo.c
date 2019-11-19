@@ -299,10 +299,6 @@ bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
                 }
             }
         }
-    }
-
-    for(l=0; l<dim; l++)
-    {
         if(scelte[l]==NULL)
         {
             printf("Nessun movimento possibile.\n");
