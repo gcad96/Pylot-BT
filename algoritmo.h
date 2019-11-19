@@ -1,6 +1,6 @@
 #ifndef ALGORITMO_H
 #define ALGORITMO_H
 
-void trovaPercorso();
+void trovaPercorso();;
 
 #endif //ALGORITMO_H
