@@ -22,10 +22,11 @@ void definisciNumeroMaxCelle(int* n);
 void path(celle c, int card, Matrice m);
 void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m);
 bool movimentoTeste(teste t, celle c, gruppi g);
-bool movimentoTesteRic(gruppo* attuale, int dim, celle c, gruppi g);
+bool movimentoTesteRic(gruppo* attuale, int dim, celle c, gruppi g, int count);
 void estraiGruppi(gruppo** start, teste t, celle c, gruppi g);
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g);
 void eseguiTest(gruppo* g, int dim, gruppi gr);
+void stampaMovimento(int n, gruppo* g, int dim);
 
 void trovaPercorso()
 {
@@ -196,11 +197,17 @@ bool movimentoTeste(teste t, celle c, gruppi g)
     for(i=0; i<getDimT(t); i++)
     {
         if(start[i]==NULL)
+        {
+            printf("Nessun movimento possibile.\n");
             return false;
+        }
+
     }
 
     eseguiTest(start, getDimT(t), g);
-    movimentoTesteRic(start, getDimT(t), c, g);
+    int count = 1;
+    stampaMovimento(count, start, getDimT(t));
+    movimentoTesteRic(start, getDimT(t), c, g, count+1);
 
     return true;
 }
@@ -235,7 +242,7 @@ void estraiGruppi(gruppo** start, teste t, celle c, gruppi g)
     free(cel);
 }
 
-bool movimentoTesteRic(gruppo* attuale, int dim, celle c, gruppi g)
+bool movimentoTesteRic(gruppo* attuale, int dim, celle c, gruppi g, int count)
 {
     if(batteriaTestata(c))
         return true;
@@ -244,8 +251,9 @@ bool movimentoTesteRic(gruppo* attuale, int dim, celle c, gruppi g)
     int j;
     for(j=0; j<dim; j++)    next[j] = NULL;
     if(!sceltaGruppi(attuale, next, dim, NULL, g))      return false;
+    stampaMovimento(count, next, dim);
     eseguiTest(next, dim, g);
-    return movimentoTesteRic(next, dim, c, g);
+    return movimentoTesteRic(next, dim, c, g, count+1);
 }
 
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
@@ -296,7 +304,10 @@ bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
     for(l=0; l<dim; l++)
     {
         if(scelte[l]==NULL)
+        {
+            printf("Nessun movimento possibile.\n");
             return false;
+        }
     }
 
     return true;
@@ -310,4 +321,16 @@ void eseguiTest(gruppo* g, int dim, gruppi gr)
         testGruppo(g[i]);
     }
     aggiornaTest(gr);
+}
+
+void stampaMovimento(int n, gruppo* gruppi, int dim)
+{
+    printf("Movimento %d\n", n);
+    int i;
+    for(i=0; i<dim; i++)
+    {
+        stampaGruppo(gruppi[i]);
+        printf("\n");
+    }
+    printf("\n\n");
 }
