@@ -23,6 +23,8 @@ struct forma_s
     //vertice 0 in (a, b)
     coordinata* offSet;  //altri vertici in (a+coordinata[i]->x, b+coordinata[i]->y)
     int nVertici;
+    float dim1;
+    float dim2;
 };
 
 void creaForma(forma* f, float d1, float d2, char* line)
@@ -64,7 +66,10 @@ void creaForma(forma* f, float d1, float d2, char* line)
     else
     {
         fprintf(stderr, "Errore nella forma della testa.\n");
+        return;
     }
+    (*f)->dim1 = d1;
+    (*f)->dim2 = d2;
 }
 
 void liberaForma(forma f)
@@ -97,4 +102,11 @@ void stampaForma(forma f)
     stampaCoordinata(f->offSet[i]);
 
     printf("\n");
+}
+
+void getSxDx(forma f, float* sx, float* dx, float offset)
+{
+    float larghezza = f->dim1;
+    *sx = offset * larghezza;
+    *dx = (1.0f - offset) * larghezza;
 }

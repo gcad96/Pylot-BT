@@ -18,11 +18,12 @@ struct testa_s
     topologia caratteristiche;
 
     forma forma;
+    float offset;
 
     int cod;
 };
 
-void creaTesta(testa* t, char* nome, float d1, float d2, char* line)
+void creaTesta(testa* t, char* nome, float d1, float d2, char* line, float offset)
 {
     *t = malloc(sizeof(struct testa_s));
     (*t)->nome = strdup(nome);
@@ -30,6 +31,7 @@ void creaTesta(testa* t, char* nome, float d1, float d2, char* line)
     (*t)->caratteristiche = NULL;
     //creaTopologia(&((*t)->caratteristiche), dim, c);
     creaForma(&((*t)->forma), d1, d2, line);
+    (*t)->offset = offset / (float) 100;
     (*t)->cod = -1;
 }
 
@@ -55,4 +57,9 @@ int getCod(testa t)
 void setCod(testa t, int id)
 {
     t->cod = id;
+}
+
+void getOffsetSxeDx(testa t, float* sx, float* dx)
+{
+    getSxDx(t->forma, sx, dx, t->offset);
 }

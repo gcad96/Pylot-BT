@@ -16,7 +16,7 @@
 #define ALTRO 0
 
 int acquisisciDatiCelle(void** gen, int* stop, char* nome, float* x, float* y);
-int acquisisciDatiTeste(void** gen, char* nome, float* x, float* y, char* l);
+int acquisisciDatiTeste(void** gen, char* nome, float* x, float* y, char* l, float* offset);
 
 void allocaCelle(celle* cel)
 {
@@ -46,14 +46,14 @@ void allocaTeste(teste* tes, int n)
     testa t;
     creaTeste(& (*tes));
     void* service = NULL;
-    char nome[L]; char line[L]; float x; float y;
+    char nome[L]; char line[L]; float x; float y; float offset;
 
     int i;
     for(i=0; i<n; i++)
     {
-        if(acquisisciDatiTeste(&service, nome, &x, &y, line))
+        if(acquisisciDatiTeste(&service, nome, &x, &y, line, &offset))
         {
-            creaTesta(&t, nome, x, y, line);
+            creaTesta(&t, nome, x, y, line, offset);
             aggiungiTesta(*tes, t);
         }
         else
@@ -105,7 +105,7 @@ int acquisisciDatiCelle(void** gen, int* stop, char* nome, float* x, float* y)
     return 1;
 }
 
-int acquisisciDatiTeste(void** gen, char* nome, float* x, float* y, char* l)
+int acquisisciDatiTeste(void** gen, char* nome, float* x, float* y, char* l, float* offset)
 {
 
 #if DAFILE
@@ -116,7 +116,7 @@ int acquisisciDatiTeste(void** gen, char* nome, float* x, float* y, char* l)
         if(f==NULL)     return 0;
         fgets(l, LLENGTH, f);
 
-        if ( fscanf(f, "%s %f %f", nome, x, y)!=3 )
+        if ( fscanf(f, "%s %f %f %f", nome, x, y, offset)!=4 )
         {
             fclose(f);
         }
@@ -126,7 +126,7 @@ int acquisisciDatiTeste(void** gen, char* nome, float* x, float* y, char* l)
     else
     {
         FILE* f = (FILE*) (*gen);
-        if ( fscanf(f, "%s %f %f", nome, x, y)!=3 )
+        if ( fscanf(f, "%s %f %f", nome, x, y, offset)!=3 )
         {
             fclose(f);
         }

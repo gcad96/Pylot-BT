@@ -6,5 +6,6 @@ typedef struct forma_s* forma;
 void creaForma(forma* f, float d1, float d2, char* line);
 void liberaForma(forma f);
 void stampaForma(forma f);
+void getSxDx(forma f, float* sx, float* dx, float offset);
 
 #endif //FORMA_H
