@@ -8,5 +8,6 @@ void liberaTeste(teste t);
 void aggiungiTesta(teste t, testa tes);
 void stampaTeste(teste t);
 int getDimT(teste t);
+int checkCompatibilitaTeste(teste t, int cod1, int cod2, gruppo g1, gruppo g2);
 
 #endif //TESTE_H

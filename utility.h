@@ -8,4 +8,11 @@
 #define FILE_INPUT_TESTE "C:\\Docs\\CLion workspace\\Pylot-BT\\Dati\\DatiTeste.txt"
 #define FILE_INPUT_CONFIGURAZIONI "C:\\Docs\\CLion workspace\\Pylot-BT\\Dati\\Configurazioni.txt"
 
+
+typedef enum
+{
+    false,
+    true
+} bool;
+
 #endif //UTILITY_H

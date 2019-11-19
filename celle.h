@@ -1,6 +1,14 @@
 #ifndef CELLE_H
 #define CELLE_H
 
+typedef enum estremo_s
+{
+    Alto,
+    Basso,
+    Destra,
+    Sinistra
+} estremo ;
+
 enum orientamento_s
 {
     ASx,
@@ -26,5 +34,6 @@ cella* getInsieme(celle c);
 int batteriaTestata(celle c);
 void calcolaDimensioniBatteria(celle c, float* base, float* altezza);
 void calcolaEstremiBatteria(celle c, coordinata* coord, orientamento* start);
+void estremiCelle(float* estremi, celle c);
 
 #endif //CELLE_H

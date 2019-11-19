@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "coordinata.h"
+#include "topologia.h"
+#include "cella.h"
+#include "celle.h"
+#include "gruppo.h"
 #include "testa.h"
 #include "teste.h"
 
@@ -53,4 +57,70 @@ void stampaTeste(teste t)
 int getDimT(teste t)
 {
     return t->dim;
+}
+
+int checkCompatibilitaTeste(teste t, int cod1, int cod2, gruppo g1, gruppo g2)
+{
+    testa t1 = t->insieme[cod1];
+    float sx1, dx1;
+    getOffsetSxeDx(t1, &sx1, &dx1);
+    testa t2 = t->insieme[cod2];
+    float sx2, dx2;
+    getOffsetSxeDx(t2, &sx2, &dx2);
+    coordinata c1 = posizioneMedia(g1);
+    coordinata c2 = posizioneMedia(g2);
+    if(c1>=c2)
+    {
+        if(getAscissa(c2)+dx2 >= getAscissa(c1)-sx1)
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        if(getAscissa(c1)+dx1 >= getAscissa(c2)-sx2)
+        {
+            return 0;
+        }
+    }
+
+    float* estremi1 = malloc(4* sizeof(float));
+    etremiGruppo(estremi1, g1);
+    float* estremi2 = malloc(4* sizeof(float));
+    etremiGruppo(estremi2, g2);
+    if(estremi1[Alto]>=estremi2[Alto])
+    {
+        if(estremi1[Basso]<=estremi2[Alto])
+        {
+            free(estremi1);     free(estremi2);
+            return 0;
+        }
+    }
+    else
+    {
+        if(estremi2[Basso]<=estremi1[Alto])
+        {
+            free(estremi1);     free(estremi2);
+            return 0;
+        }
+    }
+    if(estremi1[Destra]>=estremi2[Destra])
+    {
+        if(estremi1[Sinistra]<=estremi2[Destra])
+        {
+            free(estremi1);     free(estremi2);
+            return 0;
+        }
+    }
+    else
+    {
+        if(estremi2[Destra]<=estremi1[Sinistra])
+        {
+            free(estremi1);     free(estremi2);
+            return 0;
+        }
+    }
+    free(estremi1);     free(estremi2);
+
+    return 1;
 }

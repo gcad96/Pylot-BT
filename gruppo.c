@@ -82,6 +82,11 @@ coordinata getBaricentro(gruppo g)
     return g->baricentro;
 }
 
+coordinata posizioneMedia(gruppo g)
+{
+    return getBaricentro(g);
+}
+
 int getFase(gruppo g)
 {
     return g->fase;
@@ -176,4 +181,9 @@ void setGruppoNullo(gruppo* g)
 int isGruppoNullo(gruppo g)
 {
     return (g->fase==-1);
+}
+
+void etremiGruppo(float* e, gruppo g)
+{
+    estremiCelle(e, g->insieme);
 }

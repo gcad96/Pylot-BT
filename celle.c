@@ -10,15 +10,7 @@
 #define START 4
 #define CRESCITA 2
 
-typedef enum estremo_s
-{
-    Alto,
-    Basso,
-    Destra,
-    Sinistra
-} estremo ;
-
-float estremoBatteria(celle c, estremo e);
+float Estremo(celle c, estremo e);
 
 struct celle_s
 {
@@ -184,24 +176,24 @@ int batteriaTestata(celle c)
 
 void calcolaDimensioniBatteria(celle c, float* base, float* altezza)
 {
-    *base = estremoBatteria(c, Alto) - estremoBatteria(c, Basso);
-    *altezza = estremoBatteria(c, Destra) - estremoBatteria(c, Sinistra);
+    *base = Estremo(c, Alto) - Estremo(c, Basso);
+    *altezza = Estremo(c, Destra) - Estremo(c, Sinistra);
 }
 
 void calcolaEstremiBatteria(celle c, coordinata* coord, orientamento* start)
 {
     *start = ASx;
-    coordinata c1; creaCoordinata(&c1, estremoBatteria(c, Alto), estremoBatteria(c, Sinistra));
+    coordinata c1; creaCoordinata(&c1, Estremo(c, Alto), Estremo(c, Sinistra));
     coord[0] = c1;
-    coordinata c2; creaCoordinata(&c2, estremoBatteria(c, Alto), estremoBatteria(c, Destra));
+    coordinata c2; creaCoordinata(&c2, Estremo(c, Alto), Estremo(c, Destra));
     coord[1] = c2;
-    coordinata c3; creaCoordinata(&c3, estremoBatteria(c, Basso), estremoBatteria(c, Destra));
+    coordinata c3; creaCoordinata(&c3, Estremo(c, Basso), Estremo(c, Destra));
     coord[2] = c3;
-    coordinata c4; creaCoordinata(&c4, estremoBatteria(c, Basso), estremoBatteria(c, Sinistra));
+    coordinata c4; creaCoordinata(&c4, Estremo(c, Basso), Estremo(c, Sinistra));
     coord[3] = c4;
 }
 
-float estremoBatteria(celle c, estremo e)
+float Estremo(celle c, estremo e)
 {
     int i;
     float m;
@@ -261,4 +253,12 @@ float estremoBatteria(celle c, estremo e)
     }
 
     return m;
+}
+
+void estremiCelle(float* estremi, celle c)
+{
+    estremi[Alto] = Estremo(c, Alto);
+    estremi[Basso] = Estremo(c, Basso);
+    estremi[Sinistra] = Estremo(c, Sinistra);
+    estremi[Destra] = Estremo(c, Destra);
 }
