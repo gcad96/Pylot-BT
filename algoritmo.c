@@ -223,7 +223,7 @@ void estraiGruppi(gruppo** start, teste t, celle c, gruppi g)
     cella* cel = malloc(getDimT(t)* sizeof(cella));
     coordinata coor = coords[ASx];
     int i;
-    for(i=0; getDimT(t); i++)
+    for(i=0; i<getDimT(t); i++)
     {
         cel[i] = getCellaPiuVicina(c, coor);
         float asc = getAscissa(coor);
