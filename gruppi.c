@@ -116,7 +116,7 @@ gruppo* getGruppiConCella(gruppi g, cella c, gruppo** cont)
     *cont = malloc(g->dim*sizeof(gruppo));
     int dim = 0;
     int i;
-    for(i=1; i<g->dim; i++)
+    for(i=0; i<g->dim; i++)
     {
         if(ckeckPresenzaCella(g->insieme[i], c))
         {
@@ -124,7 +124,7 @@ gruppo* getGruppiConCella(gruppi g, cella c, gruppo** cont)
         }
     }
     setGruppoNullo(&((*cont)[(dim)++]));
-    (*cont) = realloc((*cont), (dim+1));
+    (*cont) = realloc((*cont), (dim* sizeof(gruppo)));
 }
 
 void aggiornaTest(gruppi g)
