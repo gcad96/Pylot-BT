@@ -134,7 +134,7 @@ void getNCellePiuVicine(celle c, cella a, int N, cella* vic)
 cella getCellaPiuVicina(celle c, coordinata coor)
 {
     double min = DBL_MAX;
-    int index;
+    int index=0;
 
     int i;
     for(i=0; i<c->dim; i++)
@@ -147,7 +147,7 @@ cella getCellaPiuVicina(celle c, coordinata coor)
         }
     }
 
-    return c->insieme[i];
+    return c->insieme[index];
 }
 
 int getDimC(celle c)
@@ -182,7 +182,7 @@ void calcolaDimensioniBatteria(celle c, float* base, float* altezza)
 
 void calcolaEstremiBatteria(celle c, coordinata* coord, orientamento* start)
 {
-    *start = ASx;
+    if(start!=NULL)     *start = ASx;
     coordinata c1; creaCoordinata(&c1, Estremo(c, Alto), Estremo(c, Sinistra));
     coord[0] = c1;
     coordinata c2; creaCoordinata(&c2, Estremo(c, Alto), Estremo(c, Destra));
