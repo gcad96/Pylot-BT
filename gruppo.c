@@ -53,6 +53,16 @@ void liberaGruppo(gruppo g)
     free(g);
 }
 
+int GRUPPOleq(gruppo a, gruppo b)
+{
+    return getDimC(a->insieme)>=getDimC(b->insieme);
+}
+
+int GRUPPOgt(gruppo a, gruppo b)
+{
+    return getDimC(a->insieme)<getDimC(b->insieme);
+}
+
 void setBaricentro(gruppo g)
 {
     cella* ins = getInsieme(g->insieme);

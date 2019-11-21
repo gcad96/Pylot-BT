@@ -4,6 +4,7 @@
 #include "topologia.h"
 #include "cella.h"
 #include "gruppo.h"
+#include "sortingGruppi.h"
 #include "gruppi.h"
 
 #define START 4
@@ -65,6 +66,11 @@ void stampaGruppi(gruppi g)
         stampaGruppo(g->insieme[i]);
         printf("\n");
     }
+}
+
+void ordinaGruppi(gruppi g)
+{
+    SortGruppi(g->insieme, g->dim);
 }
 
 void raggruppaPerTopologia(gruppi g)
