@@ -183,13 +183,13 @@ void calcolaDimensioniBatteria(celle c, float* base, float* altezza)
 void calcolaEstremiBatteria(celle c, coordinata* coord, orientamento* start)
 {
     if(start!=NULL)     *start = ASx;
-    coordinata c1; creaCoordinata(&c1, Estremo(c, Alto), Estremo(c, Sinistra));
+    coordinata c1; creaCoordinata(&c1, Estremo(c, Sinistra), Estremo(c, Alto));
     coord[0] = c1;
-    coordinata c2; creaCoordinata(&c2, Estremo(c, Alto), Estremo(c, Destra));
+    coordinata c2; creaCoordinata(&c2, Estremo(c, Destra), Estremo(c, Alto));
     coord[1] = c2;
-    coordinata c3; creaCoordinata(&c3, Estremo(c, Basso), Estremo(c, Destra));
+    coordinata c3; creaCoordinata(&c3, Estremo(c, Destra), Estremo(c, Basso));
     coord[2] = c3;
-    coordinata c4; creaCoordinata(&c4, Estremo(c, Basso), Estremo(c, Sinistra));
+    coordinata c4; creaCoordinata(&c4, Estremo(c, Sinistra), Estremo(c, Basso));
     coord[3] = c4;
 }
 
