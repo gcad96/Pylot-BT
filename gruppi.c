@@ -101,8 +101,9 @@ void raggruppaPerTopologia(gruppi g)
                 t = realloc(t, realDimT * sizeof(topologia));
                 g->raggruppamentiPerTopologia = realloc(g->raggruppamentiPerTopologia, realDimT*sizeof(gruppi));
             }
-            t[dimT++] = top;
-            aggiungiGruppo(g->raggruppamentiPerTopologia[j], g->insieme[i]);
+            t[dimT] = top;
+            creaGruppi(&(g->raggruppamentiPerTopologia[dimT]));
+            aggiungiGruppo(g->raggruppamentiPerTopologia[dimT++], g->insieme[i]);
         }
     }
     g->dimRaggruppamentiPerTopologia = dimT;

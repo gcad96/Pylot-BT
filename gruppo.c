@@ -141,6 +141,7 @@ void setTopologia(gruppo g)
 
     topologia t;
     creaTopologia(&t, dim-1, cc);
+    g->topologia = t;
 }
 
 void stampaGruppo(gruppo g)
