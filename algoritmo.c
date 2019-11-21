@@ -8,6 +8,7 @@
 #include "cella.h"
 #include "celle.h"
 #include "gruppo.h"
+#include "sortingGruppi.h"
 #include "gruppi.h"
 #include "testa.h"
 #include "teste.h"
@@ -27,6 +28,7 @@ void estraiGruppi(gruppo** start, teste t, celle c, gruppi g);
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g);
 void eseguiTest(gruppo* g, int dim, gruppi gr);
 void stampaMovimento(int n, gruppo* g, int dim);
+void ordinaPerCardinalita(gruppo* g);
 
 void trovaPercorso()
 {
@@ -329,4 +331,11 @@ void stampaMovimento(int n, gruppo* gruppi, int dim)
         printf("\n");
     }
     printf("\n\n");
+}
+
+void ordinaPerCardinalita(gruppo* g)
+{
+    int dim = 0;
+    while(!isGruppoNullo(g[dim++]));
+    SortGruppi(g, --dim);
 }
