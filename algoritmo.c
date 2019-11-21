@@ -22,7 +22,7 @@ void definisciNumeroMaxCelle(int* n);
 void path(celle c, int card, Matrice m);
 void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m);
 bool movimentoTeste(teste t, celle c, gruppi g);
-bool movimentoTesteRic(gruppo* attuale, int dim, celle c, gruppi g, int count);
+bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count);
 void estraiGruppi(gruppo** start, teste t, celle c, gruppi g);
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g);
 void eseguiTest(gruppo* g, int dim, gruppi gr);
@@ -209,7 +209,7 @@ bool movimentoTeste(teste t, celle c, gruppi g)
     eseguiTest(start, getDimT(t), g);
     int count = 1;
     stampaMovimento(count, start, getDimT(t));
-    movimentoTesteRic(start, getDimT(t), c, g, count+1);
+    movimentoTesteRic(start, getDimT(t), t, c, g, count + 1);
 
     return true;
 }
@@ -244,7 +244,7 @@ void estraiGruppi(gruppo** start, teste t, celle c, gruppi g)
     free(cel);
 }
 
-bool movimentoTesteRic(gruppo* attuale, int dim, celle c, gruppi g, int count)
+bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count)
 {
     if(batteriaTestata(c))
         return true;
@@ -252,10 +252,10 @@ bool movimentoTesteRic(gruppo* attuale, int dim, celle c, gruppi g, int count)
     gruppo* next = malloc(dim*sizeof(gruppo));
     int j;
     for(j=0; j<dim; j++)    next[j] = NULL;
-    if(!sceltaGruppi(attuale, next, dim, NULL, g))      return false;
+    if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
     stampaMovimento(count, next, dim);
     eseguiTest(next, dim, g);
-    return movimentoTesteRic(next, dim, c, g, count+1);
+    return movimentoTesteRic(next, dim, t, c, g, count + 1);
 }
 
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
