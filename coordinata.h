@@ -1,3 +1,5 @@
+/*Giovanni Cadau © */
+
 #ifndef COORDINATA_H
 #define COORDINATA_H
 

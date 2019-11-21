@@ -1,3 +1,5 @@
+/*Giovanni Cadau © */
+
 #include <stdio.h>
 #include <string.h>
 #include "utility.h"

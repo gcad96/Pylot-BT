@@ -1,3 +1,5 @@
+/*Giovanni Cadau © */
+
 #include <stdlib.h>
 #include "utility.h"
 #include "sortingInt.h"

@@ -1,3 +1,5 @@
+/*Giovanni Cadau © */
+
 #ifndef TOPOLOGIA_H
 #define TOPOLOGIA_H
 

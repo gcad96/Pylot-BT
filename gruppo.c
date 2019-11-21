@@ -1,3 +1,5 @@
+/*Giovanni Cadau © */
+
 #include <stdlib.h>
 #include "coordinata.h"
 #include "distanza.h"

@@ -1,3 +1,5 @@
+/*Giovanni Cadau © */
+
 #ifndef GRUPPO_H
 #define GRUPPO_H
 

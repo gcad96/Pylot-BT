@@ -1,3 +1,5 @@
+/*Giovanni Cadau © */
+
 #ifndef SORTINGGRUPPI_H
 #define SORTINGGRUPPI_H
 
