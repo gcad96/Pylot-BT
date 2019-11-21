@@ -1,4 +1,4 @@
-/*Giovanni Cadau © */
+/* Giovanni Cadau © */
 
 #include <stdio.h>
 #include <stdlib.h>

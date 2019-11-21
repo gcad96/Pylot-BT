@@ -1,4 +1,4 @@
-/*Giovanni Cadau © */
+/* Giovanni Cadau © */
 
 #ifndef ALGORITMO_H
 #define ALGORITMO_H

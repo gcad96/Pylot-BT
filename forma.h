@@ -1,4 +1,4 @@
-/*Giovanni Cadau © */
+/* Giovanni Cadau © */
 
 #ifndef FORMA_H
 #define FORMA_H

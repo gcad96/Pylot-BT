@@ -1,4 +1,4 @@
-/*Giovanni Cadau © */
+/* Giovanni Cadau © */
 
 #ifndef TESTE_H
 #define TESTE_H

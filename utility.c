@@ -1,3 +1,3 @@
-/*Giovanni Cadau © */
+/* Giovanni Cadau © */
 
 #include "utility.h"

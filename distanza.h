@@ -1,4 +1,4 @@
-/*Giovanni Cadau © */
+/* Giovanni Cadau © */
 
 #ifndef DISTANZA_H
 #define DISTANZA_H

@@ -1,4 +1,4 @@
-/*Giovanni Cadau © */
+/* Giovanni Cadau © */
 
 #include <stdlib.h>
 #include "coordinata.h"

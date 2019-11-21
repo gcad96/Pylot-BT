@@ -1,4 +1,4 @@
-/*Giovanni Cadau © */
+/* Giovanni Cadau © */
 
 #ifndef ALLOCAZIONE_H
 #define ALLOCAZIONE_H
