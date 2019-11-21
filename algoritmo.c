@@ -93,6 +93,8 @@ void generaInsiemiDiCelle(celle c, gruppi* gr)
         impostaGruppo(g, ins, quantita);
         aggiungiGruppo(*gr, g);
     }
+
+    raggruppaPerTopologia(*gr);
 }
 
 void definisciNumeroMaxCelle(int* n)

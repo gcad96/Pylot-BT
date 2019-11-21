@@ -67,28 +67,47 @@ void stampaGruppi(gruppi g)
     }
 }
 
-void raggruppaPerTopologia(gruppi g, topologia* t, int dimT)
+void raggruppaPerTopologia(gruppi g)
 {
-    g->dimRaggruppamentiPerTopologia = dimT;
+    int realDimT = START;
+    int dimT = 0;
+    topologia* t = malloc(realDimT * sizeof(topologia));
+    g->dimRaggruppamentiPerTopologia = START;
     g->raggruppamentiPerTopologia = malloc((g->dimRaggruppamentiPerTopologia)*sizeof(gruppi));
-    int k;
-    for(k=0; k<g->dimRaggruppamentiPerTopologia; k++)
+    int m;
+    for(m=0; m<g->dimRaggruppamentiPerTopologia; m++)
     {
-        creaGruppi(&(g->raggruppamentiPerTopologia[k]));
+        creaGruppi(&(g->raggruppamentiPerTopologia[m]));
     }
 
     int i, j;
     for(i=0; i<g->dim; i++)
     {
         topologia top = getTopologia(g->insieme[i]);
-        for(j=0; j<dimT; j++)
+        int trovato = 0;
+        for(j=0; j<dimT && !trovato; j++)
         {
             if(equalTopologia(top, t[j]))
             {
                 aggiungiGruppo(g->raggruppamentiPerTopologia[j], g->insieme[i]);
+                trovato = 1;
             }
         }
+        if(!trovato)
+        {
+            if(dimT+1 > realDimT)
+            {
+                realDimT *= CRESCITA;
+                t = realloc(t, realDimT * sizeof(topologia));
+                g->raggruppamentiPerTopologia = realloc(g->raggruppamentiPerTopologia, realDimT*sizeof(gruppi));
+            }
+            t[dimT++] = top;
+            aggiungiGruppo(g->raggruppamentiPerTopologia[j], g->insieme[i]);
+        }
     }
+    g->dimRaggruppamentiPerTopologia = dimT;
+
+    free(t);
 }
 
 int getDimG(gruppi g)
