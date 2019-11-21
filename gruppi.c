@@ -147,6 +147,26 @@ gruppo* getGruppiConCella(gruppi g, cella c, gruppo** cont)
     (*cont) = realloc((*cont), (dim* sizeof(gruppo)));
 }
 
+gruppi getRaggruppamentoPerTopologiaContenenteGruppo(gruppi gr, gruppo g)
+{
+    int i;
+    for(i=0; i<gr->dimRaggruppamentiPerTopologia; i++)
+    {
+        gruppi grs = gr->raggruppamentiPerTopologia[i];
+        int j;
+        for(j=0; j<grs->dim; j++)
+        {
+            gruppo gs = grs->insieme[j];
+            if(gs==g)
+            {
+                return grs;
+            }
+        }
+    }
+
+    return NULL;
+}
+
 void aggiornaTest(gruppi g)
 {
     int i;

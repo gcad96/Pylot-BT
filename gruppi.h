@@ -13,6 +13,7 @@ gruppo* getGruppi(gruppi g);
 int getDimRaggruppamentiPerTopologia(gruppi g);
 gruppi* getRaggruppamentiPerTopologia(gruppi g);
 gruppo* getGruppiConCella(gruppi g, cella c, gruppo** cont);
+gruppi getRaggruppamentoPerTopologiaContenenteGruppo(gruppi gr, gruppo g);
 void aggiornaTest(gruppi g);
 
 #endif //GRUPPI_H

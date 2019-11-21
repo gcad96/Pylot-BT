@@ -260,14 +260,12 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
 
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
 {
-    gruppi* raggruppamenti = getRaggruppamentiPerTopologia(g);
-
     int l;
     for(l=0; l<dim; l++)
     {
         int fase = -1;
-        gruppi elementi = raggruppamenti[l];
         gruppo p = i[l];
+        gruppi elementi = getRaggruppamentoPerTopologiaContenenteGruppo(g, p);
         gruppo* t = getGruppi(elementi);
         int dimT = getDimG(elementi);
         int j;
