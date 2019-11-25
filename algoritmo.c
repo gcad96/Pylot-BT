@@ -221,7 +221,7 @@ bool movimentoTeste(teste t, celle c, gruppi g)
             stampaMovimento(count, start, getDimT(t));
             movimentoTesteRic(start, getDimT(t), t, c, g, count + 1);
             resetTest(c, g);
-            //2
+            // return...
         }
         caso++;
     }

@@ -1,0 +1,1 @@
+esplorazione (grezza) dell'intero spazio delle soluzioni
