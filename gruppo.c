@@ -191,9 +191,27 @@ void setGruppoNullo(gruppo* g)
     (*g)->insieme = NULL;
 }
 
+void setGruppoVuoto(gruppo* g)
+{
+    *g = malloc(sizeof(struct gruppo_s));
+
+    (*g)->fase = -2;
+
+    (*g)->topologia = NULL;
+
+    (*g)->baricentro = NULL;
+
+    (*g)->insieme = NULL;
+}
+
 int isGruppoNullo(gruppo g)
 {
     return (g->fase==-1);
+}
+
+int isGruppoVuoto(gruppo g)
+{
+    return (g->fase==-2);
 }
 
 void etremiGruppo(float* e, gruppo g)
