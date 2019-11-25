@@ -121,6 +121,11 @@ void test(cella c)
     c->test = 1;
 }
 
+void cancellaTest(cella c)
+{
+    c->test = c->testPrec;
+}
+
 coordinata getCoordinata(cella c)
 {
     return c->coordinata;

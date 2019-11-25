@@ -18,6 +18,7 @@
 #include "algoritmo.h"
 
 #define PIUVICINE 4
+#define LIM 10
 
 void definisciNumeroTeste(int* n);
 void generaInsiemiDiCelle(celle c, gruppi* gr);
@@ -25,10 +26,11 @@ void definisciNumeroMaxCelle(int* n);
 void path(celle c, int card, Matrice m);
 void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m);
 bool movimentoTeste(teste t, celle c, gruppi g);
-bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count);
+bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* codTesteAbilitate);
 void estraiGruppi(gruppo** start, teste t, celle c, gruppi g);
-bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g);
+bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g, int* codTesteAbilitate);
 void eseguiTest(gruppo* g, int dim, gruppi gr);
+void cancellaTest(gruppo* g, int dim, gruppi gr);
 void stampaMovimento(int n, gruppo* g, int dim);
 void ordinaPerCardinalita(gruppo* g);
 
@@ -185,7 +187,6 @@ bool movimentoTeste(teste t, celle c, gruppi g)
             int ok = 1;
             for(j=0; j<i; j++)
             {
-
                 if(!checkCompatibilitaTeste(t, i, j, estratti[i][k], start[j])) // + ottimizazzione al contrario
                 {
                     ok = 0;
@@ -213,8 +214,11 @@ bool movimentoTeste(teste t, celle c, gruppi g)
     eseguiTest(start, getDimT(t), g);
     int count = 1;
     stampaMovimento(count, start, getDimT(t));
-    movimentoTesteRic(start, getDimT(t), t, c, g, count + 1);
 
+    int* abilitaTeste = malloc(getDimT(t) * sizeof(int));
+    for(j=0; j<getDimT(t); j++)  abilitaTeste[j] = 1;
+    movimentoTesteRic(start, getDimT(t), t, c, g, count + 1, abilitaTeste);
+    free(abilitaTeste);
     return true;
 }
 
@@ -248,7 +252,7 @@ void estraiGruppi(gruppo** start, teste t, celle c, gruppi g)
     free(cel);
 }
 
-bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count)
+bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* codTesteAbilitate)
 {
     if(batteriaTestata(c))
         return true;
@@ -256,57 +260,83 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     gruppo* next = malloc(dim*sizeof(gruppo));
     int j;
     for(j=0; j<dim; j++)    next[j] = NULL;
-    if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
+    if(!sceltaGruppi(attuale, next, dim, t, g, codTesteAbilitate))      return false;
     stampaMovimento(count, next, dim);
     eseguiTest(next, dim, g);
-    return movimentoTesteRic(next, dim, t, c, g, count + 1);
+
+    int* abilitaTeste = malloc(getDimT(t) * sizeof(int));
+    for(j=0; j<getDimT(t); j++)  abilitaTeste[j] = 1;
+    if(count>=LIM)
+    {
+        for(j=0; j<getDimT(t); j++)
+        {
+            movimentoTesteRic(next, dim, t, c, g, count + 1, abilitaTeste);
+            abilitaTeste[j] = 0;
+            movimentoTesteRic(next, dim, t, c, g, count + 1, abilitaTeste);
+        }
+        free(abilitaTeste);
+    }
+    else
+    {
+        movimentoTesteRic(next, dim, t, c, g, count + 1, abilitaTeste);
+    }
+
+    cancellaTest(next, dim, g);
 }
 
-bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
+bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g, int* codTesteAbilitate)
 {
     int l;
     for(l=0; l<dim; l++)
     {
-        int fase = -1;
-        gruppo p = i[l];
-        gruppi elementi = getRaggruppamentoPerTopologiaContenenteGruppo(g, p);
-        gruppo* t = getGruppi(elementi);
-        int dimT = getDimG(elementi);
-        int j;
-        double min = DBL_MAX;
-        while(scelte[l] == NULL)
+        if(codTesteAbilitate[l])
         {
-            fase++;
-            for(j=0; j<dimT; j++)
+            int fase = -1;
+            gruppo p = i[l];
+            gruppi elementi = getRaggruppamentoPerTopologiaContenenteGruppo(g, p);
+            gruppo* t = getGruppi(elementi);
+            int dimT = getDimG(elementi);
+            int j;
+            double min = DBL_MAX;
+            while(scelte[l] == NULL)
             {
-                if((getFase(t[j]))==fase)
+                fase++;
+                for(j=0; j<dimT; j++)
                 {
-                    double d = distanzaG(p, t[j]);
-                    if(d<min && d!=0) // + comparazione e mediazione
+                    if((getFase(t[j]))==fase)
                     {
-                        int k;
-                        int ok = 1;
-                        for(k=0; k<l; k++)
+                        double d = distanzaG(p, t[j]);
+                        if(d<min && d!=0) // + comparazione e mediazione
                         {
-                            if(!checkCompatibilitaTeste(tes, l, k, t[j], scelte[k])) // + ottimizazzione al contrario
+                            int k;
+                            int ok = 1;
+                            for(k=0; k<l; k++)
                             {
-                                ok = 0;
-                                break;
+                                if(!checkCompatibilitaTeste(tes, l, k, t[j], scelte[k])) // + ottimizazzione al contrario
+                                {
+                                    ok = 0;
+                                    break;
+                                }
                             }
-                        }
-                        if(ok)
-                        {
-                            min = distanzaG(p, t[j]);
-                            scelte[l] = t[j];
+                            if(ok)
+                            {
+                                min = distanzaG(p, t[j]);
+                                scelte[l] = t[j];
+                            }
                         }
                     }
                 }
             }
+            if(scelte[l]==NULL)
+            {
+                printf("Nessun movimento possibile.\n");
+                return false;
+            }
         }
-        if(scelte[l]==NULL)
+        else
         {
-            printf("Nessun movimento possibile.\n");
-            return false;
+            gruppo vuoto; setGruppoVuoto(&vuoto);
+            scelte[l] = vuoto;
         }
     }
 
@@ -329,7 +359,10 @@ void stampaMovimento(int n, gruppo* gruppi, int dim)
     int i;
     for(i=0; i<dim; i++)
     {
-        stampaGruppo(gruppi[i]);
+        if(isGruppoVuoto(gruppi[i]))
+            printf("Testa a riposo.\n");
+        else
+            stampaGruppo(gruppi[i]);
         printf("\n");
     }
     printf("\n\n");

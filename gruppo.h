@@ -20,7 +20,9 @@ double distanzaG(gruppo a, gruppo b);
 int ckeckPresenzaCella(gruppo g, cella c);
 void testGruppo(gruppo g);
 void setGruppoNullo(gruppo* g);
+void setGruppoVuoto(gruppo* g);
 int isGruppoNullo(gruppo g);
+int isGruppoVuoto(gruppo g);
 void etremiGruppo(float* e, gruppo g);
 
 #endif //GRUPPO_H
