@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
+#include <limits.h>
 #include "utility.h"
 #include "combinatore.h"
 #include "matrix.h"
@@ -26,7 +27,7 @@ void definisciNumeroMaxCelle(int* n);
 void path(celle c, int card, Matrice m);
 void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m);
 bool movimentoTeste(teste t, celle c, gruppi g);
-bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count);
+bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* best);
 void estraiGruppi(gruppo** start, teste t, celle c, gruppi g);
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g);
 void eseguiTest(gruppo* g, int dim, gruppi gr);
@@ -191,6 +192,7 @@ bool movimentoTeste(teste t, celle c, gruppi g)
     creaCombinatore(&comb, val, getDimT(t));
     free(val);
 
+    int best = INT_MAX;
     int caso = 0;
     while(caso<comb->dim)
     {
@@ -219,7 +221,7 @@ bool movimentoTeste(teste t, celle c, gruppi g)
             eseguiTest(start, getDimT(t), g);
             int count = 1;
             stampaMovimento(count, start, getDimT(t));
-            movimentoTesteRic(start, getDimT(t), t, c, g, count + 1);
+            movimentoTesteRic(start, getDimT(t), t, c, g, count + 1, &best);
             resetTest(c, g);
             // return...
         }
@@ -248,7 +250,7 @@ void estraiGruppi(gruppo** start, teste t, celle c, gruppi g)
         liberaCoordinata(coor);
         creaCoordinata(&coor, asc+porzioneX, ord);
         getGruppiConCella(g, cel[i], &(start[i]));
-        ordinaPerCardinalita(start[i]);
+        //ordinaPerCardinalita(start[i]);
     }
     liberaCoordinata(coor);
 
@@ -260,10 +262,17 @@ void estraiGruppi(gruppo** start, teste t, celle c, gruppi g)
     free(cel);
 }
 
-bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count)
+bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* best)
 {
-    if(batteriaTestata(c))
+    if(count > *best)
         return true;
+
+    if(batteriaTestata(c))
+    {
+        *best = count;
+        return true;
+    }
+
 
     gruppo* next = malloc(dim*sizeof(gruppo));
     int j;
@@ -271,7 +280,7 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
     stampaMovimento(count, next, dim);
     eseguiTest(next, dim, g);
-    return movimentoTesteRic(next, dim, t, c, g, count + 1);
+    return movimentoTesteRic(next, dim, t, c, g, count + 1, best);
 }
 
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
