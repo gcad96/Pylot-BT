@@ -28,6 +28,7 @@ void creaCombinatore(Combinatore* c, int* valori, int dim)
     for(i=0; i<dim; i++)
     {
         l[i].num_scelte = valori[i];
+        l[i].scelte = malloc((l[i].num_scelte)* sizeof(int));
         for(j=0; j<valori[i]; j++)
         {
             l[i].scelte[j] = j;
