@@ -196,7 +196,7 @@ bool movimentoTeste(teste t, celle c, gruppi g)
     free(val);
 
     int best = INT_MAX;
-    soluzione s;
+    soluzione s = NULL;
     int caso = 0;
     while(caso<comb->dim)
     {
