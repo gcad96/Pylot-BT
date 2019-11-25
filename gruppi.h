@@ -6,7 +6,7 @@
 typedef struct gruppi_s* gruppi;
 
 void creaGruppi(gruppi* g);
-void liberaGruppi(gruppi c);
+void liberaGruppi(gruppi g);
 void aggiungiGruppo(gruppi g, gruppo gr);
 void stampaGruppi(gruppi g);
 void ordinaGruppi(gruppi g); //Relazione d'ordine totale: criterio di cardinalità insieme decescente

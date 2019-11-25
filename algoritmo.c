@@ -14,6 +14,7 @@
 #include "gruppo.h"
 #include "sortingGruppi.h"
 #include "gruppi.h"
+#include "soluzione.h"
 #include "testa.h"
 #include "teste.h"
 #include "allocazione.h"
@@ -27,12 +28,13 @@ void definisciNumeroMaxCelle(int* n);
 void path(celle c, int card, Matrice m);
 void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m);
 bool movimentoTeste(teste t, celle c, gruppi g);
-bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* best);
+bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* best, soluzione* s);
 void estraiGruppi(gruppo** start, teste t, celle c, gruppi g);
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g);
 void eseguiTest(gruppo* g, int dim, gruppi gr);
 void resetTest(celle c, gruppi g);
-void stampaMovimento(int n, gruppo* g, int dim);
+void salvaMovimento(soluzione* s, gruppo* gruppi, int dim, int n);
+void salvaMovimentoIniz(soluzione* s, int dim);
 void ordinaPerCardinalita(gruppo* g);
 
 void trovaPercorso()
@@ -175,6 +177,7 @@ void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m)
 
 bool movimentoTeste(teste t, celle c, gruppi g)
 {
+    bool successo = false;
     gruppo** estratti = malloc((getDimT(t))* sizeof(gruppo*));
     estraiGruppi(estratti, t, c, g);
     gruppo* start = malloc((getDimT(t))* sizeof(gruppo));
@@ -193,6 +196,7 @@ bool movimentoTeste(teste t, celle c, gruppi g)
     free(val);
 
     int best = INT_MAX;
+    soluzione s;
     int caso = 0;
     while(caso<comb->dim)
     {
@@ -220,15 +224,17 @@ bool movimentoTeste(teste t, celle c, gruppi g)
         {
             eseguiTest(start, getDimT(t), g);
             int count = 1;
-            stampaMovimento(count, start, getDimT(t));
-            movimentoTesteRic(start, getDimT(t), t, c, g, count + 1, &best);
+            if(movimentoTesteRic(start, getDimT(t), t, c, g, count + 1, &best, &s))
+            {
+                successo = true;
+                salvaMovimento(&s, start, getDimT(t), count);
+            }
             resetTest(c, g);
-            // return...
         }
         caso++;
     }
 
-    return true;
+    return successo;
 }
 
 void estraiGruppi(gruppo** start, teste t, celle c, gruppi g)
@@ -262,14 +268,15 @@ void estraiGruppi(gruppo** start, teste t, celle c, gruppi g)
     free(cel);
 }
 
-bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* best)
+bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* best, soluzione* s)
 {
-    if(count > *best)
-        return true;
+    if(count-1 > *best)
+        return false;
 
     if(batteriaTestata(c))
     {
-        *best = count;
+        *best = count-1;
+        salvaMovimentoIniz(s, count-1);
         return true;
     }
 
@@ -278,9 +285,11 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     int j;
     for(j=0; j<dim; j++)    next[j] = NULL;
     if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
-    stampaMovimento(count, next, dim);
     eseguiTest(next, dim, g);
-    return movimentoTesteRic(next, dim, t, c, g, count + 1, best);
+    bool succ = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
+    if(succ)
+        salvaMovimento(s, next, dim, count);
+    return succ;
 }
 
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
@@ -355,6 +364,16 @@ void resetTest(celle c, gruppi g)
     {
         resetFase(grs[i]);
     }
+}
+
+void salvaMovimentoIniz(soluzione* s, int dim)
+{
+    memorizza(s, dim);
+}
+
+void salvaMovimento(soluzione* s, gruppo* gruppi, int dim, int n)
+{
+    aggiungiMovimento((*s), gruppi, dim, n);
 }
 
 void stampaMovimento(int n, gruppo* gruppi, int dim)
