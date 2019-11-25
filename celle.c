@@ -176,6 +176,15 @@ int batteriaTestata(celle c)
     return 1;
 }
 
+void resetBatteria(celle c)
+{
+    int i;
+    for(i=0; i<c->dim; i++)
+    {
+        reset(c->insieme[i]);
+    }
+}
+
 void calcolaDimensioniBatteria(celle c, float* base, float* altezza)
 {
     *base = Estremo(c, Alto) - Estremo(c, Basso);

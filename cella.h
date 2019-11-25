@@ -23,6 +23,7 @@ int getId(cella c);
 void setId(cella c, int cod);
 int isTest(cella c);
 void test(cella c);
+void reset(cella c);
 coordinata getCoordinata(cella c);
 int equalCella(cella a, cella b);
 

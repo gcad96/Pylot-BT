@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <float.h>
 #include "utility.h"
+#include "combinatore.h"
 #include "matrix.h"
 #include "coordinata.h"
 #include "topologia.h"
@@ -29,6 +30,7 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
 void estraiGruppi(gruppo** start, teste t, celle c, gruppi g);
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g);
 void eseguiTest(gruppo* g, int dim, gruppi gr);
+void resetTest(celle c, gruppi g);
 void stampaMovimento(int n, gruppo* g, int dim);
 void ordinaPerCardinalita(gruppo* g);
 
@@ -175,45 +177,54 @@ bool movimentoTeste(teste t, celle c, gruppi g)
     gruppo** estratti = malloc((getDimT(t))* sizeof(gruppo*));
     estraiGruppi(estratti, t, c, g);
     gruppo* start = malloc((getDimT(t))* sizeof(gruppo));
+
+    Combinatore comb;
+    int* val = malloc(getDimT(t)* sizeof(int));
     int i, j, k;
     for(i=0; i<getDimT(t); i++)
     {
-        start[i] = NULL;
-        k=0;
-        while(!isGruppoNullo(estratti[i][k]))
+        k = 0;
+        while(!isGruppoNullo(estratti[i][k++]));
+        k--;
+        val[i] = k;
+    }
+    creaCombinatore(&comb, val, getDimT(t));
+    free(val);
+
+    int caso = 0;
+    while(caso<comb->dim)
+    {
+        int acc = 1;
+        for(i=0; i<getDimT(t); i++)
         {
+            start[i] = estratti[i][comb->v[caso][i]];
             int ok = 1;
             for(j=0; j<i; j++)
             {
-
-                if(!checkCompatibilitaTeste(t, i, j, estratti[i][k], start[j])) // + ottimizazzione al contrario
+                if(!checkCompatibilitaTeste(t, i, j, start[i], start[j])) // + ottimizazzione al contrario
                 {
                     ok = 0;
                     break;
                 }
             }
-            if(ok)
+            if(!ok)
             {
-                start[i] = estratti[i][k];
+                acc = 0;
                 break;
             }
-            k++;
         }
-    }
-    for(i=0; i<getDimT(t); i++)
-    {
-        if(start[i]==NULL)
+
+        if(acc)
         {
-            printf("Nessun movimento possibile.\n");
-            return false;
+            eseguiTest(start, getDimT(t), g);
+            int count = 1;
+            stampaMovimento(count, start, getDimT(t));
+            movimentoTesteRic(start, getDimT(t), t, c, g, count + 1);
+            resetTest(c, g);
+            //2
         }
-
+        caso++;
     }
-
-    eseguiTest(start, getDimT(t), g);
-    int count = 1;
-    stampaMovimento(count, start, getDimT(t));
-    movimentoTesteRic(start, getDimT(t), t, c, g, count + 1);
 
     return true;
 }
@@ -237,6 +248,7 @@ void estraiGruppi(gruppo** start, teste t, celle c, gruppi g)
         liberaCoordinata(coor);
         creaCoordinata(&coor, asc+porzioneX, ord);
         getGruppiConCella(g, cel[i], &(start[i]));
+        ordinaPerCardinalita(start[i]);
     }
     liberaCoordinata(coor);
 
@@ -321,6 +333,19 @@ void eseguiTest(gruppo* g, int dim, gruppi gr)
         testGruppo(g[i]);
     }
     aggiornaTest(gr);
+}
+
+void resetTest(celle c, gruppi g)
+{
+    resetBatteria(c);
+
+    gruppo* grs = getGruppi(g);
+    int dim = getDimG(g);
+    int i;
+    for(i=0; i<dim; i++)
+    {
+        resetFase(grs[i]);
+    }
 }
 
 void stampaMovimento(int n, gruppo* gruppi, int dim)

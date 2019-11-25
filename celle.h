@@ -34,6 +34,7 @@ cella getCellaPiuVicina(celle c, coordinata coor);
 int getDimC(celle c);
 cella* getInsieme(celle c);
 int batteriaTestata(celle c);
+void resetBatteria(celle c);
 void calcolaDimensioniBatteria(celle c, float* base, float* altezza);
 void calcolaEstremiBatteria(celle c, coordinata* coord, orientamento* start);
 void estremiCelle(float* estremi, celle c);

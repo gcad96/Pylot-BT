@@ -124,6 +124,11 @@ void aggiornaFase(gruppo g)
     setFase(g, aggiornamento);
 }
 
+void resetFase(gruppo g)
+{
+    g->fase = 0;
+}
+
 int getMaxFase(gruppo g)
 {
     return getDimC(g->insieme);
