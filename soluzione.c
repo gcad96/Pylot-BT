@@ -36,3 +36,12 @@ void aggiungiMovimento(soluzione s, gruppo* gr, int dim, int n)
     creaMovimento(&m, gr, dim, n);
     s->movimenti[n-1] = m;
 }
+
+void stampaSoluzione(soluzione s)
+{
+    int i;
+    for(i=0; i<s->dim; i++)
+    {
+        stampaMovimento(s->movimenti[i]);
+    }
+}

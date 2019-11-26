@@ -234,6 +234,9 @@ bool movimentoTeste(teste t, celle c, gruppi g)
         caso++;
     }
 
+    if(successo)
+        stampaSoluzione(s);
+
     return successo;
 }
 
@@ -374,18 +377,6 @@ void salvaMovimentoIniz(soluzione* s, int dim)
 void salvaMovimento(soluzione* s, gruppo* gruppi, int dim, int n)
 {
     aggiungiMovimento((*s), gruppi, dim, n);
-}
-
-void stampaMovimento(int n, gruppo* gruppi, int dim)
-{
-    printf("Movimento %d\n", n);
-    int i;
-    for(i=0; i<dim; i++)
-    {
-        stampaGruppo(gruppi[i]);
-        printf("\n");
-    }
-    printf("\n\n");
 }
 
 void ordinaPerCardinalita(gruppo* g)
