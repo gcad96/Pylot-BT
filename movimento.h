@@ -7,6 +7,6 @@ typedef struct movimento_s* movimento;
 
 void creaMovimento(movimento* m, gruppo* gr, int dim, int n);
 void liberaMovimento(movimento m);
-void stampaMovimento(movimento m);
+void stampaMovimento(movimento m);12
 
 #endif //MOVIMENTO_H

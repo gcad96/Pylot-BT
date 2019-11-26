@@ -33,7 +33,7 @@ void liberaMovimento(movimento m)
     free(m);
 }
 
-void stampaMovimento(movimento m)
+void stampaMovimento(movimento m)12
 {
     printf("Movimento %d\n", m->numero);
     gruppo* gr = getGruppi(m->g);
