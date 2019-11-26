@@ -1,1 +1,1 @@
-esplorazione dell'intero spazio delle soluzioni12
+esplorazione dell'intero spazio delle soluzioni

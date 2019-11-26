@@ -238,7 +238,7 @@ bool movimentoTeste(teste t, celle c, gruppi g)
         stampaSoluzione(s);
 
     return successo;
-}12
+}
 
 void estraiGruppi(gruppo** start, teste t, celle c, gruppi g)
 {
