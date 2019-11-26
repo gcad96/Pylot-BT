@@ -1,1 +1,0 @@
-esplorazione dell'intero spazio delle soluzioni
