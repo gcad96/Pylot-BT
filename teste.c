@@ -63,6 +63,9 @@ int getDimT(teste t)
 
 int checkCompatibilitaTeste(teste t, int cod1, int cod2, gruppo g1, gruppo g2)
 {
+    if(isGruppoVuoto(g1) || isGruppoVuoto(g2))
+        return 1;
+
     testa t1 = t->insieme[cod1];
     float sx1, dx1;
     getOffsetSxeDx(t1, &sx1, &dx1);
