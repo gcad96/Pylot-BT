@@ -9,6 +9,7 @@ void creaGruppo(gruppo* g);
 void impostaGruppo(gruppo g, cella* cel, int q);
 int getFase(gruppo g);
 int getMaxFase(gruppo g);
+void setFase(gruppo g, int fase);
 void aggiornaFase(gruppo g);
 void resetFase(gruppo g);
 topologia getTopologia(gruppo g);

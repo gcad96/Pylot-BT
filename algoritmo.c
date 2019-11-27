@@ -36,6 +36,8 @@ void resetTest(celle c, gruppi g);
 void salvaMovimento(soluzione* s, gruppo* gruppi, int dim, int n);
 void salvaMovimentoIniz(soluzione* s, int dim);
 void ordinaPerCardinalita(gruppo* g);
+void salvaDatiPerBacktrack(celle c, gruppi g, int* test, int* fasi);
+void BackTrack(celle c, gruppi g, int* testt, int* fasi);
 
 void trovaPercorso()
 {
@@ -286,13 +288,57 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
 
     gruppo* next = malloc(dim*sizeof(gruppo));
     int j;
+    bool succ[4];
+    gruppo vuoto; setGruppoVuoto(&vuoto);
+    int* test = malloc(getDimC(c)); int* fasi = malloc(getDimG(g));
+
     for(j=0; j<dim; j++)    next[j] = NULL;
     if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
+    salvaDatiPerBacktrack(c, g, test, fasi);
     eseguiTest(next, dim, g);
-    bool succ = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
-    if(succ)
+    succ[0] = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
+    if(succ[0])
+        salvaMovimento(s, next, dim, count);  //best
+    BackTrack(c, g, test, fasi);
+
+    for(j=0; j<dim; j++)    next[j] = NULL;
+    next[0] = vuoto;
+    if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
+    salvaDatiPerBacktrack(c, g, test, fasi);
+    eseguiTest(next, dim, g);
+    succ[1] = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
+    if(succ[1])
         salvaMovimento(s, next, dim, count);
-    return succ;
+    BackTrack(c, g, test, fasi);
+
+    for(j=0; j<dim; j++)    next[j] = NULL;
+    next[dim-1] = vuoto;
+    if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
+    salvaDatiPerBacktrack(c, g, test, fasi);
+    eseguiTest(next, dim, g);
+    succ[2] = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
+    if(succ[2])
+        salvaMovimento(s, next, dim, count);
+    BackTrack(c, g, test, fasi);
+
+    for(j=0; j<dim; j++)    next[j] = NULL;
+    next[0] = vuoto; next[dim-1] = vuoto;
+    if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
+    salvaDatiPerBacktrack(c, g, test, fasi);
+    eseguiTest(next, dim, g);
+    succ[3] = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
+    if(succ[3])
+        salvaMovimento(s, next, dim, count);
+    BackTrack(c, g, test, fasi);
+
+
+    free(test); free(fasi);
+    for(j=0; j<4; j++)
+    {
+        if(succ[j])
+            return true;
+    }
+    return false;
 }
 
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
@@ -300,46 +346,49 @@ bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
     int l;
     for(l=0; l<dim; l++)
     {
-        int fase = -1;
-        gruppo p = i[l];
-        gruppi elementi = getRaggruppamentoPerTopologiaContenenteGruppo(g, p);
-        gruppo* t = getGruppi(elementi);
-        int dimT = getDimG(elementi);
-        int j;
-        double min = DBL_MAX;
-        while(scelte[l] == NULL)
+        if(!isGruppoVuoto(scelte[l]))
         {
-            fase++;
-            for(j=0; j<dimT; j++)
+            int fase = -1;
+            gruppo p = i[l];
+            gruppi elementi = getRaggruppamentoPerTopologiaContenenteGruppo(g, p);
+            gruppo* t = getGruppi(elementi);
+            int dimT = getDimG(elementi);
+            int j;
+            double min = DBL_MAX;
+            while(scelte[l] == NULL)
             {
-                if((getFase(t[j]))==fase)
+                fase++;
+                for(j=0; j<dimT; j++)
                 {
-                    double d = distanzaG(p, t[j]);
-                    if(d<min && d!=0) // + comparazione e mediazione
+                    if((getFase(t[j]))==fase)
                     {
-                        int k;
-                        int ok = 1;
-                        for(k=0; k<l; k++)
+                        double d = distanzaG(p, t[j]);
+                        if(d<min && d!=0) // + comparazione e mediazione
                         {
-                            if(!checkCompatibilitaTeste(tes, l, k, t[j], scelte[k])) // + ottimizazzione al contrario
+                            int k;
+                            int ok = 1;
+                            for(k=0; k<l; k++)
                             {
-                                ok = 0;
-                                break;
+                                if(!checkCompatibilitaTeste(tes, l, k, t[j], scelte[k])) // + ottimizazzione al contrario
+                                {
+                                    ok = 0;
+                                    break;
+                                }
                             }
-                        }
-                        if(ok)
-                        {
-                            min = distanzaG(p, t[j]);
-                            scelte[l] = t[j];
+                            if(ok)
+                            {
+                                min = distanzaG(p, t[j]);
+                                scelte[l] = t[j];
+                            }
                         }
                     }
                 }
             }
-        }
-        if(scelte[l]==NULL)
-        {
-            printf("Nessun movimento possibile.\n");
-            return false;
+            if(scelte[l]==NULL)
+            {
+                printf("Nessun movimento possibile.\n");
+                return false;
+            }
         }
     }
 
@@ -384,4 +433,41 @@ void ordinaPerCardinalita(gruppo* g)
     int dim = 0;
     while(!isGruppoNullo(g[dim++]));
     SortGruppi(g, --dim);
+}
+
+void salvaDatiPerBacktrack(celle c, gruppi g, int* test, int* fasi)
+{
+    int i;
+
+    cella* cel = getInsieme(c);
+    int dimC = getDimC(c);
+    for(i=0; i<dimC; i++)
+        test[i] = isTest(cel[i]);
+
+    gruppo* gru = getGruppi(g);
+    int dimG = getDimG(g);
+    for(i=0; i<dimG; i++)
+        fasi[i] = getFase(gru[i]);
+}
+
+void BackTrack(celle c, gruppi g, int* testt, int* fasi)
+{
+    int i;
+
+    cella* cel = getInsieme(c);
+    int dimC = getDimC(c);
+    for(i=0; i<dimC; i++)
+    {
+        if(testt[i])
+            test(cel[i]);
+        else
+            reset(cel[i]);
+    }
+
+    gruppo* gru = getGruppi(g);
+    int dimG = getDimG(g);
+    for(i=0; i<dimG; i++)
+    {
+        setFase(gru[i], fasi[i]);
+    }
 }

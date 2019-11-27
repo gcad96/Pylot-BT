@@ -19,7 +19,6 @@ struct gruppo_s
 void setBaricentro(gruppo g);
 coordinata getBaricentro(gruppo g);
 void setTopologia(gruppo g);
-void setFase(gruppo g, int fase);
 
 void creaGruppo(gruppo* g)
 {
