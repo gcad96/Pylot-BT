@@ -16,25 +16,23 @@ struct soluzione_s
     int dim;
 };
 
-void memorizza(soluzione* s, int dim)
+void memorizza(soluzione* s, int dim, movimento* movimenti)
 {
     if((*s)!=NULL)
     {
-        int i;
-        for(i=0; i<(*s)->dim; i++)
-            liberaMovimento((*s)->movimenti[i]);
-        free(*s);
+        (*s) = malloc(sizeof(struct soluzione_s));
+        (*s)->movimenti = malloc(dim * sizeof(movimento));
     }
-    (*s) = malloc(sizeof(struct soluzione_s));
+    else
+    {
+        (*s)->movimenti = realloc((*s)->movimenti, (dim * sizeof(movimento)));
+    }
     (*s)->dim = dim;
-    (*s)->movimenti = malloc(((*s)->dim) * sizeof(movimento));
-}
 
-void aggiungiMovimento(soluzione s, gruppo* gr, int dim, int n)
-{
-    movimento m;
-    creaMovimento(&m, gr, dim, n);
-    s->movimenti[n-1] = m;
+    int i;
+    for(i=0; i<(*s)->dim; i++)
+        (*s)->movimenti[i] = movimenti[i];
+
 }
 
 void stampaSoluzione(soluzione s)

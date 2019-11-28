@@ -14,6 +14,7 @@
 #include "gruppo.h"
 #include "sortingGruppi.h"
 #include "gruppi.h"
+#include "movimento.h"
 #include "soluzione.h"
 #include "testa.h"
 #include "teste.h"
@@ -28,13 +29,11 @@ void definisciNumeroMaxCelle(int* n);
 void path(celle c, int card, Matrice m);
 void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m);
 bool movimentoTeste(teste t, celle c, gruppi g);
-bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* best, soluzione* s);
+bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* best, soluzione* s, movimento* movs);
 void estraiGruppi(gruppo** start, teste t, celle c, gruppi g);
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g);
 void eseguiTest(gruppo* g, int dim, gruppi gr);
 void resetTest(celle c, gruppi g);
-void salvaMovimento(soluzione* s, gruppo* gruppi, int dim, int n);
-void salvaMovimentoIniz(soluzione* s, int dim);
 void ordinaPerCardinalita(gruppo* g);
 void salvaDatiPerBacktrack(celle c, gruppi g, int* test, int* fasi);
 void BackTrack(celle c, gruppi g, int* testt, int* fasi);
@@ -224,14 +223,14 @@ bool movimentoTeste(teste t, celle c, gruppi g)
 
         if(acc)
         {
+            movimento* movs = malloc(200* sizeof(movimento));
             eseguiTest(start, getDimT(t), g);
             int count = 1;
-            if(movimentoTesteRic(start, getDimT(t), t, c, g, count + 1, &best, &s))
-            {
+            movimento m; creaMovimento(&m, start, getDimT(t), count); movs[count-1] = m;
+            if(movimentoTesteRic(start, getDimT(t), t, c, g, count + 1, &best, &s, movs))
                 successo = true;
-                salvaMovimento(&s, start, getDimT(t), count);
-            }
             resetTest(c, g);
+            free(movs);
         }
         caso++;
     }
@@ -273,7 +272,7 @@ void estraiGruppi(gruppo** start, teste t, celle c, gruppi g)
     free(cel);
 }
 
-bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* best, soluzione* s)
+bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* best, soluzione* s, movimento* movs)
 {
     if(count-1 > *best)
         return false;
@@ -281,7 +280,7 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     if(batteriaTestata(c))
     {
         *best = count-1;
-        salvaMovimentoIniz(s, count-1);
+        memorizza(s, count-1, movs);
         return true;
     }
 
@@ -296,9 +295,8 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
     salvaDatiPerBacktrack(c, g, test, fasi);
     eseguiTest(next, dim, g);
-    succ[0] = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
-    if(succ[0])
-        salvaMovimento(s, next, dim, count);  //best
+    movimento m; creaMovimento(&m, next, getDimT(t), count); movs[count-1] = m;
+    succ[0] = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s, movs);
     BackTrack(c, g, test, fasi);
 
     for(j=0; j<dim; j++)    next[j] = NULL;
@@ -306,9 +304,8 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
     salvaDatiPerBacktrack(c, g, test, fasi);
     eseguiTest(next, dim, g);
-    succ[1] = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
-    if(succ[1])
-        salvaMovimento(s, next, dim, count);
+    movimento mm; creaMovimento(&mm, next, getDimT(t), count); movs[count-1] = mm;
+    succ[1] = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s, movs);
     BackTrack(c, g, test, fasi);
 
     for(j=0; j<dim; j++)    next[j] = NULL;
@@ -316,9 +313,8 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
     salvaDatiPerBacktrack(c, g, test, fasi);
     eseguiTest(next, dim, g);
-    succ[2] = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
-    if(succ[2])
-        salvaMovimento(s, next, dim, count);
+    movimento mmm; creaMovimento(&mmm, next, getDimT(t), count); movs[count-1] = mmm;
+    succ[2] = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s, movs);
     BackTrack(c, g, test, fasi);
 
     for(j=0; j<dim; j++)    next[j] = NULL;
@@ -326,9 +322,8 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
     salvaDatiPerBacktrack(c, g, test, fasi);
     eseguiTest(next, dim, g);
-    succ[3] = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
-    if(succ[3])
-        salvaMovimento(s, next, dim, count);
+    movimento mmmm; creaMovimento(&mmmm, next, getDimT(t), count); movs[count-1] = mmmm;
+    succ[3] = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s, movs);
     BackTrack(c, g, test, fasi);
 
 
@@ -416,16 +411,6 @@ void resetTest(celle c, gruppi g)
     {
         resetFase(grs[i]);
     }
-}
-
-void salvaMovimentoIniz(soluzione* s, int dim)
-{
-    memorizza(s, dim);
-}
-
-void salvaMovimento(soluzione* s, gruppo* gruppi, int dim, int n)
-{
-    aggiungiMovimento((*s), gruppi, dim, n);
 }
 
 void ordinaPerCardinalita(gruppo* g)

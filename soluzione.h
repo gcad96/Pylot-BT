@@ -5,8 +5,7 @@
 
 typedef struct soluzione_s* soluzione;
 
-void memorizza(soluzione* s, int dim);
-void aggiungiMovimento(soluzione s, gruppo* gr, int dim, int n);
+void memorizza(soluzione* s, int dim, movimento* movimenti);
 void stampaSoluzione(soluzione s);
 
 #endif //SOLUZIONE_H
