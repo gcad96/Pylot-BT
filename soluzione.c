@@ -18,7 +18,7 @@ struct soluzione_s
 
 void memorizza(soluzione* s, int dim, movimento* movimenti)
 {
-    if((*s)!=NULL)
+    if((*s)==NULL)
     {
         (*s) = malloc(sizeof(struct soluzione_s));
         (*s)->movimenti = malloc(dim * sizeof(movimento));

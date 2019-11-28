@@ -13,6 +13,8 @@ void setFase(gruppo g, int fase);
 void aggiornaFase(gruppo g);
 void resetFase(gruppo g);
 topologia getTopologia(gruppo g);
+gruppo getPrec(gruppo g);
+void setPrec(gruppo g, gruppo prec);
 coordinata posizioneMedia(gruppo g);
 void liberaGruppo(gruppo g);
 int GRUPPOleq(gruppo a, gruppo b); //Relazione d'ordine totale: criterio di cardinalità insieme decescente

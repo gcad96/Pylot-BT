@@ -223,7 +223,7 @@ bool movimentoTeste(teste t, celle c, gruppi g)
 
         if(acc)
         {
-            movimento* movs = malloc(200* sizeof(movimento));
+            movimento* movs = malloc(MAX_MOV_TOLLERATI* sizeof(movimento));
             eseguiTest(start, getDimT(t), g);
             int count = 1;
             movimento m; creaMovimento(&m, start, getDimT(t), count); movs[count-1] = m;
@@ -289,7 +289,7 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     int j;
     bool succ[4];
     gruppo vuoto; setGruppoVuoto(&vuoto);
-    int* test = malloc(getDimC(c)); int* fasi = malloc(getDimG(g));
+    int* test = malloc(getDimC(c)*sizeof(int)); int* fasi = malloc(getDimG(g)*sizeof(int));
 
     for(j=0; j<dim; j++)    next[j] = NULL;
     if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
@@ -300,7 +300,7 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     BackTrack(c, g, test, fasi);
 
     for(j=0; j<dim; j++)    next[j] = NULL;
-    next[0] = vuoto;
+    next[0] = vuoto; setPrec(next[0], attuale[0]);
     if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
     salvaDatiPerBacktrack(c, g, test, fasi);
     eseguiTest(next, dim, g);
@@ -309,7 +309,7 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     BackTrack(c, g, test, fasi);
 
     for(j=0; j<dim; j++)    next[j] = NULL;
-    next[dim-1] = vuoto;
+    next[dim-1] = vuoto; setPrec(next[dim-1], attuale[dim-1]);
     if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
     salvaDatiPerBacktrack(c, g, test, fasi);
     eseguiTest(next, dim, g);
@@ -318,7 +318,7 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     BackTrack(c, g, test, fasi);
 
     for(j=0; j<dim; j++)    next[j] = NULL;
-    next[0] = vuoto; next[dim-1] = vuoto;
+    next[0] = vuoto; setPrec(next[0], attuale[0]); next[dim-1] = vuoto; setPrec(next[dim-1], attuale[dim-1]);
     if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
     salvaDatiPerBacktrack(c, g, test, fasi);
     eseguiTest(next, dim, g);
@@ -345,6 +345,7 @@ bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
         {
             int fase = -1;
             gruppo p = i[l];
+            if(isGruppoVuoto(p))    p = getPrec(p);
             gruppi elementi = getRaggruppamentoPerTopologiaContenenteGruppo(g, p);
             gruppo* t = getGruppi(elementi);
             int dimT = getDimG(elementi);

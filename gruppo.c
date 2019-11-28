@@ -14,6 +14,8 @@ struct gruppo_s
     int fase;
     topologia topologia;
     coordinata baricentro;
+
+    gruppo prec;
 };
 
 void setBaricentro(gruppo g);
@@ -31,6 +33,8 @@ void creaGruppo(gruppo* g)
     (*g)->topologia = NULL;
 
     (*g)->baricentro = NULL;
+
+    (*g)->prec = NULL;
 }
 
 void impostaGruppo(gruppo g, cella* cel, int q)
@@ -160,6 +164,18 @@ void setTopologia(gruppo g)
     g->topologia = t;
 }
 
+gruppo getPrec(gruppo g)
+{
+    gruppo prec = g->prec;
+    if(!isGruppoVuoto(prec))    return prec;
+    return getPrec(prec);
+}
+
+void setPrec(gruppo g, gruppo prec)
+{
+    g->prec = prec;
+}
+
 void stampaGruppo(gruppo g)
 {
     stampaCelle(g->insieme);
@@ -177,6 +193,7 @@ int ckeckPresenzaCella(gruppo g, cella c)
 
 void testGruppo(gruppo g)
 {
+    if(isGruppoVuoto(g))    return;
     int i;
     for(i=0; i<getDimC(g->insieme); i++)
         test((getInsieme(g->insieme))[i]);
@@ -210,11 +227,13 @@ void setGruppoVuoto(gruppo* g)
 
 int isGruppoNullo(gruppo g)
 {
+    if(g==NULL) return 0;
     return (g->fase==-1);
 }
 
 int isGruppoVuoto(gruppo g)
 {
+    if(g==NULL) return 0;
     return (g->fase==-2);
 }
 
