@@ -18,7 +18,7 @@ int GRUPPOleq(gruppo a, gruppo b); //Relazione d'ordine totale: criterio di card
 int GRUPPOgt(gruppo a, gruppo b);  //Relazione d'ordine totale: criterio di cardinalità insieme decescente
 void stampaGruppo(gruppo g);
 double distanzaG(gruppo a, gruppo b);
-int ckeckPresenzaCella(gruppo g, cella c);
+int checkPresenzaCella(gruppo g, cella c);
 void testGruppo(gruppo g);
 void setGruppoNullo(gruppo* g);
 void setGruppoVuoto(gruppo* g);

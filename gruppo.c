@@ -171,7 +171,7 @@ double distanzaG(gruppo a, gruppo b)
     return distanza(getBaricentro(a), getBaricentro(b));
 }
 
-int ckeckPresenzaCella(gruppo g, cella c)
+int checkPresenzaCella(gruppo g, cella c)
 {
     return checkEsistenzaCella(g->insieme, c);
 }

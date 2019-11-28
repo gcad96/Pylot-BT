@@ -146,7 +146,7 @@ gruppo* getGruppiConCella(gruppi g, cella c, gruppo** cont)
     int i;
     for(i=0; i<g->dim; i++)
     {
-        if(ckeckPresenzaCella(g->insieme[i], c))
+        if(checkPresenzaCella(g->insieme[i], c))
         {
             (*cont)[(dim)++] = g->insieme[i];
         }
