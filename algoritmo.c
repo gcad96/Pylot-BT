@@ -307,7 +307,7 @@ bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
         int dimT = getDimG(elementi);
         int j;
         double min = DBL_MAX;
-        while(scelte[l] == NULL)
+        while(scelte[l] == NULL && fase<=getMaxFase(p))
         {
             fase++;
             for(j=0; j<dimT; j++)
