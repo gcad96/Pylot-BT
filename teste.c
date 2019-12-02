@@ -71,7 +71,7 @@ int checkCompatibilitaTeste(teste t, int cod1, int cod2, gruppo g1, gruppo g2)
     getOffsetSxeDx(t2, &sx2, &dx2);
     coordinata c1 = posizioneMedia(g1);
     coordinata c2 = posizioneMedia(g2);
-    if(getAscissa(c1)>getAscissa(c2))
+    if(getAscissa(c1)>=getAscissa(c2))
     {
         if(getAscissa(c2)+dx2 >= getAscissa(c1)-sx1)
         {
@@ -80,7 +80,10 @@ int checkCompatibilitaTeste(teste t, int cod1, int cod2, gruppo g1, gruppo g2)
     }
     else
     {
-        return 0;
+        if(getAscissa(c1)+dx1 >= getAscissa(c2)-sx2)
+        {
+            return 0;
+        }
     }
 
     float* estremi1 = malloc(4* sizeof(float));
