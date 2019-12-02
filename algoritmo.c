@@ -236,6 +236,8 @@ bool movimentoTeste(teste t, celle c, gruppi g)
 
     if(successo)
         stampaSoluzione(s);
+    else
+        printf("Nessun movimento possibile.\n");
 
     return successo;
 }
@@ -337,10 +339,8 @@ bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
             }
         }
         if(scelte[l]==NULL)
-        {
-            printf("Nessun movimento possibile.\n");
             return false;
-        }
+
     }
 
     return true;
