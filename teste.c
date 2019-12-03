@@ -139,3 +139,25 @@ int checkCompatibilitaTeste(teste t, int cod1, int cod2, gruppo g1, gruppo g2)
 
     return 1;
 }
+
+int checkPosizioneTeste(teste t, int cod1, int cod2, gruppo g1, gruppo g2)
+{
+    testa t1 = t->insieme[cod1];
+    testa t2 = t->insieme[cod2];
+
+    float* estremi1 = malloc(4* sizeof(float));
+    etremiGruppo(estremi1, g1);
+    float* estremi2 = malloc(4* sizeof(float));
+    etremiGruppo(estremi2, g2);
+
+    if(estremi1[Sinistra]<=estremi2[Destra])
+    {
+        stampaGruppo(g1); stampaGruppo(g2);
+        free(estremi1);     free(estremi2);
+        return 0;
+    }
+
+    free(estremi1);     free(estremi2);
+
+    return 1;
+}
