@@ -219,7 +219,7 @@ int isGruppoVuoto(gruppo g)
     return (g->fase==-2);
 }
 
-void etremiGruppo(float* e, gruppo g)
+void estremiGruppo(float* e, gruppo g)
 {
     estremiCelle(e, g->insieme);
 }
