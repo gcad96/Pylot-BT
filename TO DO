@@ -3,11 +3,3 @@ Testa a casa
 Baco (anche soluzione autonoma)
 
 2e3: -> soluzione con più scelte, ben definita
-
-
-if(estremi1[Sinistra]<=estremi2[Destra])
-{
-    stampaGruppo(g1); stampaGruppo(g2);
-    free(estremi1);     free(estremi2);
-    return 0;
-}
