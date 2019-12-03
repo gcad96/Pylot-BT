@@ -87,9 +87,9 @@ int checkCompatibilitaTeste(teste t, int cod1, int cod2, gruppo g1, gruppo g2)
     }
 
     float* estremi1 = malloc(4* sizeof(float));
-    etremiGruppo(estremi1, g1);
+    estremiGruppo(estremi1, g1);
     float* estremi2 = malloc(4* sizeof(float));
-    etremiGruppo(estremi2, g2);
+    estremiGruppo(estremi2, g2);
     if(estremi1[Alto]>=estremi2[Alto])
     {
         if(estremi1[Basso]<=estremi2[Alto])
@@ -140,24 +140,38 @@ int checkCompatibilitaTeste(teste t, int cod1, int cod2, gruppo g1, gruppo g2)
     return 1;
 }
 
-int checkPosizioneTeste(teste t, int cod1, int cod2, gruppo g1, gruppo g2)
+int checkPosizioneTeste(teste t, gruppo* g, int*** compatibilita)
 {
-    testa t1 = t->insieme[cod1];
-    testa t2 = t->insieme[cod2];
+    *compatibilita = malloc(getDimT(t)*sizeof(int*));
+    int successo = 1;
 
-    float* estremi1 = malloc(4* sizeof(float));
-    etremiGruppo(estremi1, g1);
-    float* estremi2 = malloc(4* sizeof(float));
-    etremiGruppo(estremi2, g2);
-
-    if(estremi1[Sinistra]<=estremi2[Destra])
+    int i, j;
+    for(i=0; i<getDimT(t); i++)
     {
-        stampaGruppo(g1); stampaGruppo(g2);
-        free(estremi1);     free(estremi2);
-        return 0;
+        (*compatibilita)[i] = malloc(getDimT(t)* sizeof(int));
+        for(j=0; j<getDimT(t); j++)
+        {
+            (*compatibilita)[i][j] = 1;
+        }
+    }
+
+    float* estremi1 = malloc(4* sizeof(float));     float* estremi2 = malloc(4* sizeof(float));
+
+    for(i=0; i<getDimT(t); i++)
+    {
+        estremiGruppo(estremi1, g[i]);
+        for(j=i+1; j<getDimT(t); j++)
+        {
+            estremiGruppo(estremi2, g[j]);
+            if(estremi1[Sinistra]>=estremi2[Destra])
+            {
+                (*compatibilita)[i][j] = 0; (*compatibilita)[j][i] = 0;
+                successo = 0;
+            }
+        }
     }
 
     free(estremi1);     free(estremi2);
 
-    return 1;
+    return successo;
 }
