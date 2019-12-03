@@ -165,7 +165,7 @@ int checkPosizioneTeste(teste t, gruppo* g, int*** compatibilita)
             estremiGruppo(estremi2, g[j]);
             if(estremi1[Sinistra]>=estremi2[Destra])
             {
-                (*compatibilita)[i][j] = 0; (*compatibilita)[j][i] = 0;
+                (*compatibilita)[i][j] = 0;
                 successo = 0;
             }
         }
