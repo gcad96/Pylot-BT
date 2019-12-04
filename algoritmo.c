@@ -5,6 +5,7 @@
 #include <float.h>
 #include <limits.h>
 #include "utility.h"
+#include "partitore.h"
 #include "combinatore.h"
 #include "matrix.h"
 #include "coordinata.h"
@@ -303,6 +304,8 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     }
     else
     {
+        Partitore p;
+        creaPartitore(&p, getDimT(t));
         for(j=0; j<getDimT(t); j++) free(compatibilita[j]);         free(compatibilita);
     }
 }

@@ -43,7 +43,7 @@ void powerset(int* val, int k, int* sol, Partitore p)
 {
     int count = 0;
     int n;
-    for(n=1; n<=k; n++)
+    for(n=k; n>=1; n--)
         count = powersetRic(val, k, sol, n, 0, 0, count, p);
 }
 
