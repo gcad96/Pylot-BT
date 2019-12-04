@@ -151,7 +151,7 @@ int checkPosizioneTeste(teste t, gruppo* g, int*** compatibilita)
         (*compatibilita)[i] = malloc(getDimT(t)* sizeof(int));
         for(j=0; j<getDimT(t); j++)
         {
-            (*compatibilita)[i][j] = 1; (*compatibilita)[j][i] = 1;
+            (*compatibilita)[i][j] = 1; (*compatibilita)[j][i] = 1; io
         }
     }
 
