@@ -22,6 +22,7 @@
 #include "algoritmo.h"
 
 #define PIUVICINE 4
+#define MAXMOVIMENTITOLLERATI 200
 
 void definisciNumeroTeste(int* n);
 void generaInsiemiDiCelle(celle c, gruppi* gr);
@@ -199,7 +200,7 @@ bool movimentoTeste(teste t, celle c, gruppi g)
     creaCombinatore(&comb, val, getDimT(t));
     free(val);
 
-    int best = INT_MAX;
+    int best = MAXMOVIMENTITOLLERATI;
     soluzione s = NULL;
     int caso = 0;
     while(caso<comb->dim)
@@ -224,7 +225,7 @@ bool movimentoTeste(teste t, celle c, gruppi g)
             }
         }
 
-        if(acc)
+        if(acc && checkPosizioneTeste(t, start))
         {
             eseguiTest(start, getDimT(t), g);
             int count = 1;
@@ -296,7 +297,6 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
 
     int first = 0; int last = getDimT(t)-1;
-    gruppo vuoto; setGruppoVuoto(&vuoto);
     Partitore p;
     creaPartitore(&p, getDimT(t));
     for(j=0; j<p->dim; j++)
@@ -308,7 +308,10 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
             if(!p->v[j][k])
             {
                 if(k==first || k==last)
+                {
+                    gruppo vuoto; setGruppoVuoto(&vuoto); setPrec(vuoto, attuale[k]);
                     next[k]= vuoto;
+                }
                 else
                     next[k] = attuale[k];
             }
@@ -342,12 +345,13 @@ bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
     {
         int fase = -1;
         gruppo p = i[l];
+        if(isGruppoVuoto(p))    p = getPrec(p);
         gruppi elementi = getRaggruppamentoPerTopologiaContenenteGruppo(g, p);
         gruppo* t = getGruppi(elementi);
         int dimT = getDimG(elementi);
         int j;
         double min = DBL_MAX;
-        while(scelte[l] == NULL && fase<=getMaxFase(p))
+        while(scelte[l]==NULL && fase<=getMaxFase(p))
         {
             fase++;
             for(j=0; j<dimT; j++)
@@ -426,7 +430,7 @@ void ordinaPerCardinalita(gruppo* g)
 
 void salvaDatiPerBacktrack(gruppo* val, gruppo** backup, int dim)
 {
-    **backup = malloc(dim*sizeof(gruppo));
+    *backup = malloc(dim*sizeof(gruppo));
     int i;
     for(i=0; i<dim; i++)
         (*backup)[i] = val[i];
