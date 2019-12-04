@@ -15,6 +15,8 @@ struct gruppo_s
     int fase;
     topologia topologia;
     coordinata baricentro;
+
+    gruppo prec;
 };
 
 void setBaricentro(gruppo g);
@@ -33,6 +35,8 @@ void creaGruppo(gruppo* g)
     (*g)->topologia = NULL;
 
     (*g)->baricentro = NULL;
+
+    (*g)->prec = NULL;
 }
 
 void impostaGruppo(gruppo g, cella* cel, int q)
@@ -224,4 +228,18 @@ int isGruppoVuoto(gruppo g)
 void estremiGruppo(float* e, gruppo g)
 {
     estremiCelle(e, g->insieme);
+}
+
+gruppo getPrec(gruppo vuoto)
+{
+    gruppo g = vuoto->prec;
+    if(!isGruppoVuoto(g))
+        return g;
+    else
+        return getPrec(g);
+}
+
+void setPrec(gruppo vuoto, gruppo prec)
+{
+    vuoto->prec = prec;
 }

@@ -25,5 +25,7 @@ void setGruppoVuoto(gruppo* g);
 int isGruppoNullo(gruppo g);
 int isGruppoVuoto(gruppo g);
 void estremiGruppo(float* e, gruppo g);
+gruppo getPrec(gruppo vuoto);
+void setPrec(gruppo vuoto, gruppo prec);
 
 #endif //GRUPPO_H

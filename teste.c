@@ -153,7 +153,7 @@ int checkPosizioneTeste(teste t, gruppo* g)
             estremiGruppo(estremi1, g[i]);
             for(j=i+1; j<getDimT(t); j++)
             {
-                if(!isGruppoVuoto(g[i]))
+                if(!isGruppoVuoto(g[j]))
                 {
                     estremiGruppo(estremi2, g[j]);
                     if (estremi1[Sinistra] >= estremi2[Destra]) {
