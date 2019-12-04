@@ -290,11 +290,21 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     int j;
     for(j=0; j<dim; j++)    next[j] = NULL;
     if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
-    eseguiTest(next, dim, g);
-    bool succ = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
-    if(succ)
-        salvaMovimento(s, next, dim, count);
-    return succ;
+
+    int** compatibilita;
+    if(checkPosizioneTeste(t, next, &compatibilita))
+    {
+        for(j=0; j<getDimT(t); j++) free(compatibilita[j]);         free(compatibilita);
+        eseguiTest(next, dim, g);
+        bool succ = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
+        if(succ)
+            salvaMovimento(s, next, dim, count);
+        return succ;
+    }
+    else
+    {
+        for(j=0; j<getDimT(t); j++) free(compatibilita[j]);         free(compatibilita);
+    }
 }
 
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
