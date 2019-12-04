@@ -1,5 +1,6 @@
 /* Giovanni Cadau © */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include "coordinata.h"
 #include "distanza.h"
@@ -163,7 +164,8 @@ void setTopologia(gruppo g)
 
 void stampaGruppo(gruppo g)
 {
-    stampaCelle(g->insieme);
+    if(!isGruppoVuoto(g))    stampaCelle(g->insieme);
+    else    printf("- Testa a riposo -\n");
 }
 
 double distanzaG(gruppo a, gruppo b)

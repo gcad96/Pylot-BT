@@ -37,6 +37,9 @@ void resetTest(celle c, gruppi g);
 void salvaMovimento(soluzione* s, gruppo* gruppi, int dim, int n);
 void salvaMovimentoIniz(soluzione* s, int dim);
 void ordinaPerCardinalita(gruppo* g);
+void salvaDatiPerBacktrack(gruppo* val, gruppo** backup, int dim);
+void backtrack(gruppo* val, gruppo* backup, int index);
+void eliminaDatiPerBacktrack(gruppo* backup);
 
 void trovaPercorso()
 {
@@ -292,22 +295,44 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     for(j=0; j<dim; j++)    next[j] = NULL;
     if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
 
-    int** compatibilita;
-    if(checkPosizioneTeste(t, next, &compatibilita))
+    int first = 0; int last = getDimT(t)-1;
+    gruppo vuoto; setGruppoVuoto(&vuoto);
+    Partitore p;
+    creaPartitore(&p, getDimT(t));
+    for(j=0; j<p->dim; j++)
     {
-        for(j=0; j<getDimT(t); j++) free(compatibilita[j]);         free(compatibilita);
-        eseguiTest(next, dim, g);
-        bool succ = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
-        if(succ)
-            salvaMovimento(s, next, dim, count);
-        return succ;
+        gruppo* v; salvaDatiPerBacktrack(next, &v, p->dimInterna);
+        int k;
+        for(k=0; k<p->dimInterna; k++)
+        {
+            if(!p->v[j][k])
+            {
+                if(k==first || k==last)
+                    next[k]= vuoto;
+                else
+                    next[k] = attuale[k];
+            }
+        }
+        if(checkPosizioneTeste(t, next))
+        {
+            eseguiTest(next, dim, g);
+            bool succ = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
+            if(succ)
+                salvaMovimento(s, next, dim, count);
+            return succ;
+        }
+        else  //backtrack
+        {
+            for(k=0; k<p->dimInterna; k++)
+            {
+                if(!p->v[j][k])
+                    backtrack(next, v, k);
+            }
+            eliminaDatiPerBacktrack(v);
+        }
     }
-    else
-    {
-        Partitore p;
-        creaPartitore(&p, getDimT(t));
-        for(j=0; j<getDimT(t); j++) free(compatibilita[j]);         free(compatibilita);
-    }
+
+    return false;
 }
 
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
@@ -364,7 +389,7 @@ void eseguiTest(gruppo* g, int dim, gruppi gr)
     int i;
     for(i=0; i<dim; i++)
     {
-        testGruppo(g[i]);
+        if(!isGruppoVuoto(g[i]))    testGruppo(g[i]);
     }
     aggiornaTest(gr);
 }
@@ -397,4 +422,22 @@ void ordinaPerCardinalita(gruppo* g)
     int dim = 0;
     while(!isGruppoNullo(g[dim++]));
     SortGruppi(g, --dim);
+}
+
+void salvaDatiPerBacktrack(gruppo* val, gruppo** backup, int dim)
+{
+    **backup = malloc(dim*sizeof(gruppo));
+    int i;
+    for(i=0; i<dim; i++)
+        (*backup)[i] = val[i];
+}
+
+void backtrack(gruppo* val, gruppo* backup, int index)
+{
+    val[index] = backup[index];
+}
+
+void eliminaDatiPerBacktrack(gruppo* backup)
+{
+    free(backup);
 }

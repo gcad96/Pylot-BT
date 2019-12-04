@@ -140,38 +140,29 @@ int checkCompatibilitaTeste(teste t, int cod1, int cod2, gruppo g1, gruppo g2)
     return 1;
 }
 
-int checkPosizioneTeste(teste t, gruppo* g, int*** compatibilita)
+int checkPosizioneTeste(teste t, gruppo* g)
 {
-    *compatibilita = malloc(getDimT(t)*sizeof(int*));
-    int successo = 1;
+
+    float* estremi1 = malloc(4* sizeof(float));     float* estremi2 = malloc(4* sizeof(float));
 
     int i, j;
     for(i=0; i<getDimT(t); i++)
     {
-        (*compatibilita)[i] = malloc(getDimT(t)* sizeof(int));
-        for(j=0; j<getDimT(t); j++)
+        if(!isGruppoVuoto(g[i]))
         {
-            (*compatibilita)[i][j] = 1; (*compatibilita)[j][i] = 1;
-        }
-    }
-
-    float* estremi1 = malloc(4* sizeof(float));     float* estremi2 = malloc(4* sizeof(float));
-
-    for(i=0; i<getDimT(t); i++)
-    {
-        estremiGruppo(estremi1, g[i]);
-        for(j=i+1; j<getDimT(t); j++)
-        {
-            estremiGruppo(estremi2, g[j]);
-            if(estremi1[Sinistra]>=estremi2[Destra])
+            estremiGruppo(estremi1, g[i]);
+            for(j=i+1; j<getDimT(t); j++)
             {
-                (*compatibilita)[i][j] = 0;
-                successo = 0;
+                if(!isGruppoVuoto(g[i]))
+                {
+                    estremiGruppo(estremi2, g[j]);
+                    if (estremi1[Sinistra] >= estremi2[Destra]) {
+                        return 0;
+                    }
+                }
             }
         }
     }
 
-    free(estremi1);     free(estremi2);
-
-    return successo;
+    return 1;
 }
