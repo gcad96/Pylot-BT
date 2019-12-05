@@ -223,4 +223,3 @@ void estremiGruppo(float* e, gruppo g)
 {
     estremiCelle(e, g->insieme);
 }
-

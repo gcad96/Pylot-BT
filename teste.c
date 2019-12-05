@@ -108,4 +108,3 @@ int gruppoCompatibile(teste t, gruppo g)
 
     return 1;
 }
-

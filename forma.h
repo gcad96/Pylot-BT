@@ -12,4 +12,3 @@ void getSxDx(forma f, float* sx, float* dx, float offset);
 void getAltoBasso(forma f, float* alto, float* basso);
 
 #endif //FORMA_H
-

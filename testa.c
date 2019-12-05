@@ -70,4 +70,3 @@ void getOffsetAltoeBasso(testa t, float* alto, float* basso)
 {
     getAltoBasso(t->forma, alto, basso);
 }
-
