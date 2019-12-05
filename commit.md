@@ -1,1 +1,1 @@
-implementazione posizione teste direttamente in checkPosizione()
+implementazione condizione accettabilita gruppi in funzione della forma della testa data
