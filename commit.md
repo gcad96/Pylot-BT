@@ -1,1 +1,1 @@
-tolta condizione restrittiva, compresa in modifica futura
+implementazione posizione teste direttamente in checkPosizione()

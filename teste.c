@@ -80,10 +80,7 @@ int checkCompatibilitaTeste(teste t, int cod1, int cod2, gruppo g1, gruppo g2)
     }
     else
     {
-        if(getAscissa(c1)+dx1 >= getAscissa(c2)-sx2)
-        {
             return 0;
-        }
     }
 
     return 1;
