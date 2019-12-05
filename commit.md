@@ -1,1 +1,1 @@
-implementazione condizione accettabilita gruppi in funzione della forma della testa data
+Implementazione condizione accettabilita gruppi in funzione della forma della testa data
