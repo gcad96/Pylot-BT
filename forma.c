@@ -121,3 +121,4 @@ void getAltoBasso(forma f, float* alto, float* basso)
     *alto = offset * altezza;
     *basso = (1.0f - offset) * altezza;
 }
+

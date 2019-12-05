@@ -14,3 +14,4 @@ int checkCompatibilitaTeste(teste t, int cod1, int cod2, gruppo g1, gruppo g2);
 int gruppoCompatibile(teste t, gruppo g);
 
 #endif //TESTE_H
+

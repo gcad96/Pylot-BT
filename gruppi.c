@@ -183,3 +183,4 @@ void aggiornaTest(gruppi g)
         aggiornaFase(g->insieme[i]);
     }
 }
+

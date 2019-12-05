@@ -20,3 +20,4 @@ gruppi getRaggruppamentoPerTopologiaContenenteGruppo(gruppi gr, gruppo g);
 void aggiornaTest(gruppi g);
 
 #endif //GRUPPI_H
+

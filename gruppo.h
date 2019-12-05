@@ -27,3 +27,4 @@ int isGruppoVuoto(gruppo g);
 void estremiGruppo(float* e, gruppo g);
 
 #endif //GRUPPO_H
+
