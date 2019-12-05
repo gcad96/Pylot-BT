@@ -1,1 +1,1 @@
-esplorazione dell'intero spazio delle soluzioni
+tolta condizione restrittiva, compresa in modifica futura

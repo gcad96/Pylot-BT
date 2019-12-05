@@ -86,56 +86,5 @@ int checkCompatibilitaTeste(teste t, int cod1, int cod2, gruppo g1, gruppo g2)
         }
     }
 
-    float* estremi1 = malloc(4* sizeof(float));
-    etremiGruppo(estremi1, g1);
-    float* estremi2 = malloc(4* sizeof(float));
-    etremiGruppo(estremi2, g2);
-    if(estremi1[Alto]>=estremi2[Alto])
-    {
-        if(estremi1[Basso]<=estremi2[Alto])
-        {
-            if(estremi1[Destra]>=estremi2[Destra])
-            {
-                if(estremi1[Sinistra]<=estremi2[Destra])
-                {
-                    free(estremi1);     free(estremi2);
-                    return 0;
-                }
-            }
-            else
-            {
-                if(estremi2[Destra]<=estremi1[Sinistra])
-                {
-                    free(estremi1);     free(estremi2);
-                    return 0;
-                }
-            }
-        }
-    }
-    else
-    {
-        if(estremi2[Basso]<=estremi1[Alto])
-        {
-            if(estremi1[Destra]>=estremi2[Destra])
-            {
-                if(estremi1[Sinistra]<=estremi2[Destra])
-                {
-                    free(estremi1);     free(estremi2);
-                    return 0;
-                }
-            }
-            else
-            {
-                if(estremi2[Destra]<=estremi1[Sinistra])
-                {
-                    free(estremi1);     free(estremi2);
-                    return 0;
-                }
-            }
-        }
-    }
-
-    free(estremi1);     free(estremi2);
-
     return 1;
 }
