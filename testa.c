@@ -65,3 +65,8 @@ void getOffsetSxeDx(testa t, float* sx, float* dx)
 {
     getSxDx(t->forma, sx, dx, t->offset);
 }
+
+void getOffsetAltoeBasso(testa t, float* alto, float* basso)
+{
+    getAltoBasso(t->forma, alto, basso);
+}

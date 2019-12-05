@@ -139,7 +139,7 @@ gruppi* getRaggruppamentiPerTopologia(gruppi g)
     return g->raggruppamentiPerTopologia;
 }
 
-gruppo* getGruppiConCella(gruppi g, cella c, gruppo** cont)
+void getGruppiConCella(gruppi g, cella c, gruppo** cont)
 {
     *cont = malloc(g->dim*sizeof(gruppo));
     int dim = 0;

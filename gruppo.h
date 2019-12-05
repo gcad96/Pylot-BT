@@ -24,6 +24,6 @@ void setGruppoNullo(gruppo* g);
 void setGruppoVuoto(gruppo* g);
 int isGruppoNullo(gruppo g);
 int isGruppoVuoto(gruppo g);
-void etremiGruppo(float* e, gruppo g);
+void estremiGruppo(float* e, gruppo g);
 
 #endif //GRUPPO_H

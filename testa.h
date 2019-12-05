@@ -11,5 +11,6 @@ void stampaTesta(testa t);
 int getCod(testa t);
 void setCod(testa t, int id);
 void getOffsetSxeDx(testa t, float* sx, float* dx);
+void getOffsetAltoeBasso(testa t, float* alto, float* basso);
 
 #endif //TESTA_H

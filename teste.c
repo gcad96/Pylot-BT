@@ -85,3 +85,26 @@ int checkCompatibilitaTeste(teste t, int cod1, int cod2, gruppo g1, gruppo g2)
 
     return 1;
 }
+
+int gruppoCompatibile(teste t, gruppo g)
+{
+    int i;
+    for(i=0; i<t->dim; i++)
+    {
+        testa tes = t->insieme[i];
+        float sx, dx, alto, basso;
+        getOffsetSxeDx(tes, &sx, &dx);
+        getOffsetAltoeBasso(tes, &alto, &basso);
+        coordinata c = posizioneMedia(g);
+        float* estremi = malloc(4* sizeof(float));
+        estremiGruppo(estremi, g);
+        if( (getAscissa(c)+dx > estremi[Destra]) || (getAscissa(c)-sx < estremi[Sinistra]) || (getOrdinata(c)+alto > estremi[Alto]) || (getOrdinata(c)+basso < estremi[Basso]) )
+        {
+            free(estremi);
+            return 0;
+        }
+        free(estremi);
+    }
+
+    return 1;
+}
