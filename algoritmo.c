@@ -21,6 +21,7 @@
 #include "algoritmo.h"
 
 #define PIUVICINE 4
+#define MAXMOVIMENTITOLLERATI 200
 
 void definisciNumeroTeste(int* n);
 void generaInsiemiDiCelle(celle c, gruppi* gr, teste t);
@@ -198,7 +199,7 @@ bool movimentoTeste(teste t, celle c, gruppi g)
     creaCombinatore(&comb, val, getDimT(t));
     free(val);
 
-    int best = INT_MAX;
+    int best = MAXMOVIMENTITOLLERATI;
     soluzione s = NULL;
     int caso = 0;
     while(caso<comb->dim)
