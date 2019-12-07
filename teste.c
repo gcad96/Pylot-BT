@@ -98,7 +98,7 @@ int gruppoCompatibile(teste t, gruppo g)
         coordinata c = posizioneMedia(g);
         float* estremi = malloc(4* sizeof(float));
         estremiGruppo(estremi, g);
-        if( (getAscissa(c)+dx > estremi[Destra]) || (getAscissa(c)-sx < estremi[Sinistra]) || (getOrdinata(c)+alto > estremi[Alto]) || (getOrdinata(c)+basso < estremi[Basso]) )
+        if( (getAscissa(c)+dx <= estremi[Destra]) || (getAscissa(c)-sx >= estremi[Sinistra]) || (getOrdinata(c)+alto <= estremi[Alto]) || (getOrdinata(c)+basso >= estremi[Basso]) )
         {
             free(estremi);
             return 0;
