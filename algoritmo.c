@@ -25,7 +25,7 @@
 #define MAXMOVIMENTITOLLERATI 200
 
 void definisciNumeroTeste(int* n);
-void generaInsiemiDiCelle(celle c, gruppi* gr);
+void generaInsiemiDiCelle(celle c, gruppi* gr, teste t);;
 void definisciNumeroMaxCelle(int* n);
 void path(celle c, int card, Matrice m);
 void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m);
@@ -52,7 +52,7 @@ void trovaPercorso()
     allocaTeste(&t, nTeste);
 
     gruppi g;
-    generaInsiemiDiCelle(c, &g);
+    generaInsiemiDiCelle(c, &g, t);
 
     bool successo;
     successo = movimentoTeste(t, c, g);
@@ -77,7 +77,7 @@ void definisciNumeroTeste(int* n)
     }
 }
 
-void generaInsiemiDiCelle(celle c, gruppi* gr)
+void generaInsiemiDiCelle(celle c, gruppi* gr, teste t)
 {
     int card;
 
@@ -105,7 +105,10 @@ void generaInsiemiDiCelle(celle c, gruppi* gr)
         }
         int quantita = j-1;
         impostaGruppo(g, ins, quantita);
-        aggiungiGruppo(*gr, g);
+        if(gruppoCompatibile(t, g))
+            aggiungiGruppo(*gr, g);
+        else
+            liberaGruppo(g);
     }
 
     raggruppaPerTopologia(*gr);
@@ -225,7 +228,7 @@ bool movimentoTeste(teste t, celle c, gruppi g)
             }
         }
 
-        if(acc && checkPosizioneTeste(t, start))
+        if(acc)
         {
             eseguiTest(start, getDimT(t), g);
             int count = 1;
