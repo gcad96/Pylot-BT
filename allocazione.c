@@ -128,7 +128,7 @@ int acquisisciDatiTeste(void** gen, char* nome, float* x, float* y, char* l, flo
     else
     {
         FILE* f = (FILE*) (*gen);
-        if ( fscanf(f, "%s %f %f", nome, x, y, offset)!=3 )
+        if ( fscanf(f, "%s %f %f %f", nome, x, y, offset)!=4 )
         {
             fclose(f);
         }

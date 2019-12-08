@@ -80,88 +80,30 @@ int checkCompatibilitaTeste(teste t, int cod1, int cod2, gruppo g1, gruppo g2)
     }
     else
     {
-        if(getAscissa(c1)+dx1 >= getAscissa(c2)-sx2)
-        {
             return 0;
-        }
     }
-
-    float* estremi1 = malloc(4* sizeof(float));
-    estremiGruppo(estremi1, g1);
-    float* estremi2 = malloc(4* sizeof(float));
-    estremiGruppo(estremi2, g2);
-    if(estremi1[Alto]>=estremi2[Alto])
-    {
-        if(estremi1[Basso]<=estremi2[Alto])
-        {
-            if(estremi1[Destra]>=estremi2[Destra])
-            {
-                if(estremi1[Sinistra]<=estremi2[Destra])
-                {
-                    free(estremi1);     free(estremi2);
-                    return 0;
-                }
-            }
-            else
-            {
-                if(estremi2[Destra]<=estremi1[Sinistra])
-                {
-                    free(estremi1);     free(estremi2);
-                    return 0;
-                }
-            }
-        }
-    }
-    else
-    {
-        if(estremi2[Basso]<=estremi1[Alto])
-        {
-            if(estremi1[Destra]>=estremi2[Destra])
-            {
-                if(estremi1[Sinistra]<=estremi2[Destra])
-                {
-                    free(estremi1);     free(estremi2);
-                    return 0;
-                }
-            }
-            else
-            {
-                if(estremi2[Destra]<=estremi1[Sinistra])
-                {
-                    free(estremi1);     free(estremi2);
-                    return 0;
-                }
-            }
-        }
-    }
-
-    free(estremi1);     free(estremi2);
 
     return 1;
 }
 
-int checkPosizioneTeste(teste t, gruppo* g)
+int gruppoCompatibile(teste t, gruppo g)
 {
-
-    float* estremi1 = malloc(4* sizeof(float));     float* estremi2 = malloc(4* sizeof(float));
-
-    int i, j;
-    for(i=0; i<getDimT(t); i++)
+    int i;
+    for(i=0; i<t->dim; i++)
     {
-        if(!isGruppoVuoto(g[i]))
+        testa tes = t->insieme[i];
+        float sx, dx, alto, basso;
+        getOffsetSxeDx(tes, &sx, &dx);
+        getOffsetAltoeBasso(tes, &alto, &basso);
+        coordinata c = posizioneMedia(g);
+        float* estremi = malloc(4* sizeof(float));
+        estremiGruppo(estremi, g);
+        if( (getAscissa(c)+dx <= estremi[Destra]) || (getAscissa(c)-sx >= estremi[Sinistra]) || (getOrdinata(c)+alto <= estremi[Alto]) || (getOrdinata(c)+basso >= estremi[Basso]) )
         {
-            estremiGruppo(estremi1, g[i]);
-            for(j=i+1; j<getDimT(t); j++)
-            {
-                if(!isGruppoVuoto(g[j]))
-                {
-                    estremiGruppo(estremi2, g[j]);
-                    if (estremi1[Sinistra] >= estremi2[Destra]) {
-                        return 0;
-                    }
-                }
-            }
+            free(estremi);
+            return 0;
         }
+        free(estremi);
     }
 
     return 1;
