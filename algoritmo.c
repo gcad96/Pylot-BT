@@ -41,6 +41,7 @@ void ordinaPerCardinalita(gruppo* g);
 void salvaDatiPerBacktrack(gruppo* val, gruppo** backup, int dim);
 void backtrack(gruppo* val, gruppo* backup, int index);
 void eliminaDatiPerBacktrack(gruppo* backup);
+int compatibilita(teste t, gruppo* g, int dim);
 
 void trovaPercorso()
 {
@@ -319,7 +320,7 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
                     next[k] = attuale[k];
             }
         }
-        if(checkPosizioneTeste(t, next))
+        if(compatibilita(t, next, getDimT(t)))
         {
             eseguiTest(next, dim, g);
             bool succ = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
@@ -364,21 +365,8 @@ bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
                     double d = distanzaG(p, t[j]);
                     if(d<min && d!=0) // + comparazione e mediazione
                     {
-                        int k;
-                        int ok = 1;
-                        for(k=0; k<l; k++)
-                        {
-                            if(!checkCompatibilitaTeste(tes, l, k, t[j], scelte[k])) // + ottimizazzione al contrario
-                            {
-                                ok = 0;
-                                break;
-                            }
-                        }
-                        if(ok)
-                        {
-                            min = distanzaG(p, t[j]);
-                            scelte[l] = t[j];
-                        }
+                        min = distanzaG(p, t[j]);
+                        scelte[l] = t[j];
                     }
                 }
             }
@@ -447,4 +435,20 @@ void backtrack(gruppo* val, gruppo* backup, int index)
 void eliminaDatiPerBacktrack(gruppo* backup)
 {
     free(backup);
+}
+
+int compatibilita(teste t, gruppo* g, int dim)
+{
+    int i;
+    for(i=0; i<getDimT(t); i++)
+    {
+        int k;
+        for(k=i+1; k<getDimT(t); k++)
+        {
+            if(!checkCompatibilitaTeste(t, k, i, g[k], g[i]))
+                return 0;
+        }
+    }
+
+    return 1;
 }
