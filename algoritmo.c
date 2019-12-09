@@ -442,11 +442,17 @@ int compatibilita(teste t, gruppo* g, int dim)
     int i;
     for(i=0; i<getDimT(t); i++)
     {
-        int k;
-        for(k=i+1; k<getDimT(t); k++)
+        if(!isGruppoVuoto(g[i]))
         {
-            if(!checkCompatibilitaTeste(t, k, i, g[k], g[i]))
-                return 0;
+            int k;
+            for(k=i+1; k<getDimT(t); k++)
+            {
+                if(!isGruppoVuoto(g[k]))
+                {
+                    if(!checkCompatibilitaTeste(t, k, i, g[k], g[i]))
+                        return 0;
+                }
+            }
         }
     }
 
