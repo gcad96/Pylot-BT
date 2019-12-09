@@ -23,6 +23,7 @@
 
 #define PIUVICINE 4
 #define MAXMOVIMENTITOLLERATI 200
+#define LIVELLO_RIDONDANZA 0
 
 void definisciNumeroTeste(int* n);
 void generaInsiemiDiCelle(celle c, gruppi* gr, teste t);;
@@ -33,6 +34,7 @@ bool movimentoTeste(teste t, celle c, gruppi g);
 bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* best, soluzione* s);
 void estraiGruppi(gruppo** start, teste t, celle c, gruppi g);
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g);
+bool sceltaGruppiRidondanti(gruppo* prec, gruppo* i, int dim, teste tes, gruppi g);
 void eseguiTest(gruppo* g, int dim, gruppi gr);
 void resetTest(celle c, gruppi g);
 void salvaMovimento(soluzione* s, gruppo* gruppi, int dim, int n);
@@ -299,47 +301,13 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     int j;
     for(j=0; j<dim; j++)    next[j] = NULL;
     if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
+    if(!sceltaGruppiRidondanti(attuale, next, dim, t, g))   return false;
 
-    int first = 0; int last = getDimT(t)-1;
-    Partitore p;
-    creaPartitore(&p, getDimT(t));
-    for(j=0; j<p->dim; j++)
-    {
-        gruppo* v; salvaDatiPerBacktrack(next, &v, p->dimInterna);
-        int k;
-        for(k=0; k<p->dimInterna; k++)
-        {
-            if(!p->v[j][k])
-            {
-                if(k==first || k==last)
-                {
-                    gruppo vuoto; setGruppoVuoto(&vuoto); setPrec(vuoto, attuale[k]);
-                    next[k]= vuoto;
-                }
-                else
-                    next[k] = attuale[k];
-            }
-        }
-        if(compatibilita(t, next, getDimT(t)))
-        {
-            eseguiTest(next, dim, g);
-            bool succ = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
-            if(succ)
-                salvaMovimento(s, next, dim, count);
-            return succ;
-        }
-        else  //backtrack
-        {
-            for(k=0; k<p->dimInterna; k++)
-            {
-                if(!p->v[j][k])
-                    backtrack(next, v, k);
-            }
-            eliminaDatiPerBacktrack(v);
-        }
-    }
-
-    return false;
+    eseguiTest(next, dim, g);
+    bool succ = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
+    if(succ)
+        salvaMovimento(s, next, dim, count);
+    return succ;
 }
 
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
@@ -353,9 +321,10 @@ bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
         gruppi elementi = getRaggruppamentoPerTopologiaContenenteGruppo(g, p);
         gruppo* t = getGruppi(elementi);
         int dimT = getDimG(elementi);
+        int maxFase = getMaxFase(p);
         int j;
         double min = DBL_MAX;
-        while(scelte[l]==NULL && fase<=getMaxFase(p))
+        while(scelte[l]==NULL && fase<=maxFase)
         {
             fase++;
             for(j=0; j<dimT; j++)
@@ -365,15 +334,90 @@ bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
                     double d = distanzaG(p, t[j]);
                     if(d<min && d!=0) // + comparazione e mediazione
                     {
-                        min = distanzaG(p, t[j]);
-                        scelte[l] = t[j];
+                        int k;
+                        int ok = 1;
+                        for(k=0; k<l; k++)
+                        {
+                            if(!isGruppoVuoto(scelte[k]))
+                            {
+                                if(!checkCompatibilitaTeste(tes, l, k, t[j], scelte[k])) // + ottimizazzione al contrario
+                                {
+                                    ok = 0;
+                                    break;
+                                }
+                            }
+                        }
+                        if(ok)
+                        {
+                            min = distanzaG(p, t[j]);
+                            scelte[l] = t[j];
+                        }
                     }
                 }
             }
         }
         if(scelte[l]==NULL)
             return false;
+        if(fase == (maxFase - LIVELLO_RIDONDANZA))
+        {
+            gruppo superfluo; setGruppoSuperfluo(&superfluo);
+            scelte[l] = superfluo;
+        }
+    }
 
+    return true;
+}
+
+bool sceltaGruppiRidondanti(gruppo* prec, gruppo* i, int dim, teste tes, gruppi g)
+{
+    int first=0; int last=dim-1;
+    int l;
+    for(l=0; l<dim; l++)
+    {
+        if(isGruppoSuperfluo(i[l]))
+        {
+            gruppo p = prec[l];
+            if(isGruppoVuoto(p))    p = getPrec(p);
+            gruppi elementi = getRaggruppamentoPerTopologiaContenenteGruppo(g, p);
+            gruppo* t = getGruppi(elementi);
+            int dimT = getDimG(elementi);
+            double min = DBL_MAX;
+            int j;
+            for(j=0; j<dimT; j++)
+            {
+                double d = distanzaG(p, t[j]);
+                if(d<min && d!=0) // + comparazione e mediazione
+                {
+                    int k;
+                    int ok = 1;
+                    for(k=0; k<l; k++)
+                    {
+                        if(!checkCompatibilitaTeste(tes, l, k, t[j], i[k])) // + ottimizazzione al contrario
+                        {
+                            ok = 0;
+                            break;
+                        }
+                    }
+                    if(ok)
+                    {
+                        min = distanzaG(p, t[j]);
+                        i[l] = t[j];
+                    }
+                }
+            }
+        }
+        if(isGruppoSuperfluo(i[l]))
+        {
+            if(l==first || l==last)
+            {
+                gruppo vuoto; setGruppoVuoto(&vuoto); setPrec(vuoto, prec[l]);
+                i[l] = vuoto;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     return true;

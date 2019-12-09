@@ -215,6 +215,19 @@ void setGruppoVuoto(gruppo* g)
     (*g)->insieme = NULL;
 }
 
+void setGruppoSuperfluo(gruppo* g)
+{
+    *g = malloc(sizeof(struct gruppo_s));
+
+    (*g)->fase = -3;
+
+    (*g)->topologia = NULL;
+
+    (*g)->baricentro = NULL;
+
+    (*g)->insieme = NULL;
+}
+
 int isGruppoNullo(gruppo g)
 {
     return (g->fase==-1);
@@ -223,6 +236,11 @@ int isGruppoNullo(gruppo g)
 int isGruppoVuoto(gruppo g)
 {
     return (g->fase==-2);
+}
+
+int isGruppoSuperfluo(gruppo g)
+{
+    return (g->fase==-3);
 }
 
 void estremiGruppo(float* e, gruppo g)
