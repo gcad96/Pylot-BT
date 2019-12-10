@@ -324,7 +324,7 @@ bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
         int maxFase = getMaxFase(p);
         int j;
         double min = DBL_MAX;
-        while(scelte[l]==NULL && fase<=maxFase)
+        while(scelte[l]==NULL && fase+1<=maxFase)
         {
             fase++;
             for(j=0; j<dimT; j++)
@@ -338,7 +338,7 @@ bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
                         int ok = 1;
                         for(k=0; k<l; k++)
                         {
-                            if(!isGruppoVuoto(scelte[k]))
+                            if(!isGruppoSuperfluo(scelte[k]))
                             {
                                 if(!checkCompatibilitaTeste(tes, l, k, t[j], scelte[k])) // + ottimizazzione al contrario
                                 {
@@ -392,10 +392,13 @@ bool sceltaGruppiRidondanti(gruppo* prec, gruppo* i, int dim, teste tes, gruppi 
                     int ok = 1;
                     for(k=0; k<l; k++)
                     {
-                        if(!checkCompatibilitaTeste(tes, l, k, t[j], i[k])) // + ottimizazzione al contrario
+                        if(!isGruppoVuoto(i[k]))
                         {
-                            ok = 0;
-                            break;
+                            if(!checkCompatibilitaTeste(tes, l, k, t[j], i[k])) // + ottimizazzione al contrario
+                            {
+                                ok = 0;
+                                break;
+                            }
                         }
                     }
                     if(ok)

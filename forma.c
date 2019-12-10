@@ -115,7 +115,7 @@ void getSxDx(forma f, float* sx, float* dx, float offset)
 
 void getAltoBasso(forma f, float* alto, float* basso)
 {
-    float offset = 50;
+    float offset = 0.5f;
 
     float altezza = f->dim2;
     *alto = offset * altezza;
