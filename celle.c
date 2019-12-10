@@ -59,13 +59,13 @@ int checkEsistenzaCella(celle c, cella cel)
     return 0;
 }
 
-void stampaCelle(celle c)
+void stampaCelle(celle c, FILE *f)
 {
     int i;
     for(i=0; i<c->dim; i++)
     {
-        stampaCella(c->insieme[i]);
-        printf("\n");
+        stampaCella(c->insieme[i], f);
+        fprintf(f, "\n");
     }
 }
 
