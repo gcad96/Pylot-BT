@@ -22,9 +22,9 @@ void liberaCoordinata(coordinata c)
     free(c);
 }
 
-void stampaCoordinata(coordinata c)
+void stampaCoordinata(coordinata c, FILE *f)
 {
-    printf("(%f, %f)", c->x, c->y);
+    fprintf(f, "(%f, %f)", c->x, c->y);
 }
 
 float getAscissa(coordinata c)

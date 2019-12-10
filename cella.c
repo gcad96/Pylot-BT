@@ -32,10 +32,10 @@ void liberaCella(cella c)
     free(c);
 }
 
-void stampaCella(cella c)
+void stampaCella(cella c, FILE *f)
 {
-    printf("Cella denominata: %s, con coordinate: ", c->nome);
-    stampaCoordinata(c->coordinata);
+    fprintf(f, "Cella denominata: %s, con coordinate: ", c->nome);
+    stampaCoordinata(c->coordinata, f);
 }
 
 int CELLAleq(cella a, cella b, criterio c)

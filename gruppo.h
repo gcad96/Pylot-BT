@@ -16,7 +16,7 @@ coordinata posizioneMedia(gruppo g);
 void liberaGruppo(gruppo g);
 int GRUPPOleq(gruppo a, gruppo b); //Relazione d'ordine totale: criterio di cardinalità insieme decescente
 int GRUPPOgt(gruppo a, gruppo b);  //Relazione d'ordine totale: criterio di cardinalità insieme decescente
-void stampaGruppo(gruppo g);
+void stampaGruppo(gruppo g, FILE *f);
 double distanzaG(gruppo a, gruppo b);
 int checkPresenzaCella(gruppo g, cella c);
 void testGruppo(gruppo g);

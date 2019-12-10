@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "utility.h"
 #include "coordinata.h"
 #include "topologia.h"
 #include "cella.h"
@@ -39,9 +40,11 @@ void aggiungiMovimento(soluzione s, gruppo* gr, int dim, int n)
 
 void stampaSoluzione(soluzione s)
 {
+    FILE* f = fopen(FILE_OUTPUT_SOLUZIONI, "w");
     int i;
     for(i=0; i<s->dim; i++)
     {
-        stampaMovimento(s->movimenti[i]);
+        stampaMovimento(s->movimenti[i], f);
     }
+    fclose(f);
 }

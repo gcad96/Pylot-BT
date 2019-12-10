@@ -15,7 +15,7 @@ typedef struct cella_s* cella;
 
 void creaCella(cella* c, char* nome, float x, float y);
 void liberaCella(cella c);
-void stampaCella(cella c);
+void stampaCella(cella c, FILE *f);
 int CELLAleq(cella a, cella b, criterio c);
 int CELLAgt(cella a, cella b, criterio c);
 double distanzaC(cella a, cella b);

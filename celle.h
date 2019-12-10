@@ -26,7 +26,7 @@ void creaCelle(celle* c);
 void liberaCelle(celle c);
 void aggiungiCella(celle c, cella cel);
 int checkEsistenzaCella(celle c, cella cel);
-void stampaCelle(celle c);
+void stampaCelle(celle c, FILE *f);
 void ordinaCelle(celle c, criterio crit);
 void generaDistanze(celle c, double ***m);
 void getNCellePiuVicine(celle c, cella a, int N, cella* vic);

@@ -166,10 +166,10 @@ void setTopologia(gruppo g)
     g->topologia = t;
 }
 
-void stampaGruppo(gruppo g)
+void stampaGruppo(gruppo g, FILE *f)
 {
-    if(!isGruppoVuoto(g))    stampaCelle(g->insieme);
-    else    printf("- Testa a riposo -\n");
+    if(!isGruppoVuoto(g)) stampaCelle(g->insieme, f);
+    else    fprintf(f, "- Testa a riposo -\n");
 }
 
 double distanzaG(gruppo a, gruppo b)
