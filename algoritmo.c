@@ -301,13 +301,47 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     int j;
     for(j=0; j<dim; j++)    next[j] = NULL;
     if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
-    if(!sceltaGruppiRidondanti(attuale, next, dim, t, g))   return false;
 
-    eseguiTest(next, dim, g);
-    bool succ = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
-    if(succ)
-        salvaMovimento(s, next, dim, count);
-    return succ;
+    int first = 0; int last = getDimT(t)-1;
+    Partitore p;
+    creaPartitore(&p, getDimT(t));
+    for(j=0; j<p->dim; j++)
+    {
+        gruppo* v; salvaDatiPerBacktrack(next, &v, p->dimInterna);
+        int k;
+        for(k=0; k<p->dimInterna; k++)
+        {
+            if(!p->v[j][k])
+            {
+                if(k==first || k==last)
+                {
+                    gruppo vuoto; setGruppoVuoto(&vuoto); setPrec(vuoto, attuale[k]);
+                    next[k]= vuoto;
+                }
+                else
+                    next[k] = attuale[k];
+            }
+        }
+        if(compatibilita(t, next, getDimT(t)))
+        {
+            eseguiTest(next, dim, g);
+            bool succ = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
+            if(succ)
+                salvaMovimento(s, next, dim, count);
+            return succ;
+        }
+        else  //backtrack
+        {
+            for(k=0; k<p->dimInterna; k++)
+            {
+                if(!p->v[j][k])
+                    backtrack(next, v, k);
+            }
+            eliminaDatiPerBacktrack(v);
+        }
+    }
+
+    return false;
 }
 
 bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
@@ -334,24 +368,8 @@ bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
                     double d = distanzaG(p, t[j]);
                     if(d<min && d!=0) // + comparazione e mediazione
                     {
-                        int k;
-                        int ok = 1;
-                        for(k=0; k<l; k++)
-                        {
-                            if(!isGruppoSuperfluo(scelte[k]))
-                            {
-                                if(!checkCompatibilitaTeste(tes, l, k, t[j], scelte[k])) // + ottimizazzione al contrario
-                                {
-                                    ok = 0;
-                                    break;
-                                }
-                            }
-                        }
-                        if(ok)
-                        {
-                            min = distanzaG(p, t[j]);
-                            scelte[l] = t[j];
-                        }
+                        min = distanzaG(p, t[j]);
+                        scelte[l] = t[j];
                     }
                 }
             }
