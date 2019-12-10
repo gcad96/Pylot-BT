@@ -44,6 +44,9 @@ void salvaDatiPerBacktrack(gruppo* val, gruppo** backup, int dim);
 void backtrack(gruppo* val, gruppo* backup, int index);
 void eliminaDatiPerBacktrack(gruppo* backup);
 int compatibilita(teste t, gruppo* g, int dim);
+void stampaAvanzamento(int passo, int tot);
+void stampaCompletamento(int passo, int tot);
+void stampaIntroduzione();
 
 void trovaPercorso()
 {
@@ -209,6 +212,7 @@ bool movimentoTeste(teste t, celle c, gruppi g)
     int best = MAXMOVIMENTITOLLERATI;
     soluzione s = NULL;
     int caso = 0;
+    stampaIntroduzione();
     while(caso<comb->dim)
     {
         int acc = 1;
@@ -243,13 +247,10 @@ bool movimentoTeste(teste t, celle c, gruppi g)
             resetTest(c, g);
         }
         if(caso%100==0)
-        {
-            float agg = (float) caso / (float) comb->dim;
-            agg*=100.0f;
-            printf("Working... %f%% \r", agg);
-        }
+            stampaAvanzamento(caso, comb->dim);
         caso++;
     }
+    stampaCompletamento(caso, comb->dim);
 
     if(successo)
         stampaSoluzione(s);
@@ -524,4 +525,24 @@ int compatibilita(teste t, gruppo* g, int dim)
     }
 
     return 1;
+}
+
+void stampaAvanzamento(int passo, int tot)
+{
+    float agg = (float) passo / (float) tot;
+    agg*=100.0f;
+    printf("Working... %f%% \r", agg);
+}
+
+void stampaCompletamento(int passo, int tot)
+{
+    float agg = (float) passo / (float) tot;
+    agg*=100.0f;
+    printf("Working... %f%% \r", agg);
+    printf("Completed.\n");
+}
+
+void stampaIntroduzione()
+{
+    printf("Welcome to Giovanni Cadau Il Fenomeno Prouction,\n");
 }
