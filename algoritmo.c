@@ -218,7 +218,7 @@ bool movimentoTeste(teste t, celle c, gruppi g)
             int ok = 1;
             for(j=0; j<i; j++)
             {
-                if(!checkCompatibilitaTeste(t, i, j, start[i], start[j])) // + ottimizazzione al contrario
+                if(!checkCompatibilitaTeste(t, i, j, start[i], start[j])) // + ottimizzazione al contrario
                 {
                     ok = 0;
                     break;
@@ -241,6 +241,12 @@ bool movimentoTeste(teste t, celle c, gruppi g)
                 salvaMovimento(&s, start, getDimT(t), count);
             }
             resetTest(c, g);
+        }
+        if(caso%100==0)
+        {
+            float agg = (float) caso / (float) comb->dim;
+            agg*=100.0f;
+            printf("Working... %f%% \r", agg);
         }
         caso++;
     }
