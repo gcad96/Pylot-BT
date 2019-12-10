@@ -544,5 +544,5 @@ void stampaCompletamento(int passo, int tot)
 
 void stampaIntroduzione()
 {
-    printf("Welcome to Giovanni Cadau Il Fenomeno Prouction,\n");
+    printf("Welcome to Giovanni Cadau Il Fenomeno Prouction.\n");
 }
