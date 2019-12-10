@@ -313,15 +313,11 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
         {
             if(!p->v[j][k])
             {
-                if(k==first || k==last)
-                {
-                    gruppo vuoto; setGruppoVuoto(&vuoto); setPrec(vuoto, attuale[k]);
-                    next[k]= vuoto;
-                }
-                else
-                    next[k] = attuale[k];
+                gruppo superfluo; setGruppoSuperfluo(&superfluo);
+                next[k] = superfluo;
             }
         }
+        if(!sceltaGruppiRidondanti(attuale, next, dim, t, g))       return false;
         if(compatibilita(t, next, getDimT(t)))
         {
             eseguiTest(next, dim, g);
@@ -449,7 +445,7 @@ void eseguiTest(gruppo* g, int dim, gruppi gr)
     int i;
     for(i=0; i<dim; i++)
     {
-        if(!isGruppoVuoto(g[i]))    testGruppo(g[i]);
+        if(!isGruppoVuoto(g[i]) && (!isGruppoSuperfluo(g[i])))    testGruppo(g[i]);
     }
     aggiornaTest(gr);
 }
