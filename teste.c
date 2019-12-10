@@ -46,13 +46,13 @@ void aggiungiTesta(teste t, testa tes)
     t->insieme[(t->dim)++] = tes;
 }
 
-void stampaTeste(teste t)
+void stampaTeste(teste t, FILE *f)
 {
     int i;
     for(i=0; i<t->dim; i++)
     {
-        stampaTesta(t->insieme[i]);
-        printf("\n");
+        stampaTesta(t->insieme[i], f);
+        fprintf(f, "\n");
     }
 }
 

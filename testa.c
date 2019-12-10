@@ -45,10 +45,10 @@ void liberaTesta(testa t)
     free(t);
 }
 
-void stampaTesta(testa t)
+void stampaTesta(testa t, FILE *f)
 {
-    printf("Testa denominata: %s, con superficie occupata: ", t->nome);
-    stampaForma(t->forma);
+    fprintf(f, "Testa denominata: %s, con superficie occupata: ", t->nome);
+    stampaForma(t->forma, f);
 }
 
 int getCod(testa t)
