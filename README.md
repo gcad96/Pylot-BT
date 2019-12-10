@@ -1,3 +1,3 @@
 # Algoritmo per Pylot BT
-versione 5.0
-....
+versione 6.0
+Final
