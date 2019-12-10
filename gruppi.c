@@ -60,13 +60,13 @@ void aggiungiGruppo(gruppi g, gruppo gr)
     g->insieme[(g->dim)++] = gr;
 }
 
-void stampaGruppi(gruppi g)
+void stampaGruppi(gruppi g, FILE *f)
 {
     int i;
     for(i=0; i<g->dim; i++)
     {
-        stampaGruppo(g->insieme[i]);
-        printf("\n");
+        stampaGruppo(g->insieme[i], f);
+        fprintf(f, "\n");
     }
 }
 

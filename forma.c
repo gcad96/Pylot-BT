@@ -86,24 +86,24 @@ void liberaForma(forma f)
     free(f);
 }
 
-void stampaForma(forma f)
+void stampaForma(forma f, FILE *ff)
 {
-    printf("vertici con coordinate: ");
+    fprintf(ff, "vertici con coordinate: ");
 
     coordinata v0;
     creaCoordinata(&v0, 0, 0);
-    stampaCoordinata(v0);
+    stampaCoordinata(v0, ff);
     liberaCoordinata(v0);
-    printf(", ");
+    fprintf(ff, ", ");
     int i;
     for(i=0; i<f->nVertici-2; i++)
     {
-        stampaCoordinata(f->offSet[i]);
-        printf(", ");
+        stampaCoordinata(f->offSet[i], ff);
+        fprintf(ff, ", ");
     }
-    stampaCoordinata(f->offSet[i]);
+    stampaCoordinata(f->offSet[i], ff);
 
-    printf("\n");
+    fprintf(ff, "\n");
 }
 
 void getSxDx(forma f, float* sx, float* dx, float offset)
