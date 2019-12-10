@@ -29,5 +29,6 @@ int isGruppoSuperfluo(gruppo g);
 void estremiGruppo(float* e, gruppo g);
 gruppo getPrec(gruppo vuoto);
 void setPrec(gruppo vuoto, gruppo prec);
+int getDimensione(gruppo g);
 
 #endif //GRUPPO_H

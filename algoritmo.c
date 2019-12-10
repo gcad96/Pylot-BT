@@ -47,6 +47,7 @@ int compatibilita(teste t, gruppo* g, int dim);
 void stampaAvanzamento(int passo, int tot);
 void stampaCompletamento(int passo, int tot);
 void stampaIntroduzione();
+int ottimizzaGruppi(gruppo* g, int dim);
 
 void trovaPercorso()
 {
@@ -235,7 +236,7 @@ bool movimentoTeste(teste t, celle c, gruppi g)
             }
         }
 
-        if(acc)
+        if(acc && ottimizzaGruppi(start, getDimT(t)))
         {
             eseguiTest(start, getDimT(t), g);
             int count = 1;
@@ -545,4 +546,22 @@ void stampaCompletamento(int passo, int tot)
 void stampaIntroduzione()
 {
     printf("Welcome to Giovanni Cadau Il Fenomeno Prouction.\n");
+}
+
+int ottimizzaGruppi(gruppo* g, int dim)
+{
+    int* dims = malloc(dim* sizeof(int));
+    int i;
+    for(i=0; i<dim; i++)
+        dims[i] = getDimensione(g[i]);
+    int ok;
+
+    ok=0;
+    for(i=0; i<dim; i++)
+    {
+        if(dims[i]==4)
+            ok=1;
+    }
+
+    return ok;
 }

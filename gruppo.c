@@ -261,3 +261,8 @@ void setPrec(gruppo vuoto, gruppo prec)
 {
     vuoto->prec = prec;
 }
+
+int getDimensione(gruppo g)
+{
+    return getDimC(g->insieme);
+}
