@@ -21,7 +21,7 @@
 #include "allocazione.h"
 #include "algoritmo.h"
 
-#define PIUVICINE 4
+#define PIUVICINE 2
 #define MAXMOVIMENTITOLLERATI 200
 #define LIVELLO_RIDONDANZA 0
 
