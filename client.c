@@ -7,4 +7,5 @@ int main(void)
 {
     setbuf(stdout, 0);
     trovaPercorso();
+    return 0;
 }

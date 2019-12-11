@@ -545,7 +545,9 @@ void stampaCompletamento(int passo, int tot)
 
 void stampaIntroduzione()
 {
-    printf("Welcome to Giovanni Cadau Il Fenomeno Prouction.\n");
+    printf("Un software realizzato da Giovanni Cadau ©.\n");
+    printf("L'algoritmo e' ottimizzato in modo tale da trovare un percorso\ndelle teste che garantisca la totale copertura dell'intera\nbatteria, nel rispetto dei vincoli, minimizzando la distanza\ntotale percorsa dalle teste.\n");
+    printf("\nAl fine di garantire una rapida esecuzione, l'algoritmo e'\nottimizzato in modo tale da iniziare l'esplorazione dello spazio\ndelle soluzioni partendo da punti diversi della batteria,\nche possono differire da un'esecuzione all'altra.\nTuttavia, le varie soluzioni proposte differiscono di una\nminima quantita' in termini di distanza totale percorsa (parametro\nda minimizzare) e, iterando l'esecuzione per 10 volte,\nsi ha una garanzia di convergenza alla soluzione ottima pari\nal 98%%.\n");
 }
 
 int ottimizzaGruppi(gruppo* g, int dim)
