@@ -1,3 +1,3 @@
 # Algoritmo per Pylot BT
 versione 6.0
-Final
+Esplorazione totale dello spazio delle soluzioni (no greedy, scelta migliore)
