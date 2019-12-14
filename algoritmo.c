@@ -22,6 +22,7 @@
 #include "algoritmo.h"
 
 #define PIUVICINE 2
+#define NSCELTE 1
 #define MAXMOVIMENTITOLLERATI 200
 #define LIVELLO_RIDONDANZA 0
 
@@ -33,7 +34,7 @@ void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m);
 bool movimentoTeste(teste t, celle c, gruppi g);
 bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* best, soluzione* s);
 void estraiGruppi(gruppo** start, teste t, celle c, gruppi g);
-bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g);
+bool sceltaGruppi(gruppo* i, gruppo** scelte, int dim, teste tes, gruppi g);
 bool sceltaGruppiRidondanti(gruppo* prec, gruppo* i, int dim, teste tes, gruppi g);
 void eseguiTest(gruppo* g, int dim, gruppi gr);
 void resetTest(celle c, gruppi g);
@@ -305,50 +306,77 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     }
 
 
-    gruppo* next = malloc(dim*sizeof(gruppo));
-    int j;
-    for(j=0; j<dim; j++)    next[j] = NULL;
-    if(!sceltaGruppi(attuale, next, dim, t, g))      return false;
-
-    int first = 0; int last = getDimT(t)-1;
-    Partitore p;
-    creaPartitore(&p, getDimT(t));
-    for(j=0; j<p->dim; j++)
+    gruppo** scelte = malloc(NSCELTE*sizeof(gruppo*));
+    int j, k;
+    for(k=0; k<NSCELTE; k++)
     {
-        gruppo* v; salvaDatiPerBacktrack(next, &v, p->dimInterna);
-        int k;
-        for(k=0; k<p->dimInterna; k++)
+        for(j=0; k<dim; k++)
         {
-            if(!p->v[j][k])
-            {
-                gruppo superfluo; setGruppoSuperfluo(&superfluo);
-                next[k] = superfluo;
-            }
+            scelte[k] = malloc(dim*sizeof(gruppo));
+            scelte[k][j] = NULL;
         }
-        if(!sceltaGruppiRidondanti(attuale, next, dim, t, g))       return false;
-        if(compatibilita(t, next, getDimT(t)))
+    }
+    if(!sceltaGruppi(attuale, scelte, dim, t, g))      return false;
+
+    Combinatore comb;
+    int* val = malloc(getDimT(t)* sizeof(int));
+    for(j=0; j<getDimT(t); j++)
+    {
+        k = 0;
+        while(!isGruppoNullo(scelte[j][k++]));
+        k--;
+        val[j] = k;
+    }
+    creaCombinatore(&comb, val, getDimT(t));
+    free(val);
+
+    gruppo* next = malloc(dim*sizeof(gruppo));
+    int caso = 0;
+    while(caso<comb->dim)
+    {
+        for (j=0; j<dim; j++)
         {
-            eseguiTest(next, dim, g);
-            bool succ = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
-            if(succ)
-                salvaMovimento(s, next, dim, count);
-            return succ;
-        }
-        else  //backtrack
-        {
-            for(k=0; k<p->dimInterna; k++)
+            next[j] = scelte[j][comb->v[caso][j]];
+            int first = 0; int last = getDimT(t)-1;
+            Partitore p;
+            creaPartitore(&p, getDimT(t));
+            for(j=0; j<p->dim; j++)
             {
-                if(!p->v[j][k])
-                    backtrack(next, v, k);
+                gruppo* v; salvaDatiPerBacktrack(next, &v, p->dimInterna);
+                for(k=0; k<p->dimInterna; k++)
+                {
+                    if(!p->v[j][k])
+                    {
+                        gruppo superfluo; setGruppoSuperfluo(&superfluo);
+                        next[k] = superfluo;
+                    }
+                }
+                if(!sceltaGruppiRidondanti(attuale, next, dim, t, g))       return false;
+                if(compatibilita(t, next, getDimT(t)))
+                {
+                    eseguiTest(next, dim, g);
+                    bool succ = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
+                    if(succ)
+                        salvaMovimento(s, next, dim, count);
+                    return succ;
+                }
+                else  //backtrack
+                {
+                    for(k=0; k<p->dimInterna; k++)
+                    {
+                        if(!p->v[j][k])
+                            backtrack(next, v, k);
+                    }
+                    eliminaDatiPerBacktrack(v);
+                }
             }
-            eliminaDatiPerBacktrack(v);
         }
     }
 
     return false;
 }
 
-bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
+bool sceltaGruppi(gruppo* i, gruppo** scelte, int dim, teste tes, gruppi g)
 {
     int l;
     for(l=0; l<dim; l++)
@@ -362,29 +390,49 @@ bool sceltaGruppi(gruppo* i, gruppo* scelte, int dim, teste tes, gruppi g)
         int maxFase = getMaxFase(p);
         int j;
         double min = DBL_MAX;
-        while(scelte[l]==NULL && fase+1<=maxFase)
+        int m;
+        for(m=0; m<NSCELTE; m++)
         {
-            fase++;
-            for(j=0; j<dimT; j++)
+            while(scelte[l][m]==NULL && fase+1<=maxFase)
             {
-                if((getFase(t[j]))==fase)
+                fase++;
+                for(j=0; j<dimT; j++)
                 {
-                    double d = distanzaG(p, t[j]);
-                    if(d<min && d!=0) // + comparazione e mediazione
+                    if((getFase(t[j]))==fase)
                     {
-                        min = distanzaG(p, t[j]);
-                        scelte[l] = t[j];
+                        double d = distanzaG(p, t[j]);
+                        if(d<min && d!=0) // + comparazione e mediazione
+                        {
+                            min = distanzaG(p, t[j]);
+                            scelte[l][m] = t[j];
+                        }
                     }
                 }
             }
+            if(scelte[l][m]==NULL)
+            {
+                gruppo nullo; setGruppoNullo(&nullo);
+                scelte[l][m] = nullo;
+            }
+            if(fase == (maxFase - LIVELLO_RIDONDANZA))
+            {
+                gruppo superfluo; setGruppoSuperfluo(&superfluo);
+                scelte[l][m] = superfluo;
+            }
         }
-        if(scelte[l]==NULL)
-            return false;
-        if(fase == (maxFase - LIVELLO_RIDONDANZA))
+    }
+
+    bool presente;
+    for(l=0; l<dim; l++)
+    {
+        presente = false;
+        int m;
+        for(m=0; m<NSCELTE; m++)
         {
-            gruppo superfluo; setGruppoSuperfluo(&superfluo);
-            scelte[l] = superfluo;
+            if(scelte[l][m]!=NULL)
+                presente = true;
         }
+       if(!presente)    return false;
     }
 
     return true;
