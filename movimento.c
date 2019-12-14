@@ -33,16 +33,16 @@ void liberaMovimento(movimento m)
     free(m);
 }
 
-void stampaMovimento(movimento m, FILE *f)
+void stampaMovimento(movimento m, FILE* f)
 {
-    fprintf(f, "Movimento %d\n", m->numero);
+    printf("Movimento %d\n", m->numero);
     gruppo* gr = getGruppi(m->g);
     int dim = getDimG(m->g);
     int i;
     for(i=0; i<dim; i++)
     {
         stampaGruppo(gr[i], f);
-        fprintf(f, "\n");
+        printf("\n");
     }
-    fprintf(f, "\n\n");
+    printf("\n\n");
 }

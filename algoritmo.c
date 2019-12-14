@@ -15,6 +15,7 @@
 #include "gruppo.h"
 #include "sortingGruppi.h"
 #include "gruppi.h"
+#include "movimento.h"
 #include "soluzione.h"
 #include "testa.h"
 #include "teste.h"
@@ -32,18 +33,18 @@ void definisciNumeroMaxCelle(int* n);
 void path(celle c, int card, Matrice m);
 void pathRic(cella u, celle c, int n, int card, int *coll, Matrice m);
 bool movimentoTeste(teste t, celle c, gruppi g);
-bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* best, soluzione* s);
+bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* best, soluzione* s, movimento* movs);
 void estraiGruppi(gruppo** start, teste t, celle c, gruppi g);
 bool sceltaGruppi(gruppo* i, gruppo** scelte, int dim, teste tes, gruppi g);
 bool sceltaGruppiRidondanti(gruppo* prec, gruppo* i, int dim, teste tes, gruppi g);
 void eseguiTest(gruppo* g, int dim, gruppi gr);
 void resetTest(celle c, gruppi g);
-void salvaMovimento(soluzione* s, gruppo* gruppi, int dim, int n);
-void salvaMovimentoIniz(soluzione* s, int dim);
 void ordinaPerCardinalita(gruppo* g);
-void salvaDatiPerBacktrack(gruppo* val, gruppo** backup, int dim);
-void backtrack(gruppo* val, gruppo* backup, int index);
-void eliminaDatiPerBacktrack(gruppo* backup);
+void salvaDatiPerBacktrackInterno(gruppo* val, gruppo** backup, int dim);
+void backtrackInterno(gruppo* val, gruppo* backup, int index);
+void eliminaDatiPerBacktrackInterno(gruppo* backup);
+void salvaDatiPerBacktrack(celle c, gruppi g, int* test, int* fasi);
+void BackTrack(celle c, gruppi g, int* testt, int* fasi);
 int compatibilita(teste t, gruppo* g, int dim);
 void stampaAvanzamento(int passo, int tot);
 void stampaCompletamento(int passo, int tot);
@@ -239,14 +240,14 @@ bool movimentoTeste(teste t, celle c, gruppi g)
 
         if(acc && ottimizzaGruppi(start, getDimT(t)))
         {
+            movimento* movs = malloc(MAXMOVIMENTITOLLERATI* sizeof(movimento));
             eseguiTest(start, getDimT(t), g);
             int count = 1;
-            if(movimentoTesteRic(start, getDimT(t), t, c, g, count + 1, &best, &s))
-            {
+            movimento m; creaMovimento(&m, start, getDimT(t), count); movs[count-1] = m;
+            if(movimentoTesteRic(start, getDimT(t), t, c, g, count + 1, &best, &s, movs))
                 successo = true;
-                salvaMovimento(&s, start, getDimT(t), count);
-            }
             resetTest(c, g);
+            free(movs);
         }
         if(caso%100==0)
             stampaAvanzamento(caso, comb->dim);
@@ -293,7 +294,7 @@ void estraiGruppi(gruppo** start, teste t, celle c, gruppi g)
     free(cel);
 }
 
-bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* best, soluzione* s)
+bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int count, int* best, soluzione* s, movimento* movs)
 {
     if(count-1 > *best)
         return false;
@@ -301,7 +302,7 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     if(batteriaTestata(c))
     {
         *best = count-1;
-        salvaMovimentoIniz(s, count-1);
+        memorizza(s, count-1, movs);
         return true;
     }
 
@@ -331,18 +332,19 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
     free(val);
 
     gruppo* next = malloc(dim*sizeof(gruppo));
+    bool* succ = malloc((comb->dim)* sizeof(bool));
+    int* test = malloc(getDimC(c)*sizeof(int)); int* fasi = malloc(getDimG(g)*sizeof(int));
     int caso = 0;
     while(caso<comb->dim)
     {
         for (j=0; j<dim; j++)
         {
             next[j] = scelte[j][comb->v[caso][j]];
-            int first = 0; int last = getDimT(t)-1;
             Partitore p;
             creaPartitore(&p, getDimT(t));
             for(j=0; j<p->dim; j++)
             {
-                gruppo* v; salvaDatiPerBacktrack(next, &v, p->dimInterna);
+                gruppo* v;  salvaDatiPerBacktrackInterno(next, &v, p->dimInterna);
                 for(k=0; k<p->dimInterna; k++)
                 {
                     if(!p->v[j][k])
@@ -354,23 +356,30 @@ bool movimentoTesteRic(gruppo* attuale, int dim, teste t, celle c, gruppi g, int
                 if(!sceltaGruppiRidondanti(attuale, next, dim, t, g))       return false;
                 if(compatibilita(t, next, getDimT(t)))
                 {
+                    salvaDatiPerBacktrack(c, g, test, fasi);
                     eseguiTest(next, dim, g);
-                    bool succ = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s);
-                    if(succ)
-                        salvaMovimento(s, next, dim, count);
-                    return succ;
+                    movimento m; creaMovimento(&m, next, getDimT(t), count); movs[count-1] = m;
+                    succ[0] = movimentoTesteRic(next, dim, t, c, g, count + 1, best, s, movs);
+                    BackTrack(c, g, test, fasi);
                 }
                 else  //backtrack
                 {
                     for(k=0; k<p->dimInterna; k++)
                     {
                         if(!p->v[j][k])
-                            backtrack(next, v, k);
+                            backtrackInterno(next, v, k);
                     }
-                    eliminaDatiPerBacktrack(v);
+                    eliminaDatiPerBacktrackInterno(v);
                 }
             }
         }
+    }
+
+    free(test); free(fasi);
+    for(j=0; j<comb->dim; j++)
+    {
+        if(succ[j])
+            return true;
     }
 
     return false;
@@ -519,16 +528,6 @@ void resetTest(celle c, gruppi g)
     }
 }
 
-void salvaMovimentoIniz(soluzione* s, int dim)
-{
-    memorizza(s, dim);
-}
-
-void salvaMovimento(soluzione* s, gruppo* gruppi, int dim, int n)
-{
-    aggiungiMovimento((*s), gruppi, dim, n);
-}
-
 void ordinaPerCardinalita(gruppo* g)
 {
     int dim = 0;
@@ -536,7 +535,7 @@ void ordinaPerCardinalita(gruppo* g)
     SortGruppi(g, --dim);
 }
 
-void salvaDatiPerBacktrack(gruppo* val, gruppo** backup, int dim)
+void salvaDatiPerBacktrackInterno(gruppo* val, gruppo** backup, int dim)
 {
     *backup = malloc(dim*sizeof(gruppo));
     int i;
@@ -544,14 +543,51 @@ void salvaDatiPerBacktrack(gruppo* val, gruppo** backup, int dim)
         (*backup)[i] = val[i];
 }
 
-void backtrack(gruppo* val, gruppo* backup, int index)
+void backtrackInterno(gruppo* val, gruppo* backup, int index)
 {
     val[index] = backup[index];
 }
 
-void eliminaDatiPerBacktrack(gruppo* backup)
+void eliminaDatiPerBacktrackInterno(gruppo* backup)
 {
     free(backup);
+}
+
+void salvaDatiPerBacktrack(celle c, gruppi g, int* test, int* fasi)
+{
+    int i;
+
+    cella* cel = getInsieme(c);
+    int dimC = getDimC(c);
+    for(i=0; i<dimC; i++)
+        test[i] = isTest(cel[i]);
+
+    gruppo* gru = getGruppi(g);
+    int dimG = getDimG(g);
+    for(i=0; i<dimG; i++)
+        fasi[i] = getFase(gru[i]);
+}
+
+void BackTrack(celle c, gruppi g, int* testt, int* fasi)
+{
+    int i;
+
+    cella* cel = getInsieme(c);
+    int dimC = getDimC(c);
+    for(i=0; i<dimC; i++)
+    {
+        if(testt[i])
+            test(cel[i]);
+        else
+            reset(cel[i]);
+    }
+
+    gruppo* gru = getGruppi(g);
+    int dimG = getDimG(g);
+    for(i=0; i<dimG; i++)
+    {
+        setFase(gru[i], fasi[i]);
+    }
 }
 
 int compatibilita(teste t, gruppo* g, int dim)
