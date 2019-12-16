@@ -65,10 +65,10 @@ int checkCompatibilitaTeste(teste t, int cod1, int cod2, gruppo g1, gruppo g2)
 {
     testa t1 = t->insieme[cod1];
     float sx1, dx1;
-    getOffsetSxeDx(t1, &sx1, &dx1);
+    getOffsetSxeDxSuperficieTotaleOccupata(t1, &sx1, &dx1);
     testa t2 = t->insieme[cod2];
     float sx2, dx2;
-    getOffsetSxeDx(t2, &sx2, &dx2);
+    getOffsetSxeDxSuperficieTotaleOccupata(t2, &sx2, &dx2);
     coordinata c1 = posizioneMedia(g1);
     coordinata c2 = posizioneMedia(g2);
     if(getAscissa(c1)>=getAscissa(c2))
@@ -93,8 +93,8 @@ int gruppoCompatibile(teste t, gruppo g)
     {
         testa tes = t->insieme[i];
         float sx, dx, alto, basso;
-        getOffsetSxeDx(tes, &sx, &dx);
-        getOffsetAltoeBasso(tes, &alto, &basso);
+        getOffsetSxeDxSuperficieTopologiaCelle(tes, &sx, &dx);
+        getOffsetAltoeBassoSuperficieTopologiaCelle(tes, &alto, &basso);
         coordinata c = posizioneMedia(g);
         float* estremi = malloc(4* sizeof(float));
         estremiGruppo(estremi, g);
